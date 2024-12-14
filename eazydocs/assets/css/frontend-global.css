@@ -559,27 +559,27 @@
   color: #fff;
 }
 
-/*=========== Start page_breadcrumb css ============*/
-.page_breadcrumb {
+/*=========== Start ezd-page_breadcrumb css ============*/
+.ezd-page_breadcrumb {
   background: var(--black_50);
   padding: 12px 0;
   position: relative;
   z-index: 1;
   margin-top: -2px;
 }
-.page_breadcrumb .row {
+.ezd-page_breadcrumb .row {
   align-items: center;
 }
-.page_breadcrumb .date {
+.ezd-page_breadcrumb .date {
   color: var(--black_500);
   float: right;
   font-size: 13px;
 }
-.page_breadcrumb .date i {
+.ezd-page_breadcrumb .date i {
   padding-right: 5px;
 }
 
-/*=========== End page_breadcrumb css ============*/
+/*=========== End ezd-page_breadcrumb css ============*/
 /* Search Banner area
 ============================================================================================ */
 .ezd_search_banner {
@@ -947,10 +947,10 @@ body:not(.ezd-search-focused) #ezd-search-results.ajax-search {
   max-width: 100% !important;
 }
 
-.header_search_form_info {
+.ezd_search_form .header_search_form_info {
   position: relative;
 }
-.header_search_form_info.search_form_wrap .search_submit_btn {
+.ezd_search_form .header_search_form_info.search_form_wrap .search_submit_btn {
   position: absolute;
   right: 0;
   box-shadow: none !important;
@@ -963,10 +963,10 @@ body:not(.ezd-search-focused) #ezd-search-results.ajax-search {
   justify-content: center;
   top: 0;
 }
-.header_search_form_info.search_form_wrap .search_submit_btn > i {
+.ezd_search_form .header_search_form_info.search_form_wrap .search_submit_btn > i {
   font-size: 16px;
 }
-.header_search_form_info.search_form_wrap .search_submit_btn > svg {
+.ezd_search_form .header_search_form_info.search_form_wrap .search_submit_btn > svg {
   width: auto;
   max-width: 20px;
   height: auto;
@@ -1022,11 +1022,13 @@ body:not(.ezd-search-focused) #ezd-search-results.ajax-search {
 }
 .header_search_keyword .search_keyword_label {
   font-size: 14px;
-  margin-right: 10px;
+  margin-right: 15px;
   color: var(--black_100);
 }
 .header_search_keyword ul {
   margin: 0;
+  display: flex !important;
+  flex-flow: row !important;
 }
 .header_search_keyword ul li {
   display: inline-block;
