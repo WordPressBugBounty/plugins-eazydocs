@@ -2,7 +2,6 @@
 /** ============ Content Styling ============ **/
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
 
 $this->start_controls_section(
 	'style_form', [
@@ -208,7 +207,6 @@ $this->add_group_control(
 	[
 		'name'     => 'keyword_label_typography',
 		'label'    => __( 'Label Typography', 'eazydocs' ),
-		'scheme'   => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
 		'selector' => '{{WRAPPER}} .search_keyword_label',
 	]
 );
