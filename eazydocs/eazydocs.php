@@ -5,7 +5,7 @@
  * Plugin URI: https://spider-themes.net/eazydocs
  * Author: spider-themes
  * Author URI: https://spider-themes.net/eazydocs
- * Version: 2.5.6
+ * Version: 2.5.7
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -81,7 +81,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.5.6';
+		const version = '2.5.7';
 		public $plugin_path;
 		public $theme_dir_path;
 		public static $dir = '';
@@ -107,11 +107,25 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			add_action('admin_init', [ $this, 'ezd_get_setup_wizard_init' ]);
 
 			if ( eaz_fs()->is_plan( 'promax' ) ) {
-				add_action( 'admin_notices', [ $this, 'database_not_found' ] );
+				add_action( 'admin_notices', [ $this, 'update_database' ] );
 			}
 
 			// Added Documentation links to plugin row meta
 			add_filter('plugin_row_meta',[ $this,  'eazydocs_row_meta' ], 10, 2);
+
+			/**
+			 * Removes admin notices on the EazyDocs pages.
+			 *
+			 * @return void
+			 */
+			add_action( 'admin_head', function () {
+				// Check if the current screen is for your plugin page
+				if ( ezd_admin_pages() ) {
+					// Remove admin notices
+					remove_all_actions( 'admin_notices' );
+					remove_all_actions( 'all_admin_notices' );
+				}
+			});
 		}
 
 		// get the instance of the EazyDocs class
@@ -165,12 +179,11 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			require_once __DIR__ . '/includes/Walker_Docs_Onepage_Fullscreen.php';
 
 			// Options
-			require_once __DIR__ . '/vendor/csf/classes/setup.class.php';
-			require_once __DIR__ . '/includes/Admin/options/settings-options.php';
-
-			if ( ezd_is_premium() ) {
-				require_once __DIR__ . '/includes/Admin/options/taxonomy-options.php';
-			}
+            require __DIR__ . '/vendor/csf/classes/setup.class.php';
+            require __DIR__ . '/includes/Admin/options/settings-options.php';
+            if ( ezd_is_premium() ) {
+                require_once __DIR__ . '/includes/Admin/options/taxonomy-options.php';
+            }
 
 			if ( ezd_unlock_themes() ) {
 				require_once __DIR__ . '/shortcodes/reference.php';
@@ -352,14 +365,14 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 
             // If any table was not created, send a notification.
 			if ( ! $tables_created ) {
-				$this->database_not_found();
+				$this->update_database();
 			}
 		}
 
 		/**
 		 * Database not found
 		 */
-		function database_not_found() {
+		function update_database() {
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'eazydocs_search_keyword';
 			$table_name2 = $wpdb->prefix . 'eazydocs_search_log';

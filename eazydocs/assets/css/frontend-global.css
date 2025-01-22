@@ -7,6 +7,7 @@
   --bs-white: #fff;
   --black_25: #f9f9f9;
   --black_50: #f2f2f2;
+    --black_75: #e4e4e4;
   --black_100: #d6d9dc;
   --black_150: #c8ccd0;
   --black_200: #bbc0c4;
@@ -544,14 +545,14 @@
 
 .ezd-alert {
   position: relative;
-  padding: 1rem 1rem;
+  padding: 15px 20px;
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
 }
 .ezd-alert.ezd-alert-info {
-  background: #f1fbfd;
-  border-color: #a0e3f2;
+  background: rgba(218, 249, 255, 0.3882352941);
+  border-color: rgba(109, 218, 243, 0.4588235294);
   color: #055160;
 }
 
@@ -584,7 +585,7 @@
 ============================================================================================ */
 .ezd_search_banner {
   background-color: #fafafa;
-  padding-top: 120px;
+  padding-top: 140px;
   padding-bottom: 70px;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -725,7 +726,7 @@ form.ezd_search_form .form-group .input-wrapper input::placeholder {
   display: none;
   transition: all 0.4s;
   z-index: 99;
-  top: calc(100% - 28px);
+  top: calc(100% - 0px);
 }
 #ezd-search-results a {
   text-decoration: none;
@@ -1087,139 +1088,6 @@ body.ezd-search-focused .ezd_click_capture {
 .eazydocs_shortcode {
   width: 100% !important;
   max-width: 100% !important;
-}
-
-.categories_guide_item {
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 50px 120px 0 rgba(4, 73, 89, 0.08);
-  padding: 40px 35px 50px;
-  margin-bottom: 30px;
-  position: relative;
-}
-.categories_guide_item .doc-top {
-  margin-bottom: 30px;
-}
-.categories_guide_item .doc-top img {
-  height: auto;
-  margin-right: 15px;
-  max-width: 50px;
-}
-.categories_guide_item.bg-warning {
-  background: #ffe69c;
-}
-.categories_guide_item.bg-dark {
-  background: #212529;
-}
-.categories_guide_item .private {
-  position: absolute;
-  right: -6px;
-  top: -17px;
-}
-.categories_guide_item .private i {
-  font-size: 40px;
-}
-.categories_guide_item img.featured-image {
-  max-width: 50px !important;
-  height: auto;
-}
-.categories_guide_item a.doc_tag_title {
-  text-decoration: none;
-  color: var(--black_900);
-  margin-bottom: 0;
-}
-.categories_guide_item a.doc_tag_title:hover {
-  color: var(--ezd_brand_color);
-}
-.categories_guide_item a.doc_tag_title .title {
-  font-size: 22px;
-  text-decoration: none;
-  margin: 0;
-}
-.categories_guide_item a.doc_tag_title span {
-  color: var(--black_500);
-  margin-top: 10px;
-}
-.categories_guide_item a.doc_tag_title span.badge {
-  font-size: 11px;
-  background: rgba(76, 76, 241, 0.1);
-  color: var(--black_800);
-  padding: 3px 8px 0;
-  border-radius: 3px;
-  margin-right: 5px;
-  display: inline-block;
-  line-height: 1.45;
-  vertical-align: middle;
-  font-weight: 500;
-  height: 20px;
-  letter-spacing: 0.2px;
-}
-.categories_guide_item.bg-dark a.doc_tag_title span {
-  color: #fff;
-}
-.categories_guide_item .doc_border_btn {
-  border: 1px solid rgba(76, 76, 241, 0.2);
-  border-radius: 4px;
-  color: var(--ezd_brand_color);
-  font-size: 14px;
-  font-weight: 500;
-  background: rgba(76, 76, 241, 0.05);
-  display: inline-block;
-  padding: 6px 20px;
-  transition: all 0.3s linear, color 0.2s;
-  text-decoration: none;
-  margin-right: 2px;
-  margin-bottom: 10px;
-}
-.categories_guide_item .doc_border_btn i {
-  margin-left: 6px;
-  font-size: 16px;
-  vertical-align: middle;
-  display: inline-block;
-  transition: all 0.2s linear, color 0s linear;
-}
-.categories_guide_item .doc_border_btn:hover, .categories_guide_item .doc_border_btn:focus {
-  box-shadow: 0 10px 20px 0 rgba(8, 102, 25, 0.2);
-  background-color: var(--ezd_brand_color) !important;
-  border-color: var(--ezd_brand_color);
-  color: #fff;
-  text-decoration: none;
-}
-.categories_guide_item .doc_border_btn:hover i, .categories_guide_item .doc_border_btn:focus i {
-  transform: translateX(8px);
-}
-.categories_guide_item .article_list {
-  margin-bottom: 42px;
-  margin-left: 0;
-  padding-left: 0;
-}
-.categories_guide_item .article_list li {
-  margin: 15px 0 0 0;
-  padding: 0;
-}
-.categories_guide_item .article_list li a {
-  font-size: 16px;
-  color: var(--p_color);
-  line-height: 22px;
-  transition: color 0.2s linear;
-  display: flex;
-  text-decoration: none;
-  align-items: center;
-}
-.categories_guide_item .article_list li a:hover {
-  color: var(--ezd_brand_color) !important;
-}
-.categories_guide_item .article_list li a::before {
-  content: "h";
-  font-family: "ElegantIcons";
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  padding-right: 15px;
 }
 
 .bg-dark .title {

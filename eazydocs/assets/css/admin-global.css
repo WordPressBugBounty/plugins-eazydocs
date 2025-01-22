@@ -7,6 +7,7 @@
   --bs-white: #fff;
   --black_25: #f9f9f9;
   --black_50: #f2f2f2;
+    --black_75: #e4e4e4;
   --black_100: #d6d9dc;
   --black_150: #c8ccd0;
   --black_200: #bbc0c4;
@@ -203,7 +204,7 @@ body.valid .active-theme.csf-field::after {
   display: none;
 }
 
-body:not(.ezd-premium) .eazydocs-pro-notice.csf-field::before {
+body:not(.ezd-premium, .valid) .eazydocs-pro-notice.csf-field::before {
   content: "Pro";
   background-color: #f1bd6c;
   color: #000;
@@ -211,7 +212,7 @@ body:not(.ezd-premium) .eazydocs-pro-notice.csf-field::before {
   border-radius: 3px;
   margin-bottom: 10px;
 }
-body:not(.ezd-premium) .eazydocs-pro-notice.csf-field::after {
+body:not(.ezd-premium, .valid) .eazydocs-pro-notice.csf-field::after {
   position: absolute;
   content: "";
   width: 100%;
@@ -221,8 +222,8 @@ body:not(.ezd-premium) .eazydocs-pro-notice.csf-field::after {
   background-color: transparent;
   z-index: 2;
 }
-body:not(.ezd-premium) .eazydocs-pro-notice .csf-title,
-body:not(.ezd-premium) .eazydocs-pro-notice .csf-fieldset {
+body:not(.ezd-premium, .valid) .eazydocs-pro-notice .csf-title,
+body:not(.ezd-premium, .valid) .eazydocs-pro-notice .csf-fieldset {
   opacity: 0.5;
   pointer-events: none;
 }

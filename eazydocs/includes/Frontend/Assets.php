@@ -26,17 +26,21 @@ class Assets {
 		wp_register_script( 'eazydocs-el-widgets', EAZYDOCS_ASSETS.'/js/frontend/elementor-widgets.js' );
 
 		wp_register_style( 'elegant-icon', EAZYDOCS_ASSETS.'/vendors/elegant-icon/style.css' );
-		wp_register_style( 'ezd-el-widgets', EAZYDOCS_ASSETS.'/css/ezd-el-widgets.css' );
+		wp_register_style( 'ezd-docs-widgets', EAZYDOCS_ASSETS.'/css/ezd-docs-widgets.css' );
 
 		$dynamic_cssd = ":root { --ezd_brand_color: " . ezd_get_opt( 'brand_color' ) . "; }";
 		wp_add_inline_style( 'eazydocs-blocks', $dynamic_cssd );
 
-		if ( ezydocspro_shortcodes_assets() ) {
+		if ( ezd_has_shortcode( ['ezd_login_form', 'reference'] ) ) {
 			wp_enqueue_style( 'eazydocs-shortcodes', EAZYDOCS_ASSETS . '/css/shortcodes.css' );
 			wp_enqueue_script( 'eazydocs-shortcodes', EAZYDOCS_ASSETS . '/js/shortcodes.js' );
 		}
 
-		if ( ezydocs_frontend_assets() ) {
+		if ( ezd_has_shortcode( ['eazydocs'] ) ) {
+			wp_enqueue_style( 'ezd-docs-widgets' );
+		}
+
+		if ( ezd_frontend_pages() ) {
 			// Scripts
 			wp_enqueue_script( 'printThis', EAZYDOCS_ASSETS . '/js/frontend/printThis.js' );
 
@@ -56,12 +60,11 @@ class Assets {
 		}
 
 		if ( is_rtl() ) {
-			if (ezydocs_frontend_assets()) {
+			if ( ezd_frontend_pages() ) {
 				wp_enqueue_style( 'eazydocs-rtl', EAZYDOCS_ASSETS . '/css/rtl.css', ['eazydocs-frontend'], EAZYDOCS_VERSION);
 			} else {
 				wp_enqueue_style( 'eazydocs-rtl', EAZYDOCS_ASSETS . '/css/rtl.css', [], EAZYDOCS_VERSION);
 			}
-
 		}
 
 		// Enqueue on onepage doc
@@ -87,13 +90,13 @@ class Assets {
 			)
 		);
 
-		wp_register_style( 'eazydocs-frontend-global', EAZYDOCS_ASSETS . '/css/frontend-global.css' );
+		wp_register_style( 'ezd-frontend-global', EAZYDOCS_ASSETS . '/css/frontend-global.css' );
 
 		// Global Scripts
 		wp_register_style( 'elegant-icon', EAZYDOCS_VEND . '/elegant-icon/style.css' );
 		if ( self::global_scope() ) {
 			wp_enqueue_style( 'elegant-icon' );
-			wp_enqueue_style( 'eazydocs-frontend-global' );
+			wp_enqueue_style( 'ezd-frontend-global' );
 
 			// Dynamic CSS
 			$dynamic_css = '';
@@ -110,7 +113,7 @@ class Assets {
 				$dynamic_css .= ".single-docs .shortcode_title .ezd-doc-badge:hover { background: rgba($brand_rgb, .7) }";
 			}
 
-			wp_add_inline_style( 'eazydocs-frontend-global', $dynamic_css );
+			wp_add_inline_style( 'ezd-frontend-global', $dynamic_css );
 			wp_enqueue_script( 'eazydocs-global', EAZYDOCS_ASSETS . '/js/frontend/global.js', array( 'jquery' ), EAZYDOCS_VERSION );
 		}
 	}

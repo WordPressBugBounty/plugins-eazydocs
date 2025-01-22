@@ -349,6 +349,7 @@
 	font-weight: 700;
 	font-size: 22px;
 	line-height: 1.5;
+	transition: 0.3s;
 }
 
 /*book chapter Dark*/
@@ -533,6 +534,10 @@
 	&:hover {
 		box-shadow: 0 16px 40px 0 rgba(10, 50, 102, 0.1);
 		border-color: #fff;
+	}
+	
+	@media (max-width: 560px) {
+		width: 100%;
 	}
 }
 
@@ -1031,8 +1036,6 @@
 	}
 }
 
-/* End Quesiton Area css
-============================================================================================ */
 .categories_guide_item {
 	border-radius: 6px;
 	background: #fff;
@@ -1040,6 +1043,10 @@
 	padding: 40px 35px 50px;
 	margin-bottom: 30px;
 	position: relative;
+
+	@media (max-width: 560px) {
+		width: 100%;
+	}
 
 	&.bg-dark {
 		background: #212529;
