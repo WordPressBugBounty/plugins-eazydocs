@@ -1,6 +1,14 @@
 @charset "UTF-8";
 /* Colors */
 :root {
+  --ezd-color-10: rgba(171, 198, 245, 0.22);
+  --ezd-color-25: #cee0ff;
+  --ezd-color-50: #b5d1ff;
+  --ezd-color-100: #9cc2ff;
+  --ezd-color-200: #84b2ff;
+  --ezd-color-300: #6ba3ff;
+  --ezd-color-400: #5294ff;
+  --ezd-color-500: #3985ff;
   --secondary_color: #1d2746;
   --green_color: #27ae60;
   --p_color: #425466;
@@ -8,7 +16,7 @@
   --bs-white: #fff;
   --black_25: #f9f9f9;
   --black_50: #f2f2f2;
-    --black_75: #e4e4e4;
+  --black_75: #eeeeee;
   --black_100: #d6d9dc;
   --black_150: #c8ccd0;
   --black_200: #bbc0c4;
@@ -64,10 +72,13 @@ input[type=search]::-webkit-search-results-decoration {
 .doc-scrollable h1, .doc-scrollable h2, .doc-scrollable h3, .doc-scrollable h4, .doc-scrollable h5, .doc-scrollable h6 {
   font-weight: 500;
   margin-bottom: 15px;
-    color: var(--black_800);
 }
 .doc-scrollable table {
   margin-bottom: 25px;
+}
+
+.ezd-container h1, .ezd-container h2, .ezd-container h3, .ezd-container h4, .ezd-container h5, .ezd-container h6 {
+  color: var(--black_800);
 }
 
 .col-md-offset-right-1,
@@ -1467,7 +1478,7 @@ body:not(.onepage-doc) .sticky_menu .doc_documentation_area.body_fixed .doc_righ
 }
 
 .doc-btm {
-  margin-top: 70px;
+  margin-top: 60px;
   clear: both;
 }
 .doc-btm ul.card_tagged {
@@ -1582,7 +1593,7 @@ body:not(.onepage-doc) .sticky_menu .doc_documentation_area.body_fixed .doc_righ
 .doc-middle-content .topic_item_tabs .topic_list_item .navbar-nav {
   padding: 0;
   margin: 0;
-    list-style: none;
+  list-style: none;
 }
 .doc-middle-content .topic_item_tabs .topic_list_item .navbar-nav li {
   margin: 0 0 10px;
@@ -1688,6 +1699,11 @@ body:not(.onepage-doc) .sticky_menu .doc_documentation_area.body_fixed .doc_righ
   max-width: 100%;
   margin-left: unset;
   margin-right: unset;
+}
+
+#comments {
+  background: var(--bs-white);
+  border-radius: 15px;
 }
 
 .doc-post-content .doc-scrollable section {
@@ -2454,6 +2470,12 @@ p .footnotes-link::after {
   font-size: 1.8em;
   display: flex;
   align-items: center;
+}
+.single-docs #post h2, .single-docs #post h3, .single-docs #post h4, .single-docs #post h5, .single-docs #post h6 {
+  scroll-margin-top: 100px;
+  scroll-padding-top: 100px;
+  margin-top: -50px;
+  padding-top: 50px;
 }
 .single-docs #post h3 {
   font-size: 1.5em;

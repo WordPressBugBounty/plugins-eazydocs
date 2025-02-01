@@ -94,12 +94,13 @@ export default function Edit( { attributes, setAttributes } ) {
 					initialOpen={true}
 				>
 					<RangeControl
+						value={col} // Bind the control value to the attribute
 						initialPosition={3}
 						label={__('Columns', 'eazydocs')}
 						max={4}
 						min={1}
-						shiftStep={ 1 }
-						onChange={ onChangeCol }
+						shiftStep={1}
+						onChange={(value) => setAttributes({ col: value })} // Update the attribute when changed
 					/>
 					
 					<TextControl
@@ -125,16 +126,15 @@ export default function Edit( { attributes, setAttributes } ) {
 					
 					<SelectControl
 						label={__('Parent Docs Order By', 'eazydocs')}
-						value={parent_docs_order}
+						value={parent_docs_order || 'menu_order'}
 						options={parentOrderOptions}
 						className={eazydocs_local_object.is_ezd_pro_block == 'yes' ? '' : 'eazydocs-pro-block-notice'}
 						onChange={(value) => setAttributes({ parent_docs_order: value })}
 					/>
 
-
 					<SelectControl
 						label={__('Parent Docs Order', 'eazydocs')}
-						value={parent_docs_order_by}
+						value={parent_docs_order_by || 'asc'}
 						options={orderOptions}
 						className={eazydocs_local_object.is_ezd_pro_block == 'yes' ? '' : 'eazydocs-pro-block-notice'}
 						onChange={(value) => setAttributes({ parent_docs_order_by: value })}

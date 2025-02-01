@@ -51,7 +51,6 @@ class Frontend {
 	 *
 	 */
 	public function footnotes($post_id){
-
 		$options 				= get_option( 'eazydocs_settings' );		
 		$is_notes_title   		= $options['is_footnotes_heading'] ?? '1';
 		$footnotes_layout  	 	= $options['footnotes_layout'] ?? 'collapsed';
@@ -72,21 +71,21 @@ class Frontend {
 			<div class="ezd-footnote-title <?php echo esc_attr( $is_footnotes_expand ); ?>">
 				<span class="ezd-plus-minus"> <i class="icon_plus-box"></i><i class="icon_minus-box"></i></span>
 				<span class="ezd-title-txt"><?php echo esc_html( $notes_title_text ); ?></span>
-				<span> ( <?php echo esc_html( $shortcode_counter ); ?> ) </span>
+                &nbsp; <span class="cite-count">(<?php echo esc_html( $shortcode_counter ); ?>) </span>
 			</div>
 			<?php 
 		endif;
 		?>
 		
-		<div ezd-data-column="<?php echo esc_attr( $footnotes_column ); ?>" class="ezd-footnote-footer <?php echo esc_attr( $ezd_notes_footer_mt .' '. $is_footnotes_expand ); ?>">
-			<?php		  
+		<div data-column="<?php echo esc_attr( $footnotes_column ); ?>" class="ezd-footnote-footer <?php echo esc_attr( $ezd_notes_footer_mt .' '. $is_footnotes_expand ); ?>">
+			<?php
 			$i = 0;
 			foreach( $reference_with_content as $reference_with_contents ) {
 				$i++;
 				?>
 				<div class="note-class-<?php echo esc_html( $reference_with_contents['id'] ); ?>" id="note-name-<?php echo esc_html( $reference_with_contents['id'] ); ?>">
 					<div class="ezd-footnotes-serial"> 
-						<spna class="ezd-serial"><?php echo esc_html($i); ?></spna> 
+						<span class="ezd-serial"><?php echo esc_html($i); ?></span>
 						<a class="ezd-note-indicator" href="#serial-id-<?php echo esc_html( $reference_with_contents['id'] ); ?>"><i class="arrow_carrot-up"></i> </a>
 					</div>
 					<div class="ezd-footnote-texts"> 
@@ -97,6 +96,31 @@ class Frontend {
 			}
 			?>
 		</div>
+
+        <script>
+            ;(function ($) {
+                'use strict';
+                $(document).ready(function () {
+                    const $footnoteFooter = $('.ezd-footnote-footer');
+                    const $footnoteTitle = $('.ezd-footnote-title');
+                    const $footnoteLinks = $('.ezd-footnotes-link-item');
+                    if ($footnoteFooter.children('div').length) {
+                        $footnoteTitle.css('display', 'flex').on('click', function () {
+                            $(this).toggleClass('expanded collapsed');
+                            $footnoteFooter.stop(true, true).slideToggle({
+                                complete: function () {
+                                    $(this).css('display', $(this).is(':visible') ? 'flex' : 'none');
+                                }
+                            });
+                        });
+                        $footnoteLinks.on('click', function () {
+                            $footnoteTitle.addClass('expanded').removeClass('collapsed');
+                            $footnoteFooter.css({ display: 'flex', height: 'auto' });
+                        });
+                    }
+                });
+            })(jQuery);
+        </script>
 	<?php
 	}
 
