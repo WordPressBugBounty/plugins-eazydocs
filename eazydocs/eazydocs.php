@@ -5,7 +5,7 @@
  * Plugin URI: https://spider-themes.net/eazydocs
  * Author: spider-themes
  * Author URI: https://spider-themes.net/eazydocs
- * Version: 2.5.8
+ * Version: 2.5.9
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -27,7 +27,7 @@ if ( function_exists( 'eaz_fs' ) ) {
 		// Retrieve the Eazydocs settings option
 		$opt 			= get_option('eazydocs_settings', []);
 		// Check if the setup wizard has been completed (defaulting to an empty string if not set)
-		$setup_wizard 	= isset($opt['setup_wizard_completed']) ? $opt['setup_wizard_completed'] : '';
+		$setup_wizard 	= $opt['setup_wizard_completed'] ?? '';
 		
 		// Check if the setup wizard is not completed and ezd_get_setup_wizard option is set
 		if ( get_option( 'ezd_get_setup_wizard' ) && ! empty( $setup_wizard ) ) {
@@ -41,7 +41,7 @@ if ( function_exists( 'eaz_fs' ) ) {
 
 			if ( ! isset( $eaz_fs ) ) {
 				// Include Freemius SDK.
-				require_once dirname( __FILE__ ) . '/includes/fs/start.php';
+				require_once dirname( __FILE__ ) . '/vendor/fs/start.php';
 
 				$eaz_fs = fs_dynamic_init(
 					[
@@ -93,7 +93,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.5.8';
+		const version = '2.5.9';
 		public $plugin_path;
 		public $theme_dir_path;
 		public static $dir = '';
@@ -133,6 +133,11 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 					// Remove admin notices
 					remove_all_actions( 'admin_notices' );
 					remove_all_actions( 'all_admin_notices' );
+
+					// Re-add a specific notice
+                    if ( !ezd_is_premium() ) {
+	                    ezd_show_notice_after_period('ezd_offer_notice', 12);
+                    }
 				}
 			});
 		}
@@ -169,8 +174,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 		public function core_includes() {
 			require_once __DIR__ . '/includes/functions.php';
 			// Notices
-			require_once __DIR__ . '/includes/notices/deactivate-other-doc-plugins.php';
-			require_once __DIR__ . '/includes/notices/asking-for-review.php';
+			require_once __DIR__ . '/includes/notices/_notices.php';
 
 			if ( eaz_fs()->is_plan( 'promax' ) ) {
 				require_once __DIR__ . '/includes/notices/update-database.php';

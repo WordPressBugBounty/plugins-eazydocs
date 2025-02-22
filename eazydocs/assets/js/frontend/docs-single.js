@@ -266,81 +266,124 @@
 		});
 
 		/**
-		 * TOC Menu
+		 * ============================
+		 * Navbar Show / Hide Script
+		 * ============================
+		 * This script handles dynamic adjustments of the navbar's top margin based on user interactions:
+		 * - Clicking internal page anchor links (.doc_menu and .ezd-note-indicator)
+		 * - Clicking outside the anchor links
+		 * - Scrolling the page
+		 * ============================
 		 */
-		$('.doc_menu a[href^="#"]:not([href="#"]').on(
-			'click',
-			function (event) {
-				var $anchor = $(this);
-				$('html, body')
-					.stop()
-					.animate(
-						{
-							scrollTop: $($anchor.attr('href')).offset().top,
-						},
-						900
-					);
-				event.preventDefault();
-			}
-		);
+
+		// Function to handle navbar margin adjustments
+		function ezdSetNavbarMarginTop(active) {
+			let height = $('.navbar.navbar_fixed').outerHeight(); // Get navbar height
+			let adminBarOffset = $('body').hasClass('admin-bar') ? 32 : 0; // Check for admin bar
+			let marginTop = active ? `-${height}px` : `${adminBarOffset}px`;
+
+			// Apply the appropriate margin and toggle active class
+			$('.navbar.navbar_fixed').toggleClass('doc_menu_active', active).css('margin-top', marginTop);
+		}
 
 		/**
-		 * Left Sidebar Toggle icon
+		 * Handle link click for internal page navigation
+		 * Applies to both .doc_menu and .ezd-note-indicator mean footnote elements.
 		 */
+		$('.doc_menu a[href^="#"]:not([href="#"]), .ezd-note-indicator').on('click', function (event) {
+			event.preventDefault();
+			ezdSetNavbarMarginTop(true); // Set navbar margin on link click
+			$('html, body').stop().animate({
+				scrollTop: $($(this).attr('href')).offset().top
+			}, 900); // Smooth scroll animation
+		});
+
+		/**
+		 * Handle click outside the target links
+		 * Reset navbar margin when clicking outside the links.
+		 */
+		$(document).on('click', function (event) {
+			if (!$(event.target).closest('.doc_menu a, .ezd-note-indicator').length) {
+				ezdSetNavbarMarginTop(false);
+			}
+		});
+
+		/**
+		 * Handle scroll events
+		 * Reset navbar margin when scrolled near the top.
+		 */
+		$(window).on('scroll', function () {
+			if ($(this).scrollTop() <= $('.navbar.navbar_fixed').outerHeight()) {
+				ezdSetNavbarMarginTop(false);
+			}
+		});
+
+		/**
+		 * ============================
+		 * End of Navbar Show / Hide Script
+		 * ============================
+		 */
+		
+		// Ensure sidebars are sticky and toggle logic works properly
 		if ($('.doc_documentation_area').length > 0) {
-			//switcher
-			var switchs = true;
-			$(document).on('click', '#mobile-right-toggle', function (e) {
+			var leftOpen = false;
+			var rightOpen = false;
+
+			// Right sidebar toggle
+			$(document).on('click', '#mobile-right-toggle, .doc_rightsidebar.opened .doc_menu a', function (e) {
 				e.preventDefault();
-				if (switchs) {
+				if (leftOpen) closeLeftSidebar();
+
+				if (!rightOpen) {
 					$('.doc_documentation_area').addClass('overlay');
-					$('.doc_rightsidebar').addClass('opened').animate(
-						{
-							right: '0px',
-						},
-						100
-					);
-					switchs = false;
+					$('.doc_rightsidebar').addClass('opened').animate({ right: '0px' }, 100);
+					rightOpen = true;
 				} else {
-					$('.doc_documentation_area').removeClass('overlay');
-					$('.doc_rightsidebar').removeClass('opened').animate(
-						{
-							right: '-290px',
-						},
-						100
-					);
-					switchs = true;
+					closeRightSidebar();
 				}
 			});
 
+			// Left sidebar toggle
 			$(document).on('click', '#mobile-left-toggle', function (e) {
 				e.preventDefault();
-				if (switchs) {
+				if (rightOpen) closeRightSidebar();
+
+				if (!leftOpen) {
 					$('.doc_documentation_area').addClass('overlay');
 					$('.left-column .doc_left_sidebarlist')
 						.addClass('opened')
-						.animate(
-							{
-								left: '0px',
-							},
-							300
-						);
-					switchs = false;
+						.animate({ left: '0px' }, 300);
+					leftOpen = true;
 				} else {
-					$('.doc_documentation_area').removeClass('overlay');
-					$('.left-column .doc_left_sidebarlist')
-						.removeClass('opened')
-						.animate(
-							{
-								left: '-330px',
-							},
-							300
-						);
-					switchs = true;
+					closeLeftSidebar();
 				}
 			});
-		}
 
+			// Close sidebars when clicking outside
+			$(document).on('click', function (e) {
+				if (
+					!$(e.target).closest('.doc_rightsidebar, .doc_rightsidebar.opened .doc_menu a, .left-column, #mobile-right-toggle, #mobile-left-toggle').length
+				) {
+					if (leftOpen) closeLeftSidebar();
+					if (rightOpen) closeRightSidebar();
+				}
+			});
+
+			function closeLeftSidebar() {
+				$('.doc_documentation_area').removeClass('overlay');
+				$('.left-column .doc_left_sidebarlist')
+					.removeClass('opened')
+					.animate({ left: '-330px' }, 300);
+				leftOpen = false;
+			}
+
+			function closeRightSidebar() {
+				$('.doc_documentation_area').removeClass('overlay');
+				$('.doc_rightsidebar').removeClass('opened').animate({ right: '-290px' }, 100);
+				rightOpen = false;
+			}
+		}
+	
 		// Mobile menu on the Doc single page
 		$(document).on('click', '.single-docs .mobile_menu_btn', function () {
 			$('body').removeClass('menu-is-closed').addClass('menu-is-opened');
