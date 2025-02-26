@@ -267,6 +267,8 @@ ol.eazydocs-search-wrapper .breadcrumb .breadcrumb-item:first-child {
 	img {
 		padding-right: 15px;
 		max-width: 40px;
+		height: auto;
+		max-height: 40px;
 	}
 
 	.topic-title {
@@ -328,14 +330,19 @@ ol.eazydocs-search-wrapper .breadcrumb .breadcrumb-item:first-child {
 	}
 }
 
-.h_content_items.box-item.collapse-wrap {
-	display: none;
+.h_content_items{
+	&.box-item.collapse-wrap {
+		display: none;
+	}
+	a{
+		text-decoration: none !important;
+	}
 }
 
 .h_item {
 	background: #fff;
-	padding-top: 30px;
-	padding-bottom: 22px;
+	padding: 30px 20px 22px;
+	box-sizing: border-box;
 	margin-bottom: 30px;
 	box-shadow: 0 1px 3px rgba(29, 56, 70, 0.16);
 	border-radius: 5px;
