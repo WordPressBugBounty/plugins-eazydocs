@@ -92,9 +92,41 @@ a.eazydocs-close-notice:active {
   }
 }
 
+
+/** === Codestar Fontawesome replaced with Dashicons === **/
+/** Down arrow **/
+.csf-field .chosen-container-single .chosen-single div b:before,
+.csf-nav ul li .csf-arrow:after {
+  content: "\f347";
+  font-family: dashicons;
+  font-size: 12px;
+}
+
+/** Cross icon **/
+.csf-field .chosen-container-single .chosen-single abbr:before,
+.csf-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close:before {
+  content: "\f335" !important;
+  font-family: dashicons;
+}
+
+.csf-field .chosen-container-active.chosen-with-drop .chosen-single div b:before {
+  content: "\f343";
+  font-family: dashicons;
+}
+
+.csf-field-image_select figure:before {
+  content: "\f147";
+  font-family: dashicons;
+  font-size: 14px;
+}
+
 /** === Codestar options / Pro Alert === **/
 .csf-field-image_select figure {
   width: 100px;
+}
+
+.csf-nav .csf-tab-icon {
+  font-size: 15px;
 }
 
 .csf-field-repeater .csf-repeater-content {
@@ -104,10 +136,12 @@ a.eazydocs-close-notice:active {
 .csf-field-image_select {
   img {
     opacity: .6;
+
     &:hover {
       opacity: 1;
     }
   }
+
   .csf--active img {
     opacity: 1;
   }
@@ -143,6 +177,31 @@ body.ezd_no_promax .eazydocs-promax-notice.csf-field,
 .eazydocs-pro-notice.csf-field {
   position: relative;
   cursor: pointer;
+}
+
+.csf-fieldset {
+  .csf-fieldset-content {
+    &[data-depend-id="footnotes_colum_opt"] {
+      border: none !important;
+      box-shadow: none;
+      outline: none;
+
+      .csf-field {
+        float: left;
+        border: none;
+        padding: 0;
+
+        &:last-child {
+          min-width: 240px;
+          margin-left: 25px;
+
+          .csf-title {
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+  }
 }
 
 body.valid.docy .active-theme-docy .csf-title,
@@ -312,7 +371,7 @@ label[for="ezd_docs_sidebar"] {
   display: block;
   text-align: left;
   margin: 20px 0 10px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
 }
 
@@ -380,6 +439,7 @@ p.big-p {
     background: rgb(255, 0, 0);;
     color: #fff;
     border-color: rgb(255, 0, 0);
+
     &:hover {
       background: #d70202;
       border-color: #d70202;
@@ -607,6 +667,99 @@ p.big-p {
     justify-content: center;
 
     .tab-pane {
+
+      &#step-4 {
+        h2 {
+          margin-bottom: 30px;
+        }
+
+        p {
+          margin-top: 20px;
+        }
+
+        ul {
+          &.ezd-plugins-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            @media screen and (max-width: 991px) {
+              display: flow;
+            }
+
+            li {
+              flex: 1;
+              border: 1px solid #c7c7c7;
+              border-radius: 5px;
+              display: flex;
+              justify-content: center;
+              flex-wrap: wrap;
+              align-items: end;
+              padding: 25px 0 0;
+
+              img {
+                max-width: 40px;
+                height: auto;
+                margin: 0;
+                border-radius: 3px;
+              }
+
+              h2 {
+                margin: 10px 0 5px;
+                display: block;
+                font-size: 20px;
+                font-weight: 500;
+              }
+
+              p {
+                font-size: 14px;
+                display: block;
+                min-height: 60px;
+              }
+
+              div {
+                background: linear-gradient(179deg, #ffffff, rgba(207, 207, 207, 0.5294117647));
+                margin: 0;
+                padding: 0 15px;
+                width: 100%;
+
+                &.action-btn-wrap {
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 10px;
+                  font-size: 14px;
+                  align-items: center;
+
+                  button {
+                    background: transparent;
+                    cursor: pointer;
+                    color: black;
+                    border: 1px solid;
+                    padding: 6px 12px;
+                    border-radius: 3px;
+
+                    &.button-action {
+                      background: #007FFF;
+                      color: white !important;
+                      border: none;
+                      transition: all 0.3s;
+
+                      &:hover {
+                        background: #002D62 !important;
+                      }
+                    }
+
+                    &:disabled {
+                      color: #787878 !important;
+                      cursor: not-allowed;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
       h2 {
         font-size: 22px;
         margin-top: 36px;
@@ -650,8 +803,9 @@ p.big-p {
       }
     }
 
-    .archive-page-selection-wrap{
+    .archive-page-selection-wrap {
       text-align: center;
+
       select {
         display: block;
         text-align: center;
@@ -660,11 +814,13 @@ p.big-p {
         border-radius: 4px;
         padding: 3px 15px;
         outline: none;
+
         &:focus {
           outline: none;
           box-shadow: none;
         }
       }
+
       span {
         font-size: 13px;
         display: block;
@@ -784,8 +940,12 @@ p.big-p {
     padding: 10px;
     background: #fbfbfb;
 
+    @media screen and (max-width: 767px) {
+      position: unset;
+      display: block;
+    }
+
     button {
-      padding: 10px 20px;
       background: #005ccb;
       border-radius: 5px;
       cursor: pointer;
@@ -795,11 +955,15 @@ p.big-p {
       color: white;
       border: none;
       margin: 0 10px;
+      line-height: normal;
+      padding: 10px;
+      box-sizing: border-box;
 
       &.sw-btn-prev {
         background: transparent;
         color: #005ccb;
         border: 1px solid #005ccb;
+
         &:hover {
           background: #005ccb;
           color: white;
@@ -814,5 +978,35 @@ p.big-p {
         display: none;
       }
     }
+  }
+}
+
+button#ezd-install-selected-plugins {
+  position: absolute;
+  display: none;
+  bottom: 10px;
+  right: 20px;
+  z-index: 1;
+  height: auto;
+  padding: 9px;
+  background: #005ccb;
+  min-width: 150px;
+  color: white;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: normal;
+  box-sizing: border-box;
+  margin: 0;
+
+  &:hover {
+    background: #00326e;
+  }
+
+  @media screen and (max-width: 767px) {
+    left: 0;
+    right: 0;
+    min-width: auto;
+    max-width: max-content;
+    margin: auto;
   }
 }

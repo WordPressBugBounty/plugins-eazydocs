@@ -4,7 +4,6 @@
 
         // Pro notices
         $('body:not(.ezd-premium) .eazydocs-pro-notice ul li:last-child label input').attr('disabled', true);
-        $('body:not(.ezd-premium) .eazydocs-pro-notice input').attr('disabled', true);
         
         // Promax notices
         $('body:not(.ezd-promax) .eazydocs-promax-notice .csf-field').attr('disabled', true);
@@ -113,7 +112,6 @@
             });
         });
         
-
         // Setup wizard scripts start
         if (typeof $.fn.wpColorPicker !== 'undefined') {
             $('.brand-color-picker').wpColorPicker({
@@ -135,7 +133,6 @@
                 $('.custom-slug-field').hide();
             }
         });
-
         
         $('.page-width-wrap input[type="radio"]').on('change', function() {
             var name = $(this).attr('value');
@@ -172,12 +169,11 @@
             var live_customizer = $('input[name="customizer_visibility"]:checked').val();
 
             // select field .archive-page-selection-wrap > select
-            var archivePage = $('.archive-page-selection-wrap select').val();
+            var archivePage     = $('.archive-page-selection-wrap select').val();
             
-
             // doc single layout
             var docSingleLayout = $('.page-layout-wrap input[name="docs_single_layout"]:checked').val();
-            var docsPageWidth = $('.page-width-wrap input[name="docsPageWidth"]:checked').val();
+            var docsPageWidth   = $('.page-width-wrap input[name="docsPageWidth"]:checked').val();
 
             // make hypen to underscore
             $.ajax({
@@ -214,9 +210,47 @@
                     alert('AJAX error: ' + status + ' - ' + error);
                 }
             });
-            
         });
-        // Setup wizard scripts end        
         
+        // Plugin activation in setup wizard
+        function ezdHandlePluginAction(button, plugin, action) {
+            button.text(action === "install" ? "Installing.." : "Activating..").prop("disabled", true);
+        
+            $.ajax({
+                url: eazydocs_local_object.ajaxurl,
+                type: "POST",
+                data: {
+                    action: "ezd_plugin_action",
+                    plugin: plugin,
+                    task: action,
+                    security: eazydocs_local_object.nonce
+                },
+                success: function (response) {
+                    if (response.success) {
+                        if (action === "install") {
+                            // Automatically trigger activation after install
+                            button.text("Activating...").attr("data-action", "activate").removeClass("button-action").addClass("button-activate");
+                            ezdHandlePluginAction(button, plugin, "activate"); // Call activation immediately
+                        } else {
+                            button.text("Activated").removeClass("button-activate button-action").addClass("button-disabled").prop("disabled", true);
+                        }
+                    } else {
+                        alert("Error: " + response.data);
+                        button.text(action.charAt(0).toUpperCase() + action.slice(1)).prop("disabled", false);
+                    }
+                }
+            });
+        }
+        
+        $(document).on("click", ".button-action, .button-activate", function () {
+            let button = $(this);
+            let plugin = button.data("plugin");
+            let action = button.data("action");
+        
+            if (plugin && action) {
+                ezdHandlePluginAction(button, plugin, action);
+            }
+        });
+        // Setup wizard scripts end       
     });
 })(jQuery);

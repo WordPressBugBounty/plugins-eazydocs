@@ -928,6 +928,10 @@ body {
 		overflow-y: auto;
 		width: calc(100% + 35px);
 		padding-right: 10px;
+		
+		.ezd-subscription-btn {
+			margin-bottom: 20px;
+		}
 	}
 }
 
@@ -1276,14 +1280,17 @@ body {
 
 //  TOC numbering
 @media (max-width: 991px) {
-	.left-column {
-		.doc_left_sidebarlist,
-		.single-docs .doc_rightsidebar {
-			margin-top: 15px;
-		}
-	}
 	.doc-middle-content {
 		margin-top: 50px;
+	}
+
+	.doc_right_mobile_menu .doc_rightsidebar,
+	.left-column .doc_left_sidebarlist {		
+		&.sticky{
+			position: fixed;
+			top: 0;
+			margin-top: 0;
+		}
 	}
 }
 
@@ -1909,6 +1916,9 @@ body:not(.onepage-doc) .sticky_menu {
 // Eazydocs password protected form
 .single-docs #post {
 	.doc-scrollable.editor-content {
+		.anchorjs-link {
+			padding-left: 5px;
+		}
 		.ezd-password-wrap {
 			p.ezd-password-title {
 				color: #fff;
@@ -2276,6 +2286,22 @@ div#eazydocs_share {
 body.admin-bar {
 	.ezd-link-copied-wrap {
 		top: 42px;
+	}
+	.doc_documentation_area.body_fixed {
+		.doc_rightsidebar,
+		.doc_left_sidebarlist {
+			&.one-page-docs-sidebar-wrap {
+				padding-top: 100px;
+			}
+		}
+	}
+	@media screen and ( max-width: 991px ) {
+		.doc_right_mobile_menu .doc_rightsidebar,
+		.left-column .doc_left_sidebarlist {
+			&.sticky{
+				top: 32px;
+			}
+		}
 	}
 }
 

@@ -54,7 +54,12 @@ class Assets {
 			wp_enqueue_script( 'sweetalert' );
 		}
 
-		if ( ezd_admin_post_types('onepage-docs')  ) {
+		if ( ezd_admin_pages() ) {
+			wp_deregister_style('csf-fa5');
+			wp_deregister_style('csf-fa5-v4-shims');
+		}
+
+		if ( ezd_admin_pages( ['eazydocs'] ) || ezd_admin_post_types('onepage-docs') ) {
 			wp_enqueue_script( 'ezd-admin-onepage', EAZYDOCS_ASSETS . '/js/admin/one_page.js', array( 'jquery' ), EAZYDOCS_VERSION );
 		}
 
@@ -90,7 +95,7 @@ class Assets {
 			'ezd_img_dir' 		=> EAZYDOCS_IMG
 		]);
 	}
-
+ 
 	/**
 	 * Enqueue global scripts
 	 * Load on all pages of WordPress dashboard
@@ -118,6 +123,7 @@ class Assets {
 				'clone_prompt_title'        => esc_html__( "Are you sure to Duplicate this doc?", "eazydocs" ),
 				'nonce'                     => wp_create_nonce( 'eazydocs-admin-nonce' ),
 				'one_page_prompt_docs'      => eazydocs_pro_doc_list(),
+				'onepage_doc_admin_url'     => admin_url(),
 				'one_page_prompt_sidebar'   => sidebar_selectbox(),
 				'one_page_doc_sidebar_edit' => edit_sidebar_selectbox(),
 				'edit_one_page_url'         => admin_url( 'admin.php?edit_docs=yes&' ),

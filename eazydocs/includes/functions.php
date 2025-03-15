@@ -644,10 +644,10 @@ function eazydocs_pro_doc_list() {
 		'post_type'      => array( 'docs' ),
 		'post_parent'    => 0
 	);
-	$docs      = get_posts( $args );
-	$doc_items = '';
-
+	$docs      		= get_posts( $args );
 	$doc_item_count = 0;
+	$doc_items 		= '<option value="">Select a doc</option>';
+
 	foreach ( $docs as $doc ) {
 		if ( ! get_page_by_path( $doc->post_name, OBJECT, 'onepage-docs' ) ) {
 			$doc_item_count ++;
@@ -680,7 +680,7 @@ function eazydocs_one_page( $doc_id ) {
 	if ( $post_status != 'draft' ) :
 		if ( count( $one_page_docs ) < 1 ) :
 			?>
-			<button class="button button-info one-page-doc" id="one-page-doc" name="submit" data-url="<?php echo esc_url(admin_url( 'admin.php' )); ?>?parentID=<?php echo esc_attr($doc_id); ?>&single_doc_title=<?php echo esc_html($one_page_title); ?>&make_onepage=yes&_wpnonce=<?php echo esc_attr(wp_create_nonce($doc_id)); ?>">
+			<button class="button button-info one-page-doc" id="one-page-doc" name="submit" data-url="<?php echo esc_url(admin_url( 'admin.php' )); ?>?parentID=<?php echo esc_attr($doc_id); ?>&single_doc_title=<?php echo esc_html($one_page_title); ?>&make_onepage=yes">
 				<?php esc_html_e( 'Make OnePage Doc', 'eazydocs' ); ?>
 			</button>
 			<?php
@@ -1433,8 +1433,9 @@ function ezd_internal_doc_security( $doc_id =  0 ) {
 	// Private doc restriction
 	if ( get_post_status( $doc_id ) == 'private' ) {
 
-		$user_group = ezd_get_opt('private_doc_user_restriction');
-		if ( $user_group['private_doc_all_user'] == 0 ) {
+		$user_group  = ezd_get_opt('private_doc_user_restriction');
+		$is_all_user = $user_group['private_doc_all_user'] ?? 0;
+		if ( $is_all_user == 0 ) {
 
 			// current user role
 			$current_user_id    = get_current_user_id();
@@ -1442,7 +1443,7 @@ function ezd_internal_doc_security( $doc_id =  0 ) {
 			$current_roles      = ( array ) $current_user->roles;
 
 			// All selected roles
-			$private_doc_roles = $user_group['private_doc_roles'];
+			$private_doc_roles  = $user_group['private_doc_roles'] ?? [];
 			$matching_roles 	= array_intersect($current_roles, $private_doc_roles);
 
 			if ( empty( $matching_roles )) {
@@ -1457,7 +1458,6 @@ function ezd_internal_doc_security( $doc_id =  0 ) {
 	}
 	return true;
 }
-
 
 /**
  * Delete doc secured by user role security

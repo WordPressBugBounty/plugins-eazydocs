@@ -4,7 +4,7 @@
 CSF::createSection( $prefix, array(
 	'id'    => 'single_doc',
 	'title' => esc_html__( 'Doc Single', 'eazydocs' ),
-	'icon'  => 'fas fa-plus-circle',
+	'icon'  => 'dashicons dashicons-media-document',
 ) );
 
 
@@ -44,7 +44,7 @@ CSF::createSection( $prefix, array(
 			'id'          => 'content-bg',
 			'type'        => 'color',
 			'title'       => esc_html__( 'Background Color', 'eazydocs' ),
-			'output'      => 'body.single-docs',
+			'output'      => 'body.single-docs .doc_documentation_area',
 			'output_mode' => 'background-color',
 		),
 
@@ -840,7 +840,7 @@ CSF::createSection( $prefix, array(
 			'subtitle'   => esc_html__( 'Highlight the typed keyword in the docs.', 'eazydocs' ),
 			'text_on'    => esc_html__( 'Enable', 'eazydocs' ),
 			'text_off'   => esc_html__( 'Disable', 'eazydocs' ),
-			'text_width' => 80,
+			'text_width' => 85,
 			'default'    => false,
 			'class'      => 'eazydocs-pro-notice',
 		),
@@ -864,10 +864,9 @@ CSF::createSection( $prefix, array(
 			'type'     => 'media',
 			'default'  => array(
 				'url' => EAZYDOCS_IMG . '/icon/folder-closed.png'
-			),
-			'class'    => 'eazydocs-pro-notice active-theme'
+			)
 		),
-
+		
 		array(
 			'title'    => esc_html__( 'Doc Section Icon Open', 'eazydocs' ),
 			'subtitle' => esc_html__( "This is the Doc's default icon. If you don't use icon for the article section individually, this icon will be shown on open states of the Doc sections.",
@@ -876,8 +875,7 @@ CSF::createSection( $prefix, array(
 			'type'     => 'media',
 			'default'  => array(
 				'url' => EAZYDOCS_IMG . '/icon/folder-open.png'
-			),
-			'class'    => 'eazydocs-pro-notice active-theme'
+			)
 		),
 
 		array(

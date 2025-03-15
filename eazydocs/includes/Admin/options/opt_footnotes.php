@@ -4,7 +4,7 @@
 CSF::createSection( $prefix, array(
 	'id'     => 'ezd_footnotes',
 	'title'  => esc_html__( 'Footnotes', 'eazydocs' ),
-	'icon'   => 'fas fa-plus-circle',
+	'icon'   => 'dashicons dashicons-text-page',
 	'fields' => [
 		array(
 			'id'         => 'is_footnotes_heading',
@@ -58,7 +58,7 @@ CSF::createSection( $prefix, array(
 			'chosen'   => true,
 			'multiple' => false,
 			'default'  => '1',
-			'class'      => 'eazydocs-pro-notice active-theme-docy active-theme-docly active-theme-ama'
+			'class'    => 'eazydocs-pro-notice active-theme-docy active-theme-docly active-theme-ama'
 		),
 
 		array(
@@ -91,19 +91,42 @@ CSF::createSection( $meta, array(
 	'title'  => esc_html__( 'Footnotes', 'eazydocs' ),
 	'fields' => array(
 		array(
-			'id'        => 'footnotes_column',
-			'type'      => 'select',
-			'title'     => esc_html__( 'Footnotes Column', 'eazydocs' ),
-			'options' => array(
-				'1'	  => esc_html__( '1 Column', 'eazydocs' ),
-				'2'	  => esc_html__( '2 Columns', 'eazydocs' ),
-				'3'	  => esc_html__( '3 Columns', 'eazydocs' ),
-				'4'	  => esc_html__( '4 Columns', 'eazydocs' ),
-				'5'	  => esc_html__( '5 Columns', 'eazydocs' ),
-				'6'	  => esc_html__( '6 Columns', 'eazydocs' )
-			),
-			'default' => ezd_get_opt('footnotes_column', 3),
-			'class'	  => 'eazydocs-pro-notice active-theme-docy active-theme-docly active-theme-ama layout-inline',
-		)
+			'id'       => 'footnotes_colum_opt',
+			'type'     => 'fieldset',
+			'title'    => esc_html__( 'Footnotes Column', 'eazydocs' ),
+			'desc'       => esc_html__( 'Select Default to use the value from the settings, or choose Custom to manually select the column number from the dropdown.', 'eazydocs' ),
+			'fields' => array(				
+				array(
+					'id'       => 'footnotes_column_source',
+					'type'     => 'select',
+					'title'    => null,
+					'options'  => [
+						'default' 	=> __( 'Default', 'eazydocs' ),
+						'custom' 	=> __( 'Custom', 'eazydocs' ),
+					],
+					'multiple' => false,
+					'default'  => 'default',
+					'class'    => 'eazydocs-pro-notice active-theme-docy active-theme-docly active-theme-ama'
+				),
+				array(
+					'id'        => 'footnotes_column',
+					'type'      => 'select',
+					'title'     => esc_html__( 'Set Column', 'eazydocs' ),
+					'options' => array(
+						'1'	  => esc_html__( '1 Column', 'eazydocs' ),
+						'2'	  => esc_html__( '2 Columns', 'eazydocs' ),
+						'3'	  => esc_html__( '3 Columns', 'eazydocs' ),
+						'4'	  => esc_html__( '4 Columns', 'eazydocs' ),
+						'5'	  => esc_html__( '5 Columns', 'eazydocs' ),
+						'6'	  => esc_html__( '6 Columns', 'eazydocs' )
+					),
+					'default' => ezd_get_opt('footnotes_column', 3),
+					'class'	  => 'eazydocs-pro-notice active-theme-docy active-theme-docly active-theme-ama layout-inline',
+					'dependency' => array(
+						array( 'footnotes_column_source', '==', 'custom' ),
+					)
+				)
+			)
+		),
 	)
 ) );
