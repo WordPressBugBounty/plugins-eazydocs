@@ -165,7 +165,6 @@ p .footnotes-link::after {
 
 .single-docs .doc_full_width .doc_rightsidebar {
   width: 100%;
-  padding-right: 10px;
 
   .pageSideSection {
     padding-left: 25px;
@@ -370,8 +369,9 @@ p .footnotes-link::after {
 }
 
 .doc_documentation_area {
-  padding: 0;
+  padding: 0 !important;
   margin: 0 !important;
+  flex: auto !important;
 }
 
 .eazydocx-credit-text {

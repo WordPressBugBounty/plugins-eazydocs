@@ -150,7 +150,7 @@ input[type=search]::-webkit-search-results-decoration {
   display: grid;
   padding-top: 25px;
   grid-template-columns: auto auto;
-  gap: 30px 20px;
+  gap: 40px;
 }
 @media (max-width: 768px) {
   .d-items {
@@ -171,11 +171,11 @@ input[type=search]::-webkit-search-results-decoration {
   align-items: center;
   box-sizing: content-box;
   line-height: 1.4;
-  width: 70px;
-  height: 70px;
+  width: 72px;
+  height: 72px;
 }
 .d-items .documentation_item .icon img {
-  max-width: 35px !important;
+  max-width: 32px !important;
   height: auto !important;
 }
 .d-items .documentation_item .media-body {
@@ -327,7 +327,6 @@ body.single-docs.ezd-theme-docly .ezd-page_breadcrumb:not(.ezd-breadcrumb) {
   max-width: 150px;
 }
 .doc_left_sidebarlist .ezd-scroll:not(.op-docs-sidebar) {
-  max-height: 650px;
   overflow-y: auto;
   padding-right: 20px;
   margin-left: -10px;
@@ -368,6 +367,9 @@ body.single-docs.ezd-theme-docly .ezd-page_breadcrumb:not(.ezd-breadcrumb) {
   border: 1px solid var(--black_50);
 }
 .nav-sidebar .nav-item.current_page_item > .doc-link a {
+  color: var(--ezd_brand_color);
+}
+.nav-sidebar .nav-item.current_page_parent .nav-link {
   color: var(--ezd_brand_color);
 }
 .nav-sidebar .nav-item.active > .doc-link .icon {
@@ -982,8 +984,7 @@ body.single-docs.ezd-theme-docly .ezd-page_breadcrumb:not(.ezd-breadcrumb) {
 }
 
 .single-docs .doc_rightsidebar {
-  max-height: 800px;
-  overflow-y: auto;
+  max-height: 100%;
   width: calc(100% + 35px);
   padding-right: 10px;
 }
@@ -1187,6 +1188,9 @@ body.single-docs.ezd-theme-docly .ezd-page_breadcrumb:not(.ezd-breadcrumb) {
   margin-bottom: 30px;
 }
 
+.toc_right {
+  overflow-y: auto;
+}
 .toc_right ul {
   padding: 0;
   margin: 0;
@@ -1274,8 +1278,14 @@ body.single-docs.ezd-theme-docly .ezd-page_breadcrumb:not(.ezd-breadcrumb) {
   .doc_right_mobile_menu .doc_rightsidebar.sticky,
   .left-column .doc_left_sidebarlist.sticky {
     position: fixed;
-    top: 0;
+    top: 55px;
     margin-top: 0;
+  }
+}
+@media (max-width: 591px) {
+  .doc_right_mobile_menu .doc_rightsidebar.sticky,
+  .left-column .doc_left_sidebarlist.sticky {
+    top: 70px;
   }
 }
 .toc_auto_numbering ul {
@@ -2233,6 +2243,19 @@ form.ezd-password-form p {
   display: none;
 }
 
+body.body_dark .doc_left_sidebarlist .ezd-scroll:not(.op-docs-sidebar)::-webkit-scrollbar-track, body.body_dark .doc_rightsidebar .toc_right::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #2c2c2c;
+}
+body.body_dark .doc_left_sidebarlist .ezd-scroll:not(.op-docs-sidebar)::-webkit-scrollbar, body.body_dark .doc_rightsidebar .toc_right::-webkit-scrollbar {
+  width: 7px;
+  background-color: #1E1F26;
+}
+body.body_dark .doc_left_sidebarlist .ezd-scroll:not(.op-docs-sidebar)::-webkit-scrollbar-thumb, body.body_dark .doc_rightsidebar .toc_right::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #666666;
+}
+
 .modal-content .shortcode_info .row {
   margin-top: 20px;
 }
@@ -2374,7 +2397,6 @@ p .footnotes-link::after {
 
 .single-docs .doc_full_width .doc_rightsidebar {
   width: 100%;
-  padding-right: 10px;
 }
 .single-docs .doc_full_width .doc_rightsidebar .pageSideSection {
   padding-left: 25px;
@@ -2532,8 +2554,9 @@ p .footnotes-link::after {
 }
 
 .doc_documentation_area {
-  padding: 0;
+  padding: 0 !important;
   margin: 0 !important;
+  flex: auto !important;
 }
 
 .eazydocx-credit-text p {

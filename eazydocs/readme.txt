@@ -2,9 +2,9 @@
 Contributors: mdjwel, spiderdevs
 Tags: knowledge base, kb, faq, wiki, documentation
 Requires at least: 5.0
-Tested up to: 6.7.3
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.6.4
+Stable tag: 2.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -230,6 +230,20 @@ You can install the EazyDocs from your WordPress Dashboard or manually upload it
 
 == Changelog ==
 
+= 2.6.5 (11 May 2025) =
+New: Added option to hide "View All" button on Docs archive for docs that have no child items
+New: Added a control for show the Number of articles to show under every sections
+New: Added a new style hover tab option in the Eazydocs 'Multidocs' widget
+Fixed: Left sidebar menu active issue with ajax loading
+Fixed: Fixed the position of the TOC sidebar toggle button on mobile
+Fixed: TOC scroll height issue resolved
+Fixed: Resolved EazyDocs layout conflict with BuddyBoss Theme
+Fixed: Resolved deprecation warning by wrapping csf files in hook
+Fixed: Button alignment issue in the EazyDocs Search Elementor widget
+Fixed: Multi Docs widget tabs with masonry issue solved
+Tweaked: Active color added for the Parent doc of the current active Doc item
+Tweaked: Setup wizard design improved
+
 = v2.6.4 (06 April 2025) =
 New: Embed Post shortcode added in EazyDocs Toolbar
 Fixed: Credit text overflown issue
@@ -261,56 +275,5 @@ Updated: Settings page icons changed
 Fixed: Settings page hide issue
 Tweaked: Onepage dark Mode improved
 Tweaked: JS code optimized for better performance
-
-= v2.6.0 (24 February 2025) =
-Tweaked: Added conditions to ensure plugin notices are displayed only to the appropriate users.
-
-= v2.5.9 (23 February 2025) =
-New: Offer notice added for our beloved users (not for new users)
-New: Loco.xml configuration file added for multiple text domains mapping in Loco translate plugin
-Fixed: Customizer settings option unlock with free instead of promax plan
-Updated: Language files (.pot and .po) updated with the latest strings
-
-= v2.5.8 (01 February 2025) =
-New: Brand color shades added in css variables
-Fixed: Resolved redirection issue during plugin activation
-Fixed: Private docs drag and drop issue resolved
-Fixed: An PHP error fixed
-Tweaked: Frontend view in dark mode improved
-Updated: Freemius SDK updated to 2.11.0
-
-= v2.5.7 (22 January 2025) =
-New: Added functions for detecting EazyDocs admin pages, post types and taxonomy page
-Fixed: Some control & responsive issue of "Single Doc" Elementor widget
-Fixed: Search widget dependency issue solved
-Fixed: The search widget static keyword text field was not editable, it resolved
-Fixed: Codestar conflicts with Docy theme
-Fixed: Cannot modify header information - headers already sent by... PHP error
-Fixed: Undefined issue resolved by defining eazydocs settings option in right sidebar for widgets
-Fixed: Some control issue of "EazyDocs Multi Doc" Elementor widget
-Tweaked: Removed notices from EazyDocs pages
-Tweaked: Improved admin assets loading
-Tweaked: File loading dependency improved
-Tweaked: Codestar updated
-Tweaked: Plugin's Assets files are re-organized to enhance performance and loading time
-Tweaked: Related docs design
-
-= v2.5.6 (18 December 2024) =
-New: Add featured image support to the 'docs' RSS feed
-Fixed: Removed Scheme Key from Widget for compatibility with the latest version of Elementor (3.26.0)
-Tweaked: Removed ezd_get_breadcrumb action
-Tweaked: Reverted breadcrumbs markup
-Tweaked: Before and after hook added for single doc content
-
-= v2.5.5 (14 December 2024) =
-Fixed: Fixed the TOC auto numbering, when an item is active
-Fixed: WordPress database error: [Table 'wp.wp_eazydocs_view_log' doesn't exist]
-Fixed: Shortcode support inside footnote has been reverted, as it was breaking the design
-Fixed: Protected posts of docs enabled in search result
-Fixed: CSF translation issue resolved
-Tweaked: Improve some CSS in Single Doc widget
-Tweaked: Include private docs in search for logged-in users
-Tweaked: Exclude private docs from search for visitors
-Updated: Freemius SDK updated to 2.10.1
 
 [See changelog for all versions](https://spider-themes.net/eazydocs/changelog/).

@@ -5,7 +5,7 @@
  * Plugin URI: https://spider-themes.net/eazydocs
  * Author: spider-themes
  * Author URI: https://spider-themes.net/eazydocs
- * Version: 2.6.4
+ * Version: 2.6.5
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -93,7 +93,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.6.4';
+		const version = '2.6.5';
 		public $plugin_path;
 		public $theme_dir_path;
 		public static $dir = '';
@@ -114,6 +114,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			add_action( 'init', [ $this, 'i18n' ] );
 			add_action( 'init', [ $this, 'init_hooked' ] );
 			add_action( 'plugins_loaded', [ $this, 'init_plugin' ] );
+			add_action( 'after_setup_theme', [ $this, 'load_csf_files' ], 20 );
 			
 			if ( eaz_fs()->is_plan( 'promax' ) ) {
 				add_action( 'admin_notices', [ $this, 'update_database' ] );
@@ -140,6 +141,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
                     }
 				}
 			});
+
 		}
 
 		// get the instance of the EazyDocs class
@@ -192,17 +194,13 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			require_once __DIR__ . '/includes/Walker_Docs_Onepage_Fullscreen.php';
 			require_once __DIR__ . '/includes/Admin/setup-wizard/Plugin_Installer.php';
  
-			// Options
-            require __DIR__ . '/vendor/csf/classes/setup.class.php';
-            require __DIR__ . '/includes/Admin/options/settings-options.php';
-            if ( ezd_is_premium() ) {
-                require_once __DIR__ . '/includes/Admin/options/taxonomy-options.php';
-            }
-
 			if ( ezd_unlock_themes() ) {
 				require_once __DIR__ . '/shortcodes/reference.php';
 				require_once __DIR__ . '/shortcodes/conditional_data.php';
 			}
+
+			// Include and Register the Shortcode for Displaying Single Docs Content
+			require_once __DIR__ . '/shortcodes/ezd-view-docs.php';
 
 			if ( ezd_is_premium() ) {
 				// Remove docs slug from URLs
@@ -218,6 +216,18 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 
 			// Blocks
 			require_once __DIR__ . '/blocks.php';
+		}
+		
+		/**
+		 * Include CSF files include
+		 */
+		public function load_csf_files(){
+			// Options
+			require __DIR__ . '/vendor/csf/classes/setup.class.php';
+			require __DIR__ . '/includes/Admin/options/settings-options.php';
+			if ( ezd_is_premium() ) {
+				require_once __DIR__ . '/includes/Admin/options/taxonomy-options.php';
+			}
 		}
 
 		/**

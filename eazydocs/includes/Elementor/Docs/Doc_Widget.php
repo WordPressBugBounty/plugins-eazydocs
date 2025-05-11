@@ -23,7 +23,7 @@ class Doc_Widget extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( '(EazyDocs) Multi Docs', 'eazydocs' );
+		return esc_html__( '(EazyDocs) MultiDocs', 'eazydocs' );
 	}
 
 	public function get_icon() {
@@ -176,7 +176,7 @@ class Doc_Widget extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+        $this->add_control(
 			'docs_slug_format', [
 				'label'     => esc_html__( 'ID Format', 'eazydocs' ),
 				'type'      => Controls_Manager::SELECT,
@@ -237,6 +237,18 @@ class Doc_Widget extends Widget_Base {
 				],
 			]
 		);
+
+        $this->add_control(
+            'doc_items_articles', [
+                'label'       => esc_html__( 'Articles', 'eazydocs' ),
+                'description' => esc_html__( 'Number of articles to show under every sections', 'eazydocs' ),
+                'type'        => Controls_Manager::NUMBER,
+                'default'     => 5,
+                'condition'   => [
+                    'doc-widget-skin' => [ '1' ]
+                ]
+            ]
+        );
 
 		$this->add_control(
 			'main_doc_excerpt', [
@@ -351,7 +363,7 @@ class Doc_Widget extends Widget_Base {
 				'label'     => esc_html__( 'Book Chapters / Tutorials Prefix', 'eazydocs' ),
 				'type'      => \Elementor\Controls_Manager::TEXT,
 				'condition' => [
-					'doc-widget-skin' => [ '4' ]
+					'doc-widget-skin' => [ '4', '5' ]
 				]
 			]
 		);
@@ -399,12 +411,6 @@ class Doc_Widget extends Widget_Base {
 					'{{WRAPPER}} .ezd_tab_title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} .book-chapter-nav .nav-item a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
-			]
-		);
-
-		$this->add_control(
-			'tab_title_hr', [
-				'type' => \Elementor\Controls_Manager::DIVIDER,
 			]
 		);
 
@@ -459,6 +465,39 @@ class Doc_Widget extends Widget_Base {
 		);
 
 		$this->end_controls_tab(); //End Normal Tab Title
+
+        //start hover Tab Title
+        $this->start_controls_tab(
+            'style_tab_title_hover', [
+                'label' => esc_html__( 'Hover', 'eazydocs' ),
+            ]
+        );
+
+        $this->add_control(
+            'hover_tab_title_text_color', [
+                'label' => esc_html__( 'Text Color', 'eazydocs' ),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => array(
+                    '{{WRAPPER}} .ezd_tab_title:hover' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .book-chapter-nav .nav-item a:hover' => 'color: {{VALUE}}',
+                )
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(), [
+                'name' => 'hover_tab_title_bg_colors',
+                'types' => [ 'classic', 'gradient' ],
+                'exclude' => [ 'image'],
+                'selector' => '{{WRAPPER}} .ezd_tab_title:hover',
+                'condition' => [
+                    'doc-widget-skin' => [ '2', '4' ],
+                    'doc-widget-skin!' => [ '5' ]
+                ]
+            ]
+        );
+
+        $this->end_controls_tab(); //End hover Tab Title
 
 
 		//=== Active Tab Title

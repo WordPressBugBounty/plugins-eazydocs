@@ -101,7 +101,7 @@ function ezd_is_plugin_installed_for_days( $days, $plugin_slug='eazydocs' ) {
 	$current_time = time();
 
 	// Check if the plugin has been installed for the required duration
-	return ( $current_time - $installed_time ) >= $required_time;
+	return ( $current_time - $installed_time ) >= $required_time; 
 }
 
 /**
@@ -1725,3 +1725,144 @@ function has_ezd_mark_text_class() {
 
     return false;
 }
+
+/**
+ * Assigns or removes the 'read_private_docs' capability to user roles
+ * based on the EazyDocs 'private_doc_user_restriction' settings.
+ */
+function ezd_read_private_docs_cap_to_user() {
+    $user_group  = ezd_get_opt('private_doc_user_restriction');
+    $is_all_user = $user_group['private_doc_all_user'] ?? 0;
+
+    if ( $is_all_user === '1' ) {
+        $get_users_role = array_values(array_keys(eazydocs_user_role_names()));
+    } else {
+        $get_users_role = $user_group['private_doc_roles'] ?? [];
+        if ( ! is_array($get_users_role) ) {
+            $get_users_role = [$get_users_role]; // Cast to array if not already
+        }
+    }
+
+    global $wp_roles;
+    if ( ! isset( $wp_roles ) ) {
+        $wp_roles = new WP_Roles();
+    }
+
+    foreach ( $wp_roles->roles as $role_key => $role_data ) {
+        $role = get_role( $role_key );
+
+        if ( in_array( $role_key, $get_users_role ) ) {
+            $role->add_cap( 'read_private_docs' );
+        } else {
+            $role->remove_cap( 'read_private_docs' );
+        }
+    }
+}
+add_action( 'init', 'ezd_read_private_docs_cap_to_user' );
+
+/**
+ * Assigns or removes the 'add or edit_docs' capability to user roles
+ */
+function ezd_docs_cap_to_user() {
+	$is_doc_contribution 	= ezd_get_opt( 'is_doc_contribution' );
+    $get_users_role 		= ezd_get_opt( 'ezd_add_editable_roles', [ 'administrator','editor','author','contributors', 'subscriber' ] );
+
+    // Define the custom capabilities to manage docs
+	$doc_caps = [
+		'edit_doc',
+		'edit_post',
+		'edit_posts',
+		'edit_docs',
+		'edit_others_posts',
+		'edit_others_docs',
+		'edit_private_docs',
+		'publish_docs',
+		'read_doc',
+		'edit_published_docs'
+	];
+
+	if ( is_singular( 'docs' ) ) {
+        global $post;
+
+        if ( $post && (int) $post->post_author === get_current_user_id() ) {
+            $user = wp_get_current_user();
+            foreach ( $doc_caps as $cap ) {
+                $user->add_cap( $cap );
+            }
+			return;
+        }
+    }
+
+    if ( empty( $is_doc_contribution ) || empty( $get_users_role ) || ! is_array( $get_users_role ) ) {
+        return;
+    }
+
+    global $wp_roles;
+    if ( ! isset( $wp_roles ) ) {
+        $wp_roles = new WP_Roles();
+    }
+
+    // Assign/remove capabilities to roles
+    foreach ( $wp_roles->roles as $role_key => $role_data ) {
+        $role = get_role( $role_key );
+        if ( ! $role ) {
+            continue;
+        }
+
+        if ( in_array( $role_key, $get_users_role ) ) {
+            foreach ( $doc_caps as $cap ) {
+                $role->add_cap( $cap );
+            }
+        } else {
+            foreach ( $doc_caps as $cap ) {
+                $role->remove_cap( $cap );
+            }
+        }
+    }
+}
+add_action( 'wp', 'ezd_docs_cap_to_user' );
+
+/**
+ * Admin bar hide for OnePage Docs
+ */
+add_filter('show_admin_bar', function( $show ) {
+    // Hide admin bar on singular onepage-docs
+    if ( is_singular('onepage-docs') ) {
+        return false;
+    }
+
+    // Only show admin bar if user is logged in
+    return is_user_logged_in();
+});
+
+
+/**
+ * 404 should return if the user has not private docs readability
+ */
+add_action( 'template_redirect', 'ezd_private_docs_access' );
+
+function ezd_private_docs_access() {
+    if ( is_singular( 'docs' ) ) {
+        global $post;
+
+        // Check if the doc is private
+        if ( get_post_status( $post->ID ) === 'private' ) {
+
+            // If user does not have permission to read private docs
+            if ( ! current_user_can( 'read_private_docs' ) ) {
+
+                // Show 404
+                global $wp_query;
+                $wp_query->set_404();
+                status_header( 404 );
+                nocache_headers();
+                include( get_query_template( '404' ) );
+                exit;
+
+            }
+        }
+    }
+}
+
+
+

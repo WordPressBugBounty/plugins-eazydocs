@@ -58,6 +58,9 @@ CSF::createSection( $prefix, array(
 			'type'      => 'fieldset',
 			'title'      => esc_html__( 'Restrict Access to', 'eazydocs' ),
 			'subtitle'   => esc_html__( 'Select who can view your private docs.', 'eazydocs' ),
+			'dependency'  => array(
+				array( 'private_doc_mode', '==', 'login' ),
+			),
 			'fields'    => array(
 				array(
 					'id'         => 'private_doc_all_user',
@@ -73,14 +76,14 @@ CSF::createSection( $prefix, array(
 					'id'         => 'private_doc_roles',
 					'type'       => 'select',
 					'title'      => esc_html__( 'User Roles', 'eazydocs' ),
-					'desc'   => esc_html__( 'Only selected User Roles will be able to view your Knowledge Base', 'eazydocs' ),
-					'options'    => [
+					'desc'   	 => esc_html__( 'Only selected User Roles will be able to view your Knowledge Base', 'eazydocs' ),
+					'options'    => function_exists( 'eazydocs_user_role_names' ) && ezd_is_premium() ? eazydocs_user_role_names() : array(
 						'administrator' => esc_html__( 'Administrator', 'eazydocs' ),
 						'editor'        => esc_html__( 'Editor', 'eazydocs' ),
 						'author'        => esc_html__( 'Author', 'eazydocs' ),
 						'contributor'   => esc_html__( 'Contributor', 'eazydocs' ),
 						'subscriber'    => esc_html__( 'Subscriber', 'eazydocs' ),
-					],
+					),
 					'default'    => 'administrator',
 					'chosen'      => true,
 					'ajax'        => true,
