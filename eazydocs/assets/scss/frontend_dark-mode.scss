@@ -30,7 +30,7 @@ body.body_dark {
 				&::placeholder{
 					color: black;
 				}
-				&::focus{
+				&:focus {
 					color: black;
 					opacity: 1;
 				}
@@ -98,10 +98,6 @@ body.body_dark {
 	.basic_table_info tbody tr td,
 	.typography_content .code-preview {
 		border-color: #272830;
-	}
-
-	.nav-sidebar .nav-item .nav-link {
-		color: #c7c9d3;
 	}
 
 	.doc_menu .nav-link,

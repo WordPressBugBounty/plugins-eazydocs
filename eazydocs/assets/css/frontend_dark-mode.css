@@ -30,7 +30,7 @@ body.body_dark .ezdoc_contributed_user_avatar .ezdoc_contributed_users .doc_user
 body.body_dark .ezdoc_contributed_user_avatar .ezdoc_contributed_users .doc_users_dropdown form input::placeholder {
   color: black;
 }
-body.body_dark .ezdoc_contributed_user_avatar .ezdoc_contributed_users .doc_users_dropdown form input::focus {
+body.body_dark .ezdoc_contributed_user_avatar .ezdoc_contributed_users .doc_users_dropdown form input:focus {
   color: black;
   opacity: 1;
 }
@@ -86,9 +86,6 @@ body.body_dark .basic_table_info tbody tr th,
 body.body_dark .basic_table_info tbody tr td,
 body.body_dark .typography_content .code-preview {
   border-color: #272830;
-}
-body.body_dark .nav-sidebar .nav-item .nav-link {
-  color: #c7c9d3;
 }
 body.body_dark .doc_menu .nav-link,
 body.body_dark .doc_rightsidebar .doc_right_link li a {
