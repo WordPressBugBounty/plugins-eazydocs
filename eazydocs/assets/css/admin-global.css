@@ -179,7 +179,7 @@ a.eazydocs-close-notice:active {
 }
 
 .csf-nav .csf-tab-icon {
-  font-size: 15px;
+  font-size: 15px !important;
 }
 
 .csf-field-repeater .csf-repeater-content {
@@ -503,9 +503,16 @@ p.big-p {
 
 .button-inline {
   margin-top: 40px;
+  display: flex;
+  gap: 10px;
 }
-.button-inline .button + .button {
-  margin-left: 10px;
+.button-inline .button:last-child {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+}
+.button-inline .button:last-child:hover {
+  background-color: #0056b3;
 }
 
 .ezd-shortcodes-wrap {
@@ -571,6 +578,10 @@ p.big-p {
 .customize-pane-parent li#accordion-section-design_fields,
 .customize-pane-parent li#accordion-section-role_manager_fields {
   display: none !important;
+}
+
+#ezd_notify_review h3 {
+  margin: 5px 0 8px;
 }
 
 /*# sourceMappingURL=admin-global.css.map */

@@ -6,30 +6,30 @@
  *
  * @package eazydocs
  */
-// If block theme is active, load the header
 
 
 // If block theme is not active, load the header
 get_header();
 ezd_header_with_block_theme();
+
 $theme_data      = wp_get_theme();
-$options         = get_option( 'eazydocs_settings' );
-$single_layout   = $options['search_banner_layout'] ?? 'default';
+$single_layout   = ezd_get_opt( 'search_banner_layout', 'default' );
 $cz_options      = '';
 $doc_container   = 'ezd-container ezd-custom-container';
 $content_wrapper = '';
 $credit_enable   = '1';
 
-$layout          = $options['docs_single_layout'] ?? 'both_sidebar';
-$doc_width       = $options['docs_page_width'] ?? '';
+$layout          = ezd_get_opt( 'docs_single_layout', 'both_sidebar' );
+$doc_width       = ezd_get_opt( 'docs_page_width' );
 $doc_container   = $doc_width == 'full-width' ? 'ezd-container-fluid px-lg-5' : 'ezd-container ezd-custom-container';
 $content_wrapper = $doc_width == 'full-width' ? 'doc_full_width' : '';
 
-$credit_text = $options['eazydocs-credit-text'] ??
-               sprintf( __( "Powered By %s EazyDocs %s", 'eazydocs' ), '<a href="https://wordpress.org/plugins/eazydocs/" target="_blank">', '</a>' );
+/* translators: %1$s is for opening link tag, %2$s is for closing link tag */
+/* translators: %1$s is for opening link tag, %2$s is for closing link tag */
+$credit_text = ezd_get_opt( 'eazydocs-credit-text', sprintf( __( 'Powered By %1$s EazyDocs %2$s', 'eazydocs' ), '<a href="https://wordpress.org/plugins/eazydocs/" target="_blank">', '</a>' ) );
 
 if ( ezd_is_premium() ) {
-	$credit_enable = $options['eazydocs-enable-credit'] ?? '1';
+	$credit_enable = ezd_get_opt( 'eazydocs-enable-credit', '1' );
 }
 
 switch ( $layout ) {
@@ -55,7 +55,8 @@ if ( $single_layout == 'default' ) {
 	}
 }
 ?>
-    <section class="doc_documentation_area <?php echo esc_attr( $content_wrapper ); ?>" id="sticky_doc">
+
+<section class="doc_documentation_area <?php echo esc_attr( $content_wrapper ); ?>" id="sticky_doc">
 
         <div class="ezd-link-copied-wrap"></div>
         <div class="overlay_bg"></div>
@@ -93,7 +94,7 @@ if ( $single_layout == 'default' ) {
 <?php
 if ( $credit_enable == '1' ) : ?>
     <div class="section eazydocs-footer">
-        <div class="<?php echo ezd_container(); ?>">
+        <div class="<?php echo esc_attr( ezd_container() ); ?>">
             <div class="ezd-grid ezd-grid-cols-12">
                 <div class="ezd-xl-col-3 ezd-lg-col-3 ezd-grid-column-full"></div>
                 <div class="ezd-grid ezd-lg-col-9 ezd-grid-column-full">
@@ -106,7 +107,7 @@ if ( $credit_enable == '1' ) : ?>
             </div>
         </div>
     </div>
-<?php
+    <?php
 endif;
 
 

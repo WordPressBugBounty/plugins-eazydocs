@@ -148,7 +148,7 @@
 				$.ajax({
 					url: eazydocs_local_object.ajaxurl,
 					type: 'post',
-					dataType: 'text',
+					dataType: 'json',
 					data: {
 						action: 'eazydocs_feedback_email',
 						name: name,
@@ -156,6 +156,7 @@
 						subject: subject,
 						doc_id: doc_id,
 						message: message,
+						security: eazydocs_local_object.nonce,
 					},
 					beforeSend: function () {
 						$('.eazydocs-form-result').html(
@@ -165,13 +166,16 @@
 						);
 					},
 					success: function (response) {
-						$('.eazydocs-form-result').html(
-							'Your message has been sent successfully.'
-						);						
-						setTimeout(function() {
-							$('.eazydocs-form-result').remove();
+						if (response.success) {
+							$('.eazydocs-form-result').html(response.data);
+						} else {
+							$('.eazydocs-form-result').html('Something went wrong.');
+						}
+						setTimeout(function () {
+							$('.eazydocs-form-result').html('');
 						}, 3000);
 					},
+
 					error: function () {
 						$('.eazydocs-form-result').html(
 							'Oops! Something wrong, try again!'

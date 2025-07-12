@@ -11,7 +11,7 @@
 function ezd_get_opt( $option, $default = '' ) {
 	$options = get_option( 'eazydocs_settings' );
 
-	if ( isset( $options[ $option ] ) ) {
+	if ( ! empty( $options[ $option ] ) ) {
 		return $options[ $option ];
 	}
 
@@ -199,17 +199,20 @@ function eazydocs_get_template( $template_name, $args = [] ) {
  * Estimated reading time
  **/
 function ezd_reading_time() {
-	$content     = get_post_field( 'post_content', get_the_ID() );
-	$word_count  = str_word_count( strip_tags( $content ) );
-	$readingtime = ceil( $word_count / 200 );
-	if ( $readingtime == 1 ) {
-		$timer = esc_html__( " minute", 'eazydocs' );
-	} else {
-		$timer = esc_html__( " minutes", 'eazydocs' );
-	}
-	$totalreadingtime = $readingtime . $timer;
-	echo esc_html( $totalreadingtime );
+    $content     = get_post_field( 'post_content', get_the_ID() );
+    $word_count  = str_word_count( wp_strip_all_tags( $content ) );
+    $readingtime = ceil( $word_count / 200 );
+
+    if ( $readingtime == 1 ) {
+        $timer = esc_html__( " minute", 'eazydocs' );
+    } else {
+        $timer = esc_html__( " minutes", 'eazydocs' );
+    }
+
+    $totalreadingtime = $readingtime . $timer;
+    echo esc_html( $totalreadingtime );
 }
+
 
 /**
  * @param string $args
@@ -417,8 +420,7 @@ if ( ! function_exists( 'eazydocs_search_breadcrumbs' ) ) {
 		$html .= '<ol class="breadcrumb eazydocs-search-wrapper" itemscope itemtype="http://schema.org/BreadcrumbList">';
 		$html .= $args['delimiter'];
 
-		$docs_page_title = ezd_get_opt( 'docs-page-title', 'eazydocs_settings' );
-		$docs_page_title = ! empty( $docs_page_title ) ? esc_html( $docs_page_title ) : esc_html__( 'Docs', 'eazydocs' );
+		$docs_page_title = ezd_get_opt( 'docs-page-title', esc_html__( 'Docs', 'eazydocs' ) );
 		$docs_home       = ezd_get_opt( 'docs-slug' );
 
 		if ( $docs_home ) {
@@ -446,7 +448,7 @@ if ( ! function_exists( 'eazydocs_search_breadcrumbs' ) ) {
 
 		$html .= ' ' . $args['before'] . get_the_title() . $args['after'];
 		$html .= '</ol>';
-		echo apply_filters( 'eazydocs_breadcrumbs_html', $html, $args );
+		echo wp_kses_post( apply_filters( 'eazydocs_breadcrumbs_html', $html, $args ) );
 	}
 }
 
@@ -509,7 +511,7 @@ if ( ! function_exists( 'docs_root_title' ) ) {
 
 		$html .= '</ol>';
 
-		echo apply_filters( 'eazydocs_breadcrumbs_html', $html, $args );
+		echo wp_kses_post( apply_filters( 'eazydocs_breadcrumbs_html', $html, $args ) );
 	}
 }
 
@@ -686,7 +688,7 @@ function eazydocs_one_page( $doc_id ) {
 		else :
 			foreach ( $one_page_docs as $single_docs ) :
 				?>
-				<a class="button button-info view-page-doc" id="view-page-doc" href="<?php echo get_permalink( $single_docs ); ?>" target="_blank">
+				<a class="button button-info view-page-doc" id="view-page-doc" href="<?php the_permalink( $single_docs ); ?>" target="_blank">
 					<?php esc_html_e( 'View OnePage Doc', 'eazydocs' ); ?>
 				</a>
 				<?php
@@ -850,9 +852,14 @@ function get_reusable_blocks_right() {
 	}
 }
 
-function manage_reusable_blocks() {
+function ezd_manage_reusable_blocks() {
 	$admin_url = admin_url( 'edit.php?post_type=wp_block' );
-	$message   = sprintf( __( '<p class="ezd-text-support"> <a href="%s" target="_blank">Manage Reusable blocks</a></p>', 'eazydocs' ), $admin_url );
+	/* translators: %s: URL for managing reusable blocks */
+	$message = sprintf(
+		'<p class="ezd-text-support"><a href="%s" target="_blank">%s</a></p>',
+		esc_url( $admin_url ),
+		esc_html__( 'Manage Reusable blocks', 'eazydocs')
+	);
 
 	return $message;
 }
@@ -862,7 +869,7 @@ function manage_reusable_blocks() {
  *
  * @return string
  */
-function edit_sidebar_selectbox() {
+function ezd_edit_sidebar_selectbox() {
 	global $wp_registered_sidebars;
 	global $post;
 	$edit_sidebars = '';
@@ -881,34 +888,39 @@ add_action( 'add_meta_boxes', function () {
 global $post;
 function ezd_onepage_docs() {
 	?>
-<p>
-    <b>Doc Layout</b><br />
-    <input type="text" disabled name="ezd_doc_layout"
-        value="<?php echo esc_attr(get_post_meta( get_the_ID(), 'ezd_doc_layout', true )); ?>" class="widefat" />
-</p> <br>
+    <p>
+        <label for="ezd_doc_layout"><?php esc_html_e( 'Doc Layout', 'eazydocs' ); ?></label><br/>
+        <input type="text" disabled name="ezd_doc_layout" id="ezd_doc_layout" value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'ezd_doc_layout', true ) ); ?>" class="widefat"/>
+    </p> <br>
 
-<p class="ezd_left_content_heading"> Left Side Content</p>
+    <p class="ezd_left_content_heading"> <?php esc_html_e( 'Left Side Content', 'eazydocs' ); ?></p>
 
-<p><b>Content Type</b><br />
-    <input type="text" disabled name="ezd_doc_content_type"
-        value="<?php echo esc_attr(get_post_meta( get_the_ID(), 'ezd_doc_content_type', true )); ?>" class="widefat" />
-</p>
-<p><b>Content Box</b><br />
-    <textarea name="ezd_doc_left_sidebar" disabled cols="30" rows="3"
-        class="widefat"> <?php echo esc_attr(get_post_meta( get_the_ID(), "ezd_doc_left_sidebar", true )); ?> </textarea>
-</p>
+    <p>
+        <label for="ezd_doc_content_type"><?php esc_html_e( 'Content Type', 'eazydocs' ); ?></label><br/>
+        <input type="text" disabled name="ezd_doc_content_type" id="ezd_doc_content_type"
+               value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'ezd_doc_content_type', true ) ); ?>" class="widefat"/>
+    </p>
 
-<p class="ezd_left_content_heading"> Right Side Content</p>
+    <p>
+        <label for="ezd_doc_left_sidebar"><?php esc_html_e( 'Content Box', 'eazydocs' ); ?></label><br/>
+        <textarea name="ezd_doc_left_sidebar" id="ezd_doc_left_sidebar" disabled cols="30" rows="3" class="widefat">
+            <?php echo esc_attr( get_post_meta( get_the_ID(), "ezd_doc_left_sidebar", true ) ); ?>
+        </textarea>
+    </p>
 
-<p><b>Content Type</b><br />
-    <input type="text" disabled name="ezd_doc_content_type_right"
-        value="<?php echo esc_attr(get_post_meta( get_the_ID(), 'ezd_doc_content_type_right', true )); ?>" class="widefat" />
-</p>
-<p><b>Content Box</b><br />
-    <textarea disabled name="ezd_doc_content_box_right" id="" cols="30" rows="3"
-        class="widefat"><?php echo esc_attr(get_post_meta( get_the_ID(), 'ezd_doc_content_box_right', true )); ?></textarea>
-</p>
-<?php
+    <p class="ezd_left_content_heading"> <?php esc_html_e( 'Right Side Content', 'eazydocs' ); ?></p>
+
+    <p>
+        <label for="ezd_doc_content_type_right"><?php esc_html_e( 'Content Type', 'eazydocs' ); ?></label><br/>
+        <input type="text" disabled name="ezd_doc_content_type_right" id="ezd_doc_content_type_right" value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'ezd_doc_content_type_right', true ) ); ?>" class="widefat"/>
+    </p>
+    <p>
+        <label for="ezd_doc_content_box_right"><?php esc_html_e( 'Content Box', 'eazydocs' ); ?></label><br/>
+        <textarea disabled name="ezd_doc_content_box_right" id="ezd_doc_content_box_right" cols="30" rows="3" class="widefat">
+            <?php echo esc_attr( get_post_meta( get_the_ID(), 'ezd_doc_content_box_right', true ) ); ?>
+        </textarea>
+    </p>
+    <?php
 }
 
 add_action( 'save_post', function ( $post_id ) {
@@ -925,19 +937,19 @@ add_action( 'save_post', function ( $post_id ) {
 	if ( ! empty( $std_comment_id ) ) {
 		update_post_meta( $post_id, 'ezd_doc_layout', $std_comment_id );
 	}
-	
+
 	if ( ! empty( $ezd_doc_content_type ) ) {
 		update_post_meta( $post_id, 'ezd_doc_content_type', $ezd_doc_content_type );
 	}
-	
+
 	if ( ! empty( $ezd_doc_content_type_right ) ) {
 		update_post_meta( $post_id, 'ezd_doc_content_type_right', $ezd_doc_content_type_right );
 	}
-	
+
 	if ( ! empty( $ezd_doc_content_box_right ) ) {
 		update_post_meta( $post_id, 'ezd_doc_content_box_right', $ezd_doc_content_box_right );
 	}	
-	
+
 } );
 
 add_image_size( 'ezd_searrch_thumb16x16', '16', '16', true );
@@ -947,15 +959,14 @@ add_image_size( 'ezd_searrch_thumb50x50', '50', '50', true );
 function ezd_password_form($output, $post = 0) {
 
     // Check if post is set and is the desired custom post type
-    if (is_null($post) || (get_post_type($post) !== 'docs')) {
+    if ( is_null( $post ) || (get_post_type( $post ) !== 'docs')) {
         // If it's not the correct post type, return the original output
         return $output;
     }
 
-	$protected_form          = get_option( 'eazydocs_settings' );
-	$protected_form_switcher = $protected_form['protected_doc_form'] ?? '';
-	$protected_form_title    = ! empty( $protected_form['protected_form_title'] ) ? $protected_form['protected_form_title'] : __( 'Enter Password & Read this Doc', 'eazydocs' );
-	$protected_form_subtitle = ! empty( $protected_form['protected_form_subtitle'] ) ? $protected_form['protected_form_subtitle'] : __( 'This content is password protected. To view it please enter your password below:', 'eazydocs' );
+	$protected_form_switcher = ezd_get_opt( 'protected_doc_form' );
+	$protected_form_title    = ezd_get_opt( 'protected_form_title', esc_html__( 'Enter Password & Read this Doc', 'eazydocs' ) );
+	$protected_form_subtitle = ezd_get_opt( 'protected_form_subtitle', esc_html__( 'This content is password protected. To view it please enter your password below:', 'eazydocs' ) );
 
 	if ( ! empty( $protected_form_switcher == 'eazydocs-form' ) ) :
 		ob_start();
@@ -1163,15 +1174,15 @@ function ezd_arrow() {
  */
 function ezd_el_title_tags() {
 	return [
-		'h1'   => __( 'H1', 'eazydocs' ),
-		'h2'   => __( 'H2', 'eazydocs' ),
-		'h3'   => __( 'H3', 'eazydocs' ),
-		'h4'   => __( 'H4', 'eazydocs' ),
-		'h5'   => __( 'H5', 'eazydocs' ),
-		'h6'   => __( 'H6', 'eazydocs' ),
-		'div'  => __( 'Div', 'eazydocs' ),
-		'span' => __( 'Span', 'eazydocs' ),
-		'p'    => __( 'Paragraph', 'eazydocs' ),
+		'h1'   => 'H1',
+		'h2'   => 'H2',
+		'h3'   => 'H3',
+		'h4'   => 'H4',
+		'h5'   => 'H5',
+		'h6'   => 'H6',
+		'div'  => 'Div',
+		'span' => 'Span',
+		'p'    => 'P'
 	];
 }
 
@@ -1207,17 +1218,17 @@ function ezd_el_image( $settings_key = '', $alt = '', $class = '', $atts = [] ) 
 function ezd_docs_layout_option() {
 	$base_options = [
 		'1' => [
-			'title' => __( 'Docs without tab', 'eazydocs' ),
+			'title' => esc_html__( 'Docs without tab', 'eazydocs' ),
 			'icon'  => 'free-doc-tab'
 		]
 	];
 
 	$pro_options = [
-		'2' => [ 'title' => __( 'Tabbed with doc lists', 'eazydocs' ) ],
-		'3' => [ 'title' => __( 'Flat tabbed docs', 'eazydocs' ) ],
-		'4' => [ 'title' => __( 'Boxed Style', 'eazydocs' ) ],
-		'5' => [ 'title' => __( 'Book Chapters / Tutorials', 'eazydocs' ) ],
-		'6' => [ 'title' => __( 'List Style', 'eazydocs' ) ]
+		'2' => [ 'title' => esc_html__( 'Tabbed with doc lists', 'eazydocs' ) ],
+		'3' => [ 'title' => esc_html__( 'Flat tabbed docs', 'eazydocs' ) ],
+		'4' => [ 'title' => esc_html__( 'Boxed Style', 'eazydocs' ) ],
+		'5' => [ 'title' => esc_html__( 'Book Chapters / Tutorials', 'eazydocs' ) ],
+		'6' => [ 'title' => esc_html__( 'List Style', 'eazydocs' ) ]
 	];
 
 	foreach ( $pro_options as $key => $option ) {
@@ -1340,7 +1351,7 @@ function ezd_footer_with_block_theme(){
 				display:none;
 			}
 		</style>
-	<?php
+		<?php
 	}
 }
 
@@ -1441,11 +1452,17 @@ function ezd_perform_edit_delete_actions( $action = 'delete', $docID = 0 ){
 		if ($current_user_id === $post_author_id || current_user_can('manage_options') ) {
 			return true;
 		} else {
-			echo '<p style="' . esc_attr( $inline_styles ) . '">' . esc_html__( "You don't have permission to " ) . esc_html( $action ) . esc_html__( " this post." ) . '</p>';
+			echo sprintf(
+				'<p style="%1$s">%2$s%3$s%4$s</p>',
+				esc_attr( $inline_styles ),
+				esc_html__( "You don't have permission to ", "eazydocs" ),
+				esc_html( $action ),
+				esc_html__( " this post.", "eazydocs" )
+			);
 		}
 	} else {
 		// User does not have delete_posts capability
-		echo '<p style="' . esc_attr( $inline_styles ) . '">' . esc_html__( 'You don\'t have sufficient permission to perform this action.', 'your-text-domain' ) . '</p>';
+		echo '<p style="' . esc_attr( $inline_styles ) . '">' . esc_html__( 'You don\'t have sufficient permission to perform this action.', 'eazydocs' ) . '</p>';
 
 	}
 }
@@ -1620,8 +1637,7 @@ function customizer_visibility_callback() {
 
     // Get current user data
     if ( current_user_can( 'manage_options' ) ) {
-        $options  = get_option( 'eazydocs_settings' );
-        $doc_id   = $options[ 'docs-slug' ] ?? '';
+        $doc_id   = ezd_get_opt( 'docs-slug' );
         $doc_page = get_post_field( 'post_name', $doc_id );
 
         $args = array(
@@ -1764,63 +1780,51 @@ add_action( 'init', 'ezd_read_private_docs_cap_to_user' );
  * Assigns or removes the 'add or edit_docs' capability to user roles
  */
 function ezd_docs_cap_to_user() {
-	$is_doc_contribution 	= ezd_get_opt( 'is_doc_contribution' );
-    $get_users_role 		= ezd_get_opt( 'ezd_add_editable_roles', [ 'administrator','editor','author','contributors', 'subscriber' ] );
+    $users_role 	= ezd_get_opt( 'ezd_add_editable_roles' );
+	$default_roles 	= ['administrator', 'editor', 'author'];
+	$active_roles 	= is_array( $users_role ) && ! empty( $users_role ) ? $users_role : $default_roles;
 
-    // Define the custom capabilities to manage docs
-	$doc_caps = [
-		'edit_doc',
-		'edit_post',
-		'edit_posts',
-		'edit_docs',
-		'edit_others_posts',
-		'edit_others_docs',
-		'edit_private_docs',
-		'publish_docs',
-		'read_doc',
-		'edit_published_docs'
-	];
+    $doc_caps = [
+        'edit_doc',
+        'edit_docs',
+        'edit_others_docs',
+        'edit_private_docs',
+        'publish_docs',
+        'edit_published_docs',
+        'delete_doc',
+        'delete_docs',
+        'delete_others_docs',
+        'delete_private_docs',
+        'delete_published_docs'
+    ];
 
-	if ( is_singular( 'docs' ) ) {
-        global $post;
-
-        if ( $post && (int) $post->post_author === get_current_user_id() ) {
-            $user = wp_get_current_user();
-            foreach ( $doc_caps as $cap ) {
-                $user->add_cap( $cap );
-            }
-			return;
-        }
-    }
-
-    if ( empty( $is_doc_contribution ) || empty( $get_users_role ) || ! is_array( $get_users_role ) ) {
-        return;
-    }
-
+    // Get all roles
     global $wp_roles;
     if ( ! isset( $wp_roles ) ) {
         $wp_roles = new WP_Roles();
     }
 
-    // Assign/remove capabilities to roles
     foreach ( $wp_roles->roles as $role_key => $role_data ) {
         $role = get_role( $role_key );
         if ( ! $role ) {
             continue;
         }
 
-        if ( in_array( $role_key, $get_users_role ) ) {
+        // Assign or remove caps based on role
+        if ( in_array( $role_key, $active_roles, true ) ) {
+            // Add capabilities to active roles
             foreach ( $doc_caps as $cap ) {
                 $role->add_cap( $cap );
             }
         } else {
+            // Remove capabilities from inactive roles
             foreach ( $doc_caps as $cap ) {
                 $role->remove_cap( $cap );
             }
         }
     }
 }
-add_action( 'wp', 'ezd_docs_cap_to_user' );
+add_action( 'init', 'ezd_docs_cap_to_user' );
 
 /**
  * Admin bar hide for OnePage Docs
@@ -1870,17 +1874,99 @@ function ezd_private_docs_access() {
  * @return string The sanitized docs slug.
  */
 function ezd_docs_slug() {
-	$docs_url  = ezd_get_opt( 'docs-url-structure', 'custom-slug' );
-	$permalink = get_option( 'permalink_structure' );
-
-    $settings_options = get_option( 'eazydocs_settings' );
-    $custom_slug = $settings_options['docs-type-slug'] ?? '';
-
-    $safe_slug = preg_replace( '/[^a-zA-Z0-9-_]/', '-', $custom_slug );
+	$docs_url	  = ezd_get_opt( 'docs-url-structure', 'custom-slug' );
+	$permalink    = get_option( 'permalink_structure' );
+    $custom_slug  = ezd_get_opt( 'docs-type-slug' );
+    $safe_slug 	  = preg_replace( '/[^a-zA-Z0-9-_]/', '-', $custom_slug );
 
 	if ( $docs_url == 'custom-slug' || $permalink === '' || $permalink === '/archives/%post_id%' ) {
 		return $safe_slug ?: 'docs';
 	}
 
 	return '';
+}
+
+/**
+ * Sanitize nested objects for use in the admin panel
+ *
+ * @param array $items Array of items to sanitize.
+ * @return array Sanitized array of items.
+ */
+function ezd_sanitize_nested_objects( $items ) {
+	$sanitized = [];
+
+	foreach ( $items as $item ) {
+		if ( ! isset( $item->id ) ) {
+			continue;
+		}
+
+		$sanitized_item = (object) [
+			'id' => intval( $item->id )
+		];
+
+		if ( isset( $item->children ) && is_array( $item->children ) ) {
+			$sanitized_item->children = ezd_sanitize_nested_objects( $item->children );
+		}
+
+		$sanitized[] = $sanitized_item;
+	}
+
+	return $sanitized;
+}
+
+
+/**
+ * Get all descendant IDs by a parent ID
+ *
+ * @param int    $parent_id   The parent post ID.
+ * @param string $post_type   The post type to query (default: 'docs').
+ * @param string $post_status The post status to query (default: 'publish').
+ *
+ * @return array An array of all descendant post IDs.
+ */
+function ezd_get_all_descendant_ids( $parent_id, $post_type = 'docs', $post_status = 'publish' ) {
+    global $wpdb;
+
+    $all_ids = [];
+
+    // Get immediate children IDs
+    $children = $wpdb->get_col( $wpdb->prepare(
+        "SELECT ID FROM {$wpdb->posts} WHERE post_parent = %d AND post_type = %s AND post_status = %s",
+        $parent_id,
+        $post_type,
+        $post_status
+    ));
+
+    if ( ! empty( $children ) ) {
+        foreach ( $children as $child_id ) {
+            // Add this child ID
+            $all_ids[] = $child_id;
+            // Recursively get grandchildren and deeper descendants
+            $descendants = ezd_get_all_descendant_ids( $child_id, $post_type, $post_status );
+            if ( ! empty( $descendants ) ) {
+                $all_ids = array_merge( $all_ids, $descendants );
+            }
+        }
+    }
+
+    return $all_ids;
+}
+
+/**
+ * Get previous and next IDs from an array of IDs
+ *
+ * @param array $all_ids
+ * @param int $current_id
+ *
+ * @return array
+ */
+function ezd_get_prev_next_from_array( $all_ids, $current_id ) {
+    $index = array_search( $current_id, $all_ids );
+    if ( $index === false ) {
+        return ['prev' => 0, 'next' => 0]; // current id not found
+    }
+    $prev = ( $index > 0 ) ? $all_ids[ $index - 1 ] : 0;
+    $next = ( $index < count( $all_ids ) - 1 ) ? $all_ids[ $index + 1 ] : 0;
+
+    return ['prev' => $prev, 'next' => $next];
 }

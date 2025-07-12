@@ -294,6 +294,15 @@ CSF::createSection( $prefix, array(
 							'id'          => 'assistant_bg',
 							'type'        => 'color',
 							'title'       => esc_html__( 'Icon Color', 'eazydocs' ),
+							'output'      => '.chat-toggle a',
+							'output_mode' => 'background-color',
+						),
+
+						array(
+							'id'          => 'icon_bg_hover',
+							'type'        => 'color',
+							'title'       => esc_html__( 'Icon Hover Color', 'eazydocs' ),
+							'output'      => '.chat-toggle a:hover',
 							'output_mode' => 'background-color',
 						),
 
@@ -301,6 +310,7 @@ CSF::createSection( $prefix, array(
 							'id'          => 'assistant_header_bg',
 							'type'        => 'color',
 							'title'       => esc_html__( 'Header Background', 'eazydocs' ),
+							'output'      => '.chatbox-header',
 							'output_mode' => 'background-color',
 						),
 
@@ -317,8 +327,8 @@ CSF::createSection( $prefix, array(
 							'type'        => 'color',
 							'title'       => esc_html__( 'Submit Button', 'eazydocs' ),
 							'output'      => '.chatbox-form input[type="submit"]',
-							'output_mode' => 'background-color',
-						)
+							'output_mode' => 'background-color'
+						),
 					)
 				),
 
@@ -372,22 +382,20 @@ CSF::createSection( $prefix, array(
 
 // Function to generate dynamic embed code box
 function generate_embed_code_box() {
-    $site_url = site_url(); // Current site URL
-
+    $site_url 		= site_url(); // Current site URL
     // Get assistant icon options using get_option like in Assistant.php
-    $ed_options = get_option('eazydocs_settings');
-    $open_icon = $ed_options['assistant_open_icon'] ?? [];
-    $close_icon = $ed_options['assistant_close_icon'] ?? [];
-    $open_icon_url = isset($open_icon['url']) && $open_icon['url'] ? $open_icon['url'] : "{$site_url}/wp-content/plugins/eazydocs-pro/assets/images/frontend/chat.svg";
+    $open_icon 		= ezd_get_opt( 'assistant_open_icon', [] );
+    $close_icon 	= ezd_get_opt( 'assistant_close_icon', [] );
+    $open_icon_url 	= isset($open_icon['url']) && $open_icon['url'] ? $open_icon['url'] : "{$site_url}/wp-content/plugins/eazydocs-pro/assets/images/frontend/chat.svg";
     $close_icon_url = isset($close_icon['url']) && $close_icon['url'] ? $close_icon['url'] : "{$site_url}/wp-content/plugins/eazydocs-pro/assets/images/frontend/close.svg";
 
     // Get spacing options from assistant_tab_settings
-    $tab_settings = $ed_options['assistant_tab_settings'] ?? [];
-    $spacing_vertical = $tab_settings['assistant_spacing_vertical'] ?? '';
+    $tab_settings 		= ezd_get_opt( 'assistant_tab_settings', [] );
+    $spacing_vertical 	= $tab_settings['assistant_spacing_vertical'] ?? '';
     $spacing_horizontal = $tab_settings['assistant_spacing_horizontal'] ?? '';
-    $vertical_unit = (is_numeric($spacing_vertical) && $spacing_vertical !== '') ? $spacing_vertical . '%' : '';
-    $horizontal_unit = (is_numeric($spacing_horizontal) && $spacing_horizontal !== '') ? $spacing_horizontal . '%' : '';
-    $iframe_bottom = (is_numeric($spacing_vertical) && $spacing_vertical !== '') ? 'calc(' . $spacing_vertical . '% + 76px)' : '';
+    $vertical_unit 		= (is_numeric($spacing_vertical) && $spacing_vertical !== '') ? $spacing_vertical . '%' : '';
+    $horizontal_unit 	= (is_numeric($spacing_horizontal) && $spacing_horizontal !== '') ? $spacing_horizontal . '%' : '';
+    $iframe_bottom 		= (is_numeric($spacing_vertical) && $spacing_vertical !== '') ? 'calc(' . $spacing_vertical . '% + 76px)' : '';
 
     $chat_toggle_style = '';
     $chat_toggle_style_arr = [];
@@ -413,25 +421,27 @@ function generate_embed_code_box() {
         $iframe_wrap_style = 'style="' . implode(' ', $iframe_wrap_style_arr) . '"';
     }
 
-    $code = <<<HTML
-<div class="eazydocs-cross-domain-code">
-   <link rel="stylesheet" href="{$site_url}/wp-content/plugins/eazydocs-pro/assets/css/embed-assistant.css" media="all">
-   <script src="{$site_url}/wp-content/plugins/eazydocs-pro/assets/js/embed-assistant.js"></script>
-   <div class="chat-toggle" {$chat_toggle_style}>
-      <img class="wp-spotlight-chat" src="{$open_icon_url}" alt="Chat Icon">
-      <img class="wp-spotlight-hide" src="{$close_icon_url}" alt="Close Icon" style="display: none;">
-   </div>
-   <button class="close-chat-sm"><span>Hide</span><span class="icon">❮</span></button>
-   <div class="chatbox-iframe-wraper" {$iframe_wrap_style}><iframe src="{$site_url}/iframe-assistant/" style="border: none;" frameborder="0"></iframe></div>
-</div>
-HTML;
+    $code  = '<div class="eazydocs-cross-domain-code">' . "\n";
 
-    $escaped_code = esc_html($code);
+	$code .= '   <!-- Embed Assistant Styles -->' . "\n";
+	// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+	$code .= '   <link rel="stylesheet" href="' . esc_url( $site_url ) . '/wp-content/plugins/eazydocs-pro/assets/css/embed-assistant.css" media="all">' . "\n";
+	// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+	$code .= '   <script src="' . esc_url( $site_url ) . '/wp-content/plugins/eazydocs-pro/assets/js/embed-assistant.js"></script>' . "\n";
+
+	$code .= '   <div class="chat-toggle" ' . ( $chat_toggle_style ? 'style="' . esc_attr( $chat_toggle_style ) . '"' : '' ) . '>' . "\n";
+	$code .= '      <img class="wp-spotlight-chat" src="' . esc_url( $open_icon_url ) . '" alt="' . esc_attr__( 'Chat Icon', 'eazydocs' ) . '">' . "\n";
+	$code .= '      <img class="wp-spotlight-hide" src="' . esc_url( $close_icon_url ) . '" alt="' . esc_attr__( 'Close Icon', 'eazydocs' ) . '" style="display: none;">' . "\n";
+	$code .= '   </div>' . "\n";
+	$code .= '   <button class="close-chat-sm"><span>' . esc_html__( 'Hide', 'eazydocs' ) . '</span><span class="icon">❮</span></button>' . "\n";
+	$code .= '   <div class="chatbox-iframe-wraper" ' . ( $iframe_wrap_style ? 'style="' . esc_attr( $iframe_wrap_style ) . '"' : '' ) . '>' . "\n";
+	$code .= '      <iframe src="' . esc_url( $site_url ) . '/iframe-assistant/" style="border: none;" frameborder="0"></iframe>' . "\n";
+	$code .= '   </div>' . "\n";
+	$code .= '</div>';
 
     return "
     <div class='assistant-embed-code-box' style='position:relative;margin-bottom:15px;'>
-        <textarea readonly >{$escaped_code}</textarea>
+        <textarea readonly >{$code}</textarea>
         <button class='button admin-copy-embed-code' >Copy</button>
-    </div>
-    ";
+    </div>";
 }

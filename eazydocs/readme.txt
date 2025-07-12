@@ -1,10 +1,10 @@
-=== EazyDocs - Most Powerful Knowledge base, wiki, Documentation Builder Plugin ===
+=== EazyDocs - Easy Knowledge Base, Wiki, and Documentation Builder ===
 Contributors: mdjwel, spiderdevs
 Tags: knowledge base, kb, faq, wiki, documentation
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.6.7
+Stable tag: 2.6.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,7 @@ Keep a record of article drafts and edits, and restore earlier versions if requi
 - Single & Multidocs Block
 - Extra Depth Level
 - Cross Domain Embed Option for Docs Assistant
+- Author/Contributor profile page 
 
 ## EazyDocs Promax plan features include:
 - All Pro plan features
@@ -232,6 +233,19 @@ You can install the EazyDocs from your WordPress Dashboard or manually upload it
 
 == Changelog ==
 
+= 2.6.8 (12 July 2025) =
+New: Added the function "ezd_get_opt()" for CSF settings where it was missing
+New: Dashboard Menu Title option added in the EazyDocs Settings > General page
+New: Added a new button to see onePage Fullscreen layout demo
+fixed: Docs edit issue resolved
+Fixed: Translation issues
+Fixed: Security issues fixed
+Fixed: Resolved some issues of Assistant fields
+Tweaked: Admin Doc sidebar width flexibility improved
+Tweaked: Make the string translation safe and secure
+Tweaked: Improved View OnePage demo button
+Updated: Language files updated
+
 = 2.6.7 (18 June 2025) =
 Fixed: Accordion reorder issue at depth-4 resolved
 Tweaked: Improved the Full width container in mobile devices
@@ -268,13 +282,6 @@ Tweaked: Disable the enter key for search field
 Tweaked: Multi Docs Elementor widget controls reorganized
 Tweaked: Multi Docs widget
 Tweaked: Removed some unused CSS
-
-= v2.6.3 (22 March 2025) =
-Fixed: Resolved PHP 7.4 compatibility issue
-Fixed: Missing multidocs widgets masonry layout resolved
-Tweaked: Advanced Accordion Gutenberg Block plugin added in the Setup Wizard plugin recommendation step
-Tweaked: Unloaded unnecessary CSS and JS files from the Setup Wizard page
-Tweaked: Setup Wizard code file structure improved to make the maintenance easier
 
 
 [See changelog for all versions](https://spider-themes.net/eazydocs/changelog/).

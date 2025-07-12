@@ -17,15 +17,9 @@ $masonry_attr   = $is_masonry == 'yes' ? 'ezd-massonry-col="3"' : '';
                   $active = ( $i == 0 ) ? ' active' : '';
                   $post_title_slug = $doc->post_name;
                   $doc_name        = explode( ' ', $doc->post_title );
-
-                  if ( $slug_type == 1 ) {
-                    $atts = "href='#doc-4{$post_title_slug}'";
-                  } else {
-                    $atts = "href='#doc-4{$widget_id}-{$doc->ID}'";
-                  }
                   ?>
                     <li class="nav-item<?php echo esc_attr( $active ) ?>">
-                      <a <?php echo $atts; ?> class="nav-link">
+                        <a href="#doc-4<?php echo esc_attr($slug_type == 1 ? $post_title_slug : "$widget_id-$doc->ID"); ?>" class="nav-link">
                         <?php
                         if ( ! empty( $settings['book_chapter_prefix'] ) ):
                           ?>
@@ -86,7 +80,7 @@ $masonry_attr   = $is_masonry == 'yes' ? 'ezd-massonry-col="3"' : '';
 							<?php 
               if ( ! empty( $section->post_title ) ) : 
                 ?>
-                <a class="doc4-section-title" href="<?php echo get_permalink( $section->ID ); ?>">
+                <a class="doc4-section-title" href="<?php the_permalink( $section->ID ); ?>">
                   <h4> <?php echo wp_kses_post( $section->post_title ); ?> </h4>
                 </a>
                 <?php 
@@ -107,7 +101,7 @@ $masonry_attr   = $is_masonry == 'yes' ? 'ezd-massonry-col="3"' : '';
 									$child_count = $child ++
 									?>
                   <li>
-                    <a href="<?php echo get_permalink( $doc_item->ID ) ?>">
+                    <a href="<?php the_permalink( $doc_item->ID ) ?>">
                       <span class="chapter_counter">
                           <?php echo esc_html( $section_count . "." . $child_count . " " ); ?>
                       </span>

@@ -6,15 +6,19 @@
 	        echo wp_get_attachment_image( $settings_key['id'], 'full', '', array( 'class' => $class ) );
 
         } elseif ( ! empty( $settings_key['url'] ) && empty( $settings_key['id'] ) ) {
-	        $class = ! empty( $class ) ? "class='$class'" : '';
-	        $attss = '';
-	        //echo print_r($atts);
-	        if ( ! empty( $atts ) ) {
-		        foreach ( $atts as $k => $att ) {
-			        $attss .= "$k=" . "'$att'";
-		        }
-	        }
-	        echo "<img src='{$settings_key['url']}' $class alt='$alt' $attss>";
+			$class_attr = ! empty( $class ) ? 'class="' . esc_attr( $class ) . '"' : '';
+			$atts_str   = '';
+
+			if ( ! empty( $atts ) && is_array( $atts ) ) {
+				foreach ( $atts as $k => $att ) {
+					$atts_str .= ' ' . esc_attr( $k ) . '="' . esc_attr( $att ) . '"';
+				}
+			}
+
+			$img_url = isset( $settings_key['url'] ) ? esc_url( $settings_key['url'] ) : '';
+			$alt     = isset( $alt ) ? esc_attr( $alt ) : '';
+
+			echo wp_kses_post( '<img src="' . $img_url . '" ' . $class_attr . ' alt="' . $alt . '"' . $atts_str . '>' );
         }
         ?>
 		<?php if ( $settings['is_bg_objects'] == 'yes' ) : ?>
@@ -56,7 +60,7 @@
 						}
 
 						if ( ! empty( $section->post_title ) ) { ?>
-                            <a href="<?php echo get_permalink( $section->ID ); ?>">
+                            <a href="<?php the_permalink( $section->ID ); ?>">
                                 <h3 class="ct-heading-text"> <?php echo wp_kses_post( $section->post_title ); ?> </h3>
                             </a>
 							<?php
@@ -68,7 +72,7 @@
 								foreach ( $doc_items as $doc_item ) :
 									?>
                                     <li>
-                                        <a class="ct-content-text" href="<?php echo get_permalink( $doc_item->ID ) ?>">
+                                        <a class="ct-content-text" href="<?php the_permalink( $doc_item->ID ) ?>">
 											<?php echo wp_kses_post( $doc_item->post_title ) ?>
                                         </a>
                                     </li>

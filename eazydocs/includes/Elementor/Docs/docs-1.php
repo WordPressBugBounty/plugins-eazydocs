@@ -1,9 +1,6 @@
 <?php
-$opt                    = get_option( 'eazydocs_settings' );
-$topics_count           = $opt['topics_count'] ?? '1';
-$topics                 = $opt['topics_text'] ?? esc_html__( 'Topics', 'eazydocs' );
-$private_doc_mode       = $opt['private_doc_mode'] ?? '';
-$private_doc_login_page = $opt['private_doc_login_page'] ?? '';
+$private_doc_mode       = ezd_get_opt( 'private_doc_mode' );
+$private_doc_login_page = ezd_get_opt( 'private_doc_login_page' );
 $ppp_column             = ! empty( $settings['ppp_column'] ) ? $settings['ppp_column'] : '3';
 $is_masonry     		= $settings['masonry'] ?? '';
 $masonry_layout 		= $is_masonry == 'yes' ? 'ezd-column-3 ezd-masonry' : '';
@@ -12,7 +9,7 @@ $layout 				= 'grid';
 
 // Check pro plugin class exists
 if ( ezd_is_premium() ) {
-	$layout = $opt['docs-archive-layout'] ?? $layout; // id of field
+	$layout = ezd_get_opt( 'docs-archive-layout', $layout ); // id of field
 }
 ?>
 
@@ -21,7 +18,7 @@ if ( ezd_is_premium() ) {
 
 		<?php
 		$exclude_id = $doc_exclude ?? '';
-		$parent_args = new WP_Query( [
+		$parent_args = new WP_Query( [ 
 			'post_type'      => 'docs',
 			'posts_per_page' => $doc_number,
 			'post_status'    => array( 'publish', 'private' ),
@@ -58,9 +55,9 @@ if ( ezd_is_premium() ) {
                 <div class="ezd-col-width">
                     <div class="categories_guide_item <?php echo esc_attr( $private_bg . $protected_bg ); ?> wow fadeInUp" <?php echo wp_kses_post($private_bg_op); ?>>
 						<?php
-						if ( get_post_status() == 'private' ) {
-							$pd_txt = esc_attr__( 'Private Doc', 'eazydocs' );
-							echo '<div class="private" title="' . $pd_txt . '"><i class="icon_lock"></i></div>';
+						if ( get_post_status() === 'private' ) {
+							$pd_txt = __( 'Private Doc', 'eazydocs' );
+							echo '<div class="private" title="' . esc_attr( $pd_txt ) . '"><i class="icon_lock"></i></div>';
 						}
 
 						if ( ! empty( $post->post_password ) ) :
@@ -81,8 +78,10 @@ if ( ezd_is_premium() ) {
                             <a class="doc_tag_title" href="<?php the_permalink(); ?>">
                                 <h4 class="title ezd_item_title"> <?php the_title(); ?> </h4>
                                 <span class="ezd-badge">
-									<?php echo count( $get_child_docs );
-									esc_html_e( ' Topics', 'eazydocs' ); ?>
+									<?php 
+									echo count( $get_child_docs );
+									echo ' ' . esc_html( $topics_label ); 
+									?>
 								</span>
                             </a>
                         </div>
@@ -95,7 +94,7 @@ if ( ezd_is_premium() ) {
 								foreach ( $sections as $section ) :
 									?>
                                     <li>
-                                        <a href="<?php echo get_permalink( $section ); ?>" class="ezd_item_list_title">
+                                        <a href="<?php the_permalink( $section ); ?>" class="ezd_item_list_title">
 											<?php echo wp_kses_post( $section->post_title ); ?>
                                         </a>
                                     </li>

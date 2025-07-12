@@ -86,37 +86,37 @@ class Admin {
 		}
 
 		if ( class_exists( 'EZD_EazyDocsPro' ) ) {
-			$ezd_menu_title = __( 'EazyDocs Pro', 'eazydocs' );
+			$ezd_menu_title = ezd_get_opt( 'docs_menu_title', esc_html__( 'EazyDocs Pro', 'eazydocs' ) );
 		} else {
-			$ezd_menu_title = __( 'EazyDocs', 'eazydocs' );
+			$ezd_menu_title = ezd_get_opt( 'docs_menu_title', esc_html__( 'EazyDocs', 'eazydocs' ) );
 		}
 
 		add_menu_page( $ezd_menu_title, $ezd_menu_title, $capabilites, 'eazydocs', [ $this, 'eazydocs_page' ], 'dashicons-media-document', 10 );
-		add_submenu_page( 'eazydocs', __( 'Docs Builder', 'eazydocs' ), __( 'Docs Builder', 'eazydocs' ), $capabilites, 'eazydocs' );
+		add_submenu_page( 'eazydocs', esc_html__( 'Docs Builder', 'eazydocs' ), esc_html__( 'Docs Builder', 'eazydocs' ), $capabilites, 'eazydocs' );
 
 		if ( ezd_is_premium() ) {
 			if ( $is_customizer ) {
-				add_submenu_page( 'eazydocs', __( 'Customize', 'eazydocs' ), __( 'Customize', 'eazydocs' ), 'manage_options', '/customize.php?autofocus[panel]=docs-page&autofocus[section]=docs-archive-page' );
+				add_submenu_page( 'eazydocs', esc_html__( 'Customize', 'eazydocs' ), esc_html__( 'Customize', 'eazydocs' ), 'manage_options', '/customize.php?autofocus[panel]=docs-page&autofocus[section]=docs-archive-page' );
 			}
 		}
 
-		add_submenu_page( 'eazydocs', __( 'Tags', 'eazydocs' ), __( 'Tags', 'eazydocs' ), 'manage_options', '/edit-tags.php?taxonomy=doc_tag&post_type=docs' );
+		add_submenu_page( 'eazydocs', esc_html__( 'Tags', 'eazydocs' ), esc_html__( 'Tags', 'eazydocs' ), 'manage_options', '/edit-tags.php?taxonomy=doc_tag&post_type=docs' );
 
 		$current_theme = get_template();
 		if ( $current_theme == 'docy' || $current_theme == 'docly' || ezd_is_premium() ) {
-			add_submenu_page( 'eazydocs', __( 'OnePage Docs', 'eazydocs' ), __( 'OnePage Docs', 'eazydocs' ), 'manage_options', '/edit.php?post_type=onepage-docs' );
+			add_submenu_page( 'eazydocs', esc_html__( 'OnePage Docs', 'eazydocs' ), esc_html__( 'OnePage Docs', 'eazydocs' ), 'manage_options', '/edit.php?post_type=onepage-docs' );
 		} else {
-			add_submenu_page( 'eazydocs', __( 'OnePage Doc', 'eazydocs' ), __( 'OnePage Doc', 'eazydocs' ), 'manage_options', 'ezd-onepage-presents', [ $this, 'ezd_onepage_presents' ] );
+			add_submenu_page( 'eazydocs', esc_html__( 'OnePage Doc', 'eazydocs' ), esc_html__( 'OnePage Doc', 'eazydocs' ), 'manage_options', 'ezd-onepage-presents', [ $this, 'ezd_onepage_presents' ] );
 		}
 
 		if ( ezd_is_premium() ) {
 			do_action( 'ezd_pro_admin_menu' );
 		} else {
-			add_submenu_page( 'eazydocs', __( 'Users Feedback', 'eazydocs' ), __( 'Users Feedback', 'eazydocs' ), $capabilites, 'ezd-user-feedback', [ $this, 'ezd_feedback_presents' ] );
-			add_submenu_page( 'eazydocs', __( 'Analytics', 'eazydocs' ), __( 'Analytics', 'eazydocs' ), $capabilites, 'ezd-analytics', [ $this, 'ezd_analytics_presents' ] );
+			add_submenu_page( 'eazydocs', esc_html__( 'Users Feedback', 'eazydocs' ), esc_html__( 'Users Feedback', 'eazydocs' ), $capabilites, 'ezd-user-feedback', [ $this, 'ezd_feedback_presents' ] );
+			add_submenu_page( 'eazydocs', esc_html__( 'Analytics', 'eazydocs' ), esc_html__( 'Analytics', 'eazydocs' ), $capabilites, 'ezd-analytics', [ $this, 'ezd_analytics_presents' ] );
 		}
 
-		add_submenu_page( 'eazydocs', __( 'Setup Wizard', 'eazydocs' ), __( 'Setup Wizard', 'eazydocs' ), 'manage_options', 'eazydocs-initial-setup', [ $this, 'ezd_setup_wizard' ] );
+		add_submenu_page( 'eazydocs', esc_html__( 'Setup Wizard', 'eazydocs' ), esc_html__( 'Setup Wizard', 'eazydocs' ), 'manage_options', 'eazydocs-initial-setup', [ $this, 'ezd_setup_wizard' ] );
 	}
 
 	/**
@@ -184,9 +184,13 @@ class Admin {
                     <a class="button button-primary ezd-btn ezd-btn-pro btn-lg" href="<?php echo esc_url( admin_url( 'admin.php?page=eazydocs-pricing' ) ); ?>">
 						<?php esc_html_e( 'Go Pro', 'eazydocs' ); ?>
                     </a>
-                    <a class="button button-secondary ezd-btn btn-lg" target="_blank" href="https://wordpress-theme.spider-themes.net/docy/docy-documentation/"
-                       title="<?php esc_attr_e( 'View Frontend Demo', 'eazydocs' ); ?>">
-						<?php esc_html_e( 'View Demo', 'eazydocs' ); ?>
+                    <a class="button button-secondary ezd-btn btn-lg" target="_blank" href="https://wordpress-plugins.spider-themes.net/eazydocs-pro/doc/rogan-documentation/"
+                       title="<?php esc_attr_e( 'View Classic Frontend Demo', 'eazydocs' ); ?>">
+						<?php esc_html_e( 'Classic Layout Demo', 'eazydocs' ); ?>
+                    </a>
+                    <a class="button button-secondary ezd-btn btn-lg" target="_blank" href="https://wordpress-plugins.spider-themes.net/eazydocs-pro/doc/banca-wordpress-theme/"
+                       title="<?php esc_attr_e( 'View Fullscreen Frontend Demo', 'eazydocs' ); ?>">
+		                <?php esc_html_e( 'Fullscreen Layout Demo', 'eazydocs' ); ?>
                     </a>
                 </div>
             </div>
@@ -282,53 +286,62 @@ class Admin {
 	 ** Nestable Callback function
 	 **/
 	public function nestable_callback() {
-		$nestedArray = json_decode( stripslashes( $_POST['data'] ) );
-		$i           = 0;
-		$c           = 0;
-		$c_of        = 0;
-		$f_of        = 0;
+		check_ajax_referer( 'eazydocs-admin-nonce', 'security' );
+
+		if ( ! isset( $_POST['data'] ) ) {
+			wp_send_json_error( [ 'message' => 'Missing data parameter.' ] );
+		}
+
+		$raw_data = stripslashes( $_POST['data'] ); // Keep stripslashes since you're using it in JS
+		$nestedArray = json_decode( $raw_data );
+
+		if ( ! is_array( $nestedArray ) ) {
+			wp_send_json_error( [ 'message' => 'Invalid data format.' ] );
+		}
+
+		$nestedArray = ezd_sanitize_nested_objects( $nestedArray ); // ✅ sanitize all IDs
+
+		$i    = 0;
+		$c    = 0;
+		$c_of = 0;
+		$f_of = 0;
+
 		foreach ( $nestedArray as $value ) {
-			$i ++;
+			$i++;
 			wp_update_post( [
 				'ID'          => $value->id,
 				'menu_order'  => $i,
 				'post_parent' => eaz_get_nestable_parent_id( $value->id )
-			], true );
+			] );
 
 			if ( is_array( $value->children ) ) {
 				foreach ( $value->children as $child ) {
-					$c ++;
+					$c++;
 					wp_update_post( [
 						'ID'          => $child->id,
 						'menu_order'  => $c,
 						'post_parent' => $value->id
-					], true );
+					] );
+
 					if ( is_array( $child->children ) ) {
 						foreach ( $child->children as $of_child ) {
-							$c_of ++;
-							wp_update_post(
-								[
-									'ID'          => $of_child->id,
-									'menu_order'  => $c_of,
-									'post_parent' => $child->id
-								],
-								true
-							);
+							$c_of++;
+							wp_update_post( [
+								'ID'          => $of_child->id,
+								'menu_order'  => $c_of,
+								'post_parent' => $child->id
+							] );
 
 							if ( is_array( $of_child->children ) ) {
 								foreach ( $of_child->children as $fourth_child ) {
-									$f_of ++;
-									wp_update_post(
-										[
-											'ID'          => $fourth_child->id,
-											'menu_order'  => $f_of,
-											'post_parent' => $of_child->id
-										],
-										true
-									);
+									$f_of++;
+									wp_update_post( [
+										'ID'          => $fourth_child->id,
+										'menu_order'  => $f_of,
+										'post_parent' => $of_child->id
+									] );
 								}
 							}
-
 						}
 					}
 				}
@@ -337,6 +350,7 @@ class Admin {
 
 		wp_send_json_success( $nestedArray );
 	}
+
 
 	public function parent_nestable_callback() {
 		$nestedArray = json_decode( stripslashes( $_POST['data'] ) );

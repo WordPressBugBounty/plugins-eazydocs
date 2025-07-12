@@ -1,9 +1,7 @@
 <?php
-$opt                    = get_option( 'eazydocs_settings' );
-$topics                 = $opt['topics_text'] ?? esc_html__( 'Topics', 'eazydocs' );
-$private_doc_mode       = $opt['private_doc_mode'] ?? '';
-$private_doc_login_page = $opt['private_doc_login_page'] ?? '';
-$is_subscription 		= $opt['subscriptions'] ?? false;
+$private_doc_mode       = ezd_get_opt( 'private_doc_mode' );
+$private_doc_login_page = ezd_get_opt( 'private_doc_login_page' );
+$is_subscription 		= ezd_get_opt( 'subscriptions', false );
 $is_btn_show 			= ezd_get_opt('docs-view-all-btn');
 $is_masonry             = '';
 // Check pro plugin class exists
@@ -60,7 +58,7 @@ if ( $docs ) :
 						}
 						?>
                         <div class="doc-top ezd-d-flex ezd-align-items-start">
-                            <a class="doc_tag_title" href="<?php echo get_permalink( $main_doc['doc']->ID ); ?>">
+                            <a class="doc_tag_title" href="<?php the_permalink( $main_doc['doc']->ID ); ?>">
 								<?php if ( ! empty( $main_doc['doc']->post_title ) ) : ?>
                                     <h4 class="title">
 										<?php echo wp_kses_post( $main_doc['doc']->post_title ); ?>
@@ -82,7 +80,7 @@ if ( $docs ) :
 								foreach ( $main_doc['sections'] as $item ) :
 									?>
                                     <li>
-                                        <a href="<?php echo get_permalink( $item->ID ); ?>">
+                                        <a href="<?php the_permalink( $item->ID ); ?>">
 											<?php echo esc_html( $item->post_title ); ?>
                                         </a>
                                     </li>
@@ -101,7 +99,7 @@ if ( $docs ) :
 							if ( ( ! $has_children && ! empty( $more ) && ! empty( $is_btn_show ) ) || 
 								( $has_children && ! empty( $more ) ) ) :
 								?>
-								<a href="<?php echo get_permalink( $main_doc['doc']->ID ); ?>" class="doc_border_btn">
+								<a href="<?php the_permalink( $main_doc['doc']->ID ); ?>" class="doc_border_btn">
 									<?php echo esc_html( $more ); ?> <i class="arrow_right"></i>
 								</a>
 								<?php 

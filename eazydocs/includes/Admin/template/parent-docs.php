@@ -59,7 +59,7 @@ $count = $query->found_posts;
                         <?php echo count($doc_counter) > 0 ? count($doc_counter) : ''; ?>
                     </span>
                 </div>
-                <div class="link">
+                <div class="link link-wrapper">
                     <?php
                     if ( ezd_is_premium() ) {
                         if ( current_user_can('manage_options') ) {
@@ -82,22 +82,24 @@ $count = $query->found_posts;
 
                     <?php 
                      if ( ezd_is_admin_or_editor(get_the_ID(), 'delete') ) :
+                        $delete_id = get_the_ID();
+                        $nonce     = wp_create_nonce( $delete_id );
                         ?>
-                         <a href="<?php echo admin_url('admin.php?Doc_Delete=yes&_wpnonce=' . esc_attr(wp_create_nonce(get_the_ID())) . '&DeleteID=' . esc_attr(get_the_ID())); ?>" class="link delete parent-delete" title="<?php esc_attr_e('Move to Trash', 'eazydocs'); ?>">
-                             <span class="dashicons dashicons-trash"></span>
-                         </a>
+                        <a href="<?php echo esc_url( admin_url( 'admin.php' ) . '?Doc_Delete=yes&_wpnonce=' . $nonce . '&DeleteID=' . $delete_id ); ?>" class="link delete parent-delete" title="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>">
+                            <span class="dashicons dashicons-trash"></span>
+                        </a>
                         <?php 
                     endif;
 
                     if ( current_user_can('manage_options') ) :
                         ?>  
-                        <span class="ezd-admin-bulk-options" id="bulk-options-<?php echo esc_attr(get_the_ID()); ?>">
+                        <span class="ezd-admin-bulk-options link" id="bulk-options-<?php echo esc_attr(get_the_ID()); ?>">
                             <span class="dashicons dashicons-arrow-down-alt2"></span>
                             <span class="ezd-admin-bulk-actions">
                                 <?php
                                 if ( ezd_is_premium() ) :
-                                    do_action('eazydocs_parent_doc_duplicate', get_the_ID());
-                                    do_action('eazydocs_doc_visibility', get_the_ID());
+                                    do_action('eazydocs_duplicate', get_the_ID());
+                                    do_action('eazydocs_visibility', get_the_ID());
 
                                     $left_type      = get_post_meta(get_the_ID(), 'ezd_doc_left_sidebar_type', true);
                                     $left_type      = '&left_type=' . $left_type;

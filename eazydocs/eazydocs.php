@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: EazyDocs
- * Description: A powerful & beautiful documentation, knowledge base builder plugin.
+ * Description: Powerful & beautiful documentation, knowledge base builder plugin.
  * Plugin URI: https://spider-themes.net/eazydocs
  * Author: spider-themes
  * Author URI: https://spider-themes.net/eazydocs
- * Version: 2.6.7
+ * Version: 2.6.8
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -111,7 +111,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			$this->core_includes();
 
 			register_activation_hook( __FILE__, [ $this, 'activate' ] );
-			add_action( 'init', [ $this, 'i18n' ] );
+			add_action( 'plugins_loaded', [ $this, 'i18n' ] );
 			add_action( 'init', [ $this, 'init_hooked' ] );
 			add_action( 'plugins_loaded', [ $this, 'init_plugin' ] );
 			add_action( 'after_setup_theme', [ $this, 'load_csf_files' ], 20 );
@@ -163,7 +163,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 		 * @access public
 		 */
 		public function i18n() {
-			load_plugin_textdomain( 'eazydocs', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+			load_plugin_textdomain( 'eazydocs', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		}
 
 		/**
