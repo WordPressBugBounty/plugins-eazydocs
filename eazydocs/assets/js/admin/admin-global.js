@@ -25,6 +25,9 @@
                 })
             } else {
                 $('body:not(.ezd-premium) .eazydocs-pro-notice').on('click', function (e) {
+                    if ($('body').hasClass('ama') && $(this).hasClass('active-theme-ama')) {
+                        return; // skip alert
+                    }
                     e.preventDefault();
                     let href = $(this).attr('href')
                     Swal.fire({
@@ -32,8 +35,7 @@
                         html: 'This is a PRO feature. You need to <a href="admin.php?page=eazydocs-pricing"><strong class="upgrade-link">Upgrade&nbsp;&nbsp;➤</strong></a> to the Premium Version to use this feature',
                         icon: "warning",
                         buttons: [false, "Close"],
-                        dangerMode: true,
-                        //footer: '<a href="https://spider-themes.net/eazydocs/" target="_blank"> Learn More </a>',
+                        dangerMode: true
                     })
                 })
             }
@@ -112,7 +114,6 @@
             });
         });
 
-
         $('.admin-copy-embed-code').on('click', function(e) {
             e.preventDefault();
             var textarea = $(this).siblings('textarea')[0];
@@ -123,5 +124,83 @@
             setTimeout(() => { $(this).text('Copy'); }, 2000);
         });
 
+        // BetterDocs to EazyDocs migration
+        $('.ezd-migration-wrapper button').on('click', function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure to migrate?',
+                html: `
+                    <div class="migration-alert-info">
+                        <p>We're committed to ensuring a smooth and successful migration to EazyDocs.</p>
+                        <label><strong>Choose migration source</strong></label>
+                        <div class="migration-field-wrap">
+                            <select id="ezd_migration_options">
+                                <option value="betterdocs">BetterDocs</option>
+                            </select>
+                            <fieldset>To EazyDocs</fieldset>
+                        </div>
+                        <p class="migration-alert-text">
+                            <strong>⚠️ Migration Notice:</strong><br>
+                            Before migrating, we recommend exporting your docs from <b>Tools > Export</b>. After migration, review your content—if anything's off, you can easily re-import the backup.
+                        </p>
+                    </div>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yes, I'm sure",
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    const migrationOption = $('#ezd_migration_options').val();
+                    if (!migrationOption) {
+                        Swal.showValidationMessage('Please select BetterDocs to migrate from.');
+                        return false;
+                    }
+                    return { migrationOption };
+                }
+            }).then((result) => {
+                if (!result.isConfirmed || !result.value) return;
+
+                const migrationFrom = result.value.migrationOption;
+
+                Swal.fire({
+                    title: 'Migrating...',
+                    text: `Migrating from ${migrationFrom} to EazyDocs...`,
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+
+                $.ajax({
+                    url: eazydocs_local_object.ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'ezd_migrate_to_eazydocs',
+                        migrate_from: migrationFrom
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'Migration Complete!',
+                                text: 'You have successfully migrated your knowledgebase to EazyDocs.',
+                                icon: 'success',
+                                confirmButtonText: 'Go to EazyDocs'
+                            }).then(() => {
+                                window.location.href = 'admin.php?page=eazydocs';
+                            });
+                        } else {
+                            const msg = (response.data && response.data.message) || response.data || 'Something went wrong.';
+                            Swal.fire({
+                                title: 'Migration Failed',
+                                text: msg,
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'AJAX request failed. Please try again.', 'error');
+                    }
+                });
+            });
+        });
+        
     });
 })(jQuery);

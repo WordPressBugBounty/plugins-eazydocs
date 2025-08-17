@@ -44,17 +44,30 @@ class Ajax {
 
 		// seems new
 		if ( $type ) {
-			$count = (int) get_post_meta( $post_id, $type, true );
-
-			$timestamp = current_time( 'mysql' );
+			$count 		= (int) get_post_meta( $post_id, $type, true );
+			$timestamp 	= current_time( 'mysql' );
 
 			update_post_meta( $post_id, $type, $count + 1 );
 
 			if ( $type == 'positive' ) {
-				update_post_meta( $post_id, 'positive_voter', get_current_user_id() );
+				$voters = get_post_meta( $post_id, 'positive_voter', true );
+				$voters = is_array( $voters ) ? $voters : [];
+
+				if ( ! in_array( get_current_user_id(), $voters ) ) {
+					$voters[] = get_current_user_id();
+					update_post_meta( $post_id, 'positive_voter', $voters );
+				}
+
 				update_post_meta( $post_id, 'positive_time', $timestamp );
 			} else {
-				update_post_meta( $post_id, 'negative_voter', get_current_user_id() );
+				$voters = get_post_meta( $post_id, 'negative_voter', true );
+				$voters = is_array( $voters ) ? $voters : [];
+
+				if ( ! in_array( get_current_user_id(), $voters ) ) {
+					$voters[] = get_current_user_id();
+					update_post_meta( $post_id, 'negative_voter', $voters );
+				}
+
 				update_post_meta( $post_id, 'negative_time', $timestamp );
 			}
 
@@ -81,17 +94,18 @@ class Ajax {
 
 		// Search by keyword
 		$args = [
-			'post_type'      	=> 'docs',
-			'posts_per_page' 	=> -1,
-			'post_status'     => is_user_logged_in() ? ['publish', 'private', 'protected'] : ['publish', 'protected'], 
-			's' 				=> $keyword, // Include keyword search
+			'post_type'      => 'docs',
+			'posts_per_page' => -1,
+			'post_status'    => is_user_logged_in() ? ['publish', 'private', 'protected'] : ['publish', 'protected'], 
+			's' 			 => $keyword, // Include keyword search
+			'orderby' 		 => [ 'menu_order' => 'ASC', 'title' => 'ASC' ]
 		];
 
 		$posts = new WP_Query($args);
 
 		// Search by tag
-		$getTags 	= get_terms([ 'taxonomy' => 'doc_tag', 'hide_empty' => false, 'object_ids' => get_posts([ 'post_type' => 'docs', 'posts_per_page' => -1, 'fields' => 'ids', ]) ]);
-		$checkTags 	= [];
+		$getTags = get_terms([ 'taxonomy' => 'doc_tag', 'hide_empty' => false, 'object_ids' => get_posts([ 'post_type' => 'docs', 'posts_per_page' => -1, 'fields' => 'ids', ]) ]);
+		$checkTags = [];
 
 		if ( ! empty( $getTags ) && !is_wp_error( $getTags ) ) {
 			foreach ($getTags as $tag) {
@@ -122,9 +136,9 @@ class Ajax {
 			$posts = new WP_Query([
 				'post_type'      => 'docs',
 				'posts_per_page' => -1,
-				'post_status'     => is_user_logged_in() ? ['publish', 'private', 'protected'] : ['publish', 'protected'],
+				'post_status'    => is_user_logged_in() ? ['publish', 'private', 'protected'] : ['publish', 'protected'],
 				'post__in'       => wp_list_pluck($merged_posts, 'ID'),
-				'orderby'        => 'post__in', // Maintain order
+				'orderby' 		 => [ 'menu_order' => 'ASC', 'title' => 'ASC' ]
 			]);
 		}
 
@@ -171,9 +185,10 @@ class Ajax {
 			}
 
 			while ( $posts->have_posts() ) : $posts->the_post();
-				$no_thumbnail 		= ezd_get_opt('is_search_result_thumbnail') == false ? 'no-thumbnail' :  '';
+				$no_thumbnail = ezd_get_opt('is_search_result_thumbnail') == false ? 'no-thumbnail' :  '';
 				?>
                 <div class="search-result-item <?php echo esc_attr( $no_thumbnail ); ?>" data-url="<?php the_permalink( get_the_ID() ); ?>">
+					
                     <a href="<?php the_permalink( get_the_ID() ) ?>" class="title">
 
 						<?php						

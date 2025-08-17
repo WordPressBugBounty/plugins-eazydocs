@@ -46,6 +46,25 @@ class Doc_Widget extends Widget_Base {
 		return [ 'eazydocs', 'docs', 'documentations', 'knowledge base', 'knowledgebase', 'kb', 'eazydocs' ];
 	}
 
+    /*
+     * Tab ID Format
+     */
+    public function tab_id_format( $doc_id, $prefix ) {
+        $settings = $this->get_settings_for_display();
+        $slug_type = $settings['docs_slug_format'] ?? '';
+        $widget_id = $this->get_id();
+
+	    $post_title_slug = get_post_field( 'post_name', $doc_id );
+
+        if ( $slug_type == 1 ) {
+            $tab_id = $prefix.'-'.$post_title_slug;
+        } else {
+            $tab_id = $prefix.'-'.$widget_id.$doc_id;
+        }
+
+        echo esc_attr($tab_id);
+    }
+
 	/**
 	 * Name: register_controls()
 	 * Desc: Register controls for these widgets
@@ -178,13 +197,13 @@ class Doc_Widget extends Widget_Base {
 
         $this->add_control(
 			'docs_slug_format', [
-				'label'     => esc_html__( 'ID Format', 'eazydocs' ),
+				'label'     => esc_html__( 'Tab ID Format', 'eazydocs' ),
+				'description'   => esc_html__( 'If the slug ID does not work then you should pick the number ID.', 'eazydocs' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => [
-					'1'     => 'Slug ID',
-					'2'     => 'Number ID',
+					'1'     => esc_html__( 'Slug ID', 'eazydocs' ),
+					'2'     => esc_html__( 'Number ID', 'eazydocs' ),
 				],
-				'description'   => esc_html__( 'If the slug ID does not work then you should pick the number ID.', 'eazydocs' ),
 				'condition' => [
 					'doc-widget-skin' => [ '2', '3', '4', '5' ]
 				],
@@ -1013,7 +1032,7 @@ class Doc_Widget extends Widget_Base {
 			}
 		}
 
-        if ( ezd_unlock_themes() ) {
+        if ( ezd_unlock_themes('docy','docly') ) {
 		    include( "docs-{$settings['doc-widget-skin']}.php" );
         } else {
             include( "docs-1.php" );

@@ -17,7 +17,7 @@ $children = array(
     'echo'        => false,
     'post_type'   => 'docs',
     'walker'      => $walker,
-    'post_status' => current_user_can( 'read_private_docs' ) ? [ 'publish', 'private' ] : ['publish'],
+    'post_status' => current_user_can( 'read_private_docs' ) ? [ 'publish', 'private', 'draft' ] : ['publish'],
 );
 
 // If 'Self Docs' is selected, set 'child_of' to filter by the current doc.
@@ -85,11 +85,11 @@ if ( $credit_enable == '1' ) {
                 <?php
                 $args = [
                     'title_li'    => '',
-                    'order'       => 'menu_order',
+                    'sort_column' => 'menu_order',
                     'echo'        => false,
                     'post_type'   => 'docs',
                     'walker'      => $doc_walker,
-                    'post_status' => current_user_can( 'read_private_docs' ) ? [ 'publish', 'private' ] : ['publish'],
+                    'post_status' => current_user_can( 'read_private_docs' ) ? [ 'publish', 'private', 'draft' ] : ['publish'],
                 ];
 
                 // If 'Self Docs' is selected, set 'child_of' to filter by the current doc.

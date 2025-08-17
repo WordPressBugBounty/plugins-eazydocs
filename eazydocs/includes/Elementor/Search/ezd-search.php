@@ -27,12 +27,12 @@ add_action('wp_footer', function() {
             jQuery("#ezd_searchInput").focus(function() {
                 jQuery('body').addClass('ezd-search-focused');
                 jQuery('form.ezd_search_form').css('z-index', '999');
-            })
+            });
 
             jQuery(".focus_overlay").click(function() {
                 jQuery('body').removeClass('ezd-search-focused');
                 jQuery('form.ezd_search_form').css('z-index', 'unset');
-            })
+            });
 
             /**
              * Search Form Keywords
@@ -144,12 +144,26 @@ add_action('wp_footer', function() {
         // Prevent form submission when pressing Enter in the search input field
         document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.getElementById("ezd_searchInput");
-            searchInput.addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    event.preventDefault(); // Prevent form submission
-                }
-            });
+            if (searchInput) {
+                searchInput.addEventListener("keypress", function (event) {
+                    if (eazydocs_local_object.ezd_search_submit != 1) {
+                        if (event.key === "Enter") {
+                            event.preventDefault(); // Prevent form submission
+                        }
+                    }
+                });
+            }
         });
+
+        jQuery("button.search_submit_btn").on("click", function(e) {
+            if (eazydocs_local_object.ezd_search_submit != 1) {
+                e.preventDefault(); // stop the form from submitting
+                return false;
+            }
+            jQuery(".ezd_search_form").submit();
+        });
+
+
     </script>
     <?php
 });
