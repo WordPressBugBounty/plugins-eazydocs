@@ -57,9 +57,18 @@
     background: rgba(#252733, 0.05);
     text-align: center;
     cursor: pointer;
-
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #747474;
+    text-decoration: none;
     &:hover {
       background: #cdcdcd;
+    }
+
+    a{
+      color: #747474;
+      line-height: 1;
     }
 
     svg {
@@ -88,18 +97,11 @@
   .header-notify-icon {
     &.ezd-trashicon{
       position: relative;
-      a{
-        color: #747474;
-        padding-top: 10px;
-        display: block;
-        text-decoration: none;
-        }
         .easydocs-badge {
           background: #333;
           color: #fff;
         }
     }
-    cursor:auto;
   }
 }
 
@@ -262,8 +264,10 @@
 .notify-column {
   margin-top: 16px;
   max-height: rem(320px);
-  overflow-y: auto;
+  overflow-y: auto !important;
   scrollbar-width: thin;
+perspective-origin: unset !important;
+height: 100% !important;
 
   &::-webkit-scrollbar-track {
     border-radius: 10px;
@@ -282,7 +286,7 @@
 }
 
 .notification-item {
-  display: flex;
+  display: none;
   align-items: flex-start;
   cursor: pointer;
   gap: var(--gutter-10);
@@ -290,6 +294,12 @@
   @include margin(mx, var(--gutter-10));
   @include property;
   border-radius: rem(5px);
+  transition: .3s all;
+  &.show_mix{
+    display: flex;
+    opacity: 1 !important;
+    transform: unset !important
+  }
 
   .notification-image {
     @include size(2.5rem);

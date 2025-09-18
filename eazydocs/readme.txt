@@ -4,31 +4,37 @@ Tags: knowledge base, kb, faq, wiki, documentation
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Build unlimited, professional knowledge bases in WordPress effortlessly. Drag and drop documents with ease. Customizable to match your brand.
+Create unlimited knowledge bases, organize docs with drag-and-drop, and customize with ease. SEO-friendly, responsive, user-friendly.
 
 == Description ==
 
 EazyDocs is a comprehensive and feature-rich knowledge base and documentation builder plugin for WordPress. With EazyDocs, you have the freedom to create unlimited knowledge bases for your products, without any limitations. The plugin offers a user-friendly interface, allowing you to easily order and nest your documents by simply dragging and dropping them. EazyDocs comes with a modern and professional design by default, and it also offers customization options to match your brand identity.
 
 ### Video Overview (Showcased free and premium features)
-[youtube https://youtu.be/GsNyPAFHJW4?si=FP-8zIgwim5wFMZJ]
+[youtube https://youtu.be/QOXcD_LqKKM?si=2HP2hgNWofh9RzZR]
 
 Designed with the reader in mind, EazyDocs prioritizes a seamless user experience. It is optimized for search engines, integrated with Schema.org, and provides sticky sidebars for easy navigation. The plugin supports multilingual and RTL languages, ensuring accessibility for a global audience. EazyDocs is responsive and retina-ready, ensuring your knowledge base looks great on all devices. It also includes advanced features like live search, feedback collection, article voting, revision history, and more.
 
 Simplify the process of creating and managing documentation with EazyDocs, making it an essential tool for businesses, developers, and content creators.
 
+### What Our Users Say
+[youtube https://youtu.be/VpW0pkYcfCY?si=J_BrJI0YPhD1l-NM]
+
+### Explore More Success Stories ###
+- [Bit Apps](https://spider-themes.net/eazydocs/bit-apps/)
+- [Glamsy Designs](https://spider-themes.net/eazydocs/glamsydesigns/)
+
 ## 🔗 USEFUL LINKS ##
 
 - [Get EazyDocs Premium](https://spider-themes.net/eazydocs/)
 - [Frontend Demo (Premium version)](https://wordpress-plugins.spider-themes.net/eazydocs-pro/)
-- [Try EazyDocs Premium](https://wordpress-plugins.spider-themes.net/eazydocs-pro/demo/)
 - [Video Tutorials](https://www.youtube.com/playlist?list=PLeCjxMdg411XgYy-AekTE-bhvCXQguZWJ)
-- [EazyDocs Documentation (Made by EazyDocs)](https://helpdesk.spider-themes.net/docs/eazydocs-wordpress-plugin/)
-- [EazyDocs Support Forum](https://wordpress.org/support/plugin/eazydocs/)
+- [Documentation (Made by EazyDocs)](https://helpdesk.spider-themes.net/docs/eazydocs-wordpress-plugin/)
+- [Support Forum](https://wordpress.org/support/plugin/eazydocs/)
 
 ### Reasons to Choose EazyDocs ###
 
@@ -64,6 +70,9 @@ EazyDocs is 100% responsive to make your Knowledge base look beautiful and effec
 
 - **On Demand Asset Loading:**
 Loading only necessary CSS, JavaScript, image, and font files assets on the EazyDocs pages and will not load our assets on other pages of your website.
+
+### 🚀 How to create a Knowledge base website with EazyDocs (premium version) ###
+[youtube https://youtu.be/4H2npHIR2qg?si=ilfv7FAqS0YTSQiz]
 
 ## 📒 Hierarchical & Filterable Doc Builder UI ##
 We designed the EazyDocs Doc Builder admin UI to be as simple as possible yet powerful. You can create a new doc, filter docs by post status, view positive/negative feedback ratio, and organize your docs with drag-and-drop ordering.
@@ -126,45 +135,50 @@ Organize and manage your articles efficiently by tagging them, making it easier 
 ## 🕑 Revision History ##
 Keep a record of article drafts and edits, and restore earlier versions if required.
 
-### 🚀 How to create a Knowledge base website with EazyDocs (premium version) ###
-[youtube https://youtu.be/4H2npHIR2qg?si=ilfv7FAqS0YTSQiz]
+## 🔁 Migration ##
+Easily move your documentation from BetterDocs to EazyDocs with our one-click migration tool. Transfer everything seamlessly and keep your site clean by removing BetterDocs after migration.
+
+## ✉️ Email Reporting ##
+Get detailed insights into your documentation performance directly in your inbox. The new Email Reporting feature provides both static and dynamic analytics reports, helping you track user engagement and make data-driven decisions with ease.
+
+### 🚀 How to Migrate from BetterDocs to EazyDocs ###
+[youtube https://youtu.be/mXUK8rEH7tg?si=py7PQibYn-HNTmLz]
 
 ## EazyDocs Pro plan features include:
 - Doc Root URL
 - Book Chapter Elementor Widget
 - Voting & Comments Notifications
-- Doc Helper Assistant with Contact Form
-- Conditional Content Dropdown
-- Ajax Doc Loading
-- Doc Dark Mode
-- OnePage Documentation
-- User Role Management
-- Docs Archive Masonry Layout
-- Private Doc with Login Page
-- Glossary Docs
+- [Doc Helper Assistant with Contact Form](https://spider-themes.net/eazydocs/features/helper-assistant/)
+- [Conditional Content Dropdown](https://spider-themes.net/eazydocs/features/conditional-dropdown/)
+- [Ajax Doc Loading](https://spider-themes.net/eazydocs/features/ajax-live-search/)
+- [Doc Dark Mode](https://spider-themes.net/eazydocs/features/dark-mode/)
+- [OnePage Documentation](https://spider-themes.net/eazydocs/features/onepage-doc/)
+- [User Role Management](https://spider-themes.net/eazydocs/features/user-role-management/)
+- [Docs Archive Masonry Layout]()
+- [Private Doc with Login Page](https://spider-themes.net/eazydocs/features/bulk-visibility/)
+- [Glossary Docs](https://youtu.be/Mm-lQl5Tre4?si=XJ8r08kpCVUcxZ2y)
 - Extended Doc Layout
-- Doc Badge
-- Suggested Search Keywords
-- Bulk Duplicate Documentation
-- Bulk Doc Visibility (Private/internal, Password Protected, Public)
+- [Doc Badge](https://youtu.be/lXypbPmRFiU?si=SgnpUxT3w-mTTiJq)
+- [Suggested Search Keywords](https://spider-themes.net/eazydocs/features/ajax-live-search/)
+- [Bulk Duplicate Documentation](https://spider-themes.net/eazydocs/features/duplicate-copy-documentation)
+- [Bulk Doc Visibility (Private/internal, Password Protected, Public)](https://spider-themes.net/eazydocs/features/bulk-visibility/)
 - User Restriction, Internal / External Site Support
-- Editable Single Doc Sidebar Area
+- [Editable Single Doc Sidebar Area](https://youtu.be/y3UJXfqhPgk?si=-BqofWmVs0BryqV4)
 - Fully RTL Compatibility
-- Duplicate Bulk/Individual Documentation
+- [Duplicate Bulk/Individual Documentation](https://spider-themes.net/eazydocs/features/duplicate-copy-documentation/)
 - Users Feedback Database
-- Single & Multidocs Block
+- [Single & Multidocs Block](https://spider-themes.net/eazydocs/single-multidocs-block/)
 - Extra Depth Level
 - Cross Domain Embed Option for Docs Assistant
-- Author/Contributor profile page 
 
 ## EazyDocs Promax plan features include:
 - All Pro plan features
-- Subscribe to Docs
-- Feedback on Selected Text
-- Analytics
-- Contributor, Add/Edit doc from Frontend
-- Footnotes
-- Elementor pre-made templates
+- [Subscribe to Docs](https://spider-themes.net/eazydocs/features/subscribe/)
+- [Feedback on Selected Text](https://spider-themes.net/eazydocs/features/feedback-on-selected-text/)
+- [Analytics](https://spider-themes.net/eazydocs/features/analytics/)
+- [Contributor, Add/Edit doc from Frontend](https://youtu.be/l8H8KEdMejA?si=gp6GG_agG1jLPJiE)
+- [Footnotes](https://youtu.be/ytNghaQ0Zko?si=CBl2sLCvNx6HJ8Ri)
+- [Elementor pre-made templates](https://spider-themes.net/eazydocs/pre-made-elementor-template/)
 - Author/Contributor profile page 
 
 [Click here](https://spider-themes.net/eazydocs/features) to know more about EazyDocs Premium Plans and Features
@@ -233,6 +247,12 @@ You can install the EazyDocs from your WordPress Dashboard or manually upload it
 
 == Changelog ==
 
+= 2.7.1 (18 September 2025) =
+Tweaked: Docs Builder UI improved
+Tweaked: Improved the review notice design
+Tweaked: Removed unnecessary padding from highlighted text in left sidebar
+Updated: Freemius SDK updated to 2.12.2
+
 = 2.7.0 (17 August 2025) =
 New: Added Migration Tool to move docs from BetterDocs to EazyDocs (Go to EazyDocs > Migration, click “Start Migration,” then review and delete BetterDocs)
 New: Added Google Login functionality with configurable settings
@@ -269,31 +289,6 @@ Updated: Language files updated
 = 2.6.7 (18 June 2025) =
 Fixed: Accordion reorder issue at depth-4 resolved
 Tweaked: Improved the Full width container in mobile devices
-Tweaked: Improved doc single page design 
-
-= 2.6.6 (28 May 2025) =
-New: Tags show hide option added in 'EazyDocs > Settings > Docs single'
-New: Added Order & OrderBy options to MultiDocs widget
-Fixed: Child doc count was showing wrong in the Doc builder UI
-Fixed: Child doc title alignment issue fixed in content area
-Fixed: Resolved update database admin notice
-Tweaked: Parent doc active color applied for all depths
-Tweaked: Improve the left sidebar on mobile device
-Updated: Freemius SDK updated to 2.12.0
-
-= 2.6.5 (11 May 2025) =
-New: Added option to hide "View All" button on Docs archive for docs that have no child items
-New: Added a control for show the Number of articles to show under every sections
-New: Added a new style hover tab option in the Eazydocs 'Multidocs' widget
-Fixed: Left sidebar menu active issue with ajax loading
-Fixed: Fixed the position of the TOC sidebar toggle button on mobile
-Fixed: TOC scroll height issue resolved
-Fixed: Resolved EazyDocs layout conflict with BuddyBoss Theme
-Fixed: Resolved deprecation warning by wrapping csf files in hook
-Fixed: Button alignment issue in the EazyDocs Search Elementor widget
-Fixed: Multi Docs widget tabs with masonry issue solved
-Tweaked: Active color added for the Parent doc of the current active Doc item
-Tweaked: Setup wizard design improved
-
+Tweaked: Improved doc single page design
 
 [See changelog for all versions](https://spider-themes.net/eazydocs/changelog/).

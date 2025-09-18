@@ -404,11 +404,6 @@ h2#swal2-title {
   background: #ffffbe;
 }
 
-.header-notify-icon .notify-icon {
-  padding-top: 10px;
-  margin: auto;
-}
-
 /** ONE PAGE CSS **/
 body.post-type-onepage-docs .wrap .page-title-action:not(.add-onepage),
 #adminmenu #toplevel_page_eazydocs ul li a:empty {
@@ -616,8 +611,46 @@ p.big-p {
   display: none !important;
 }
 
-#ezd_notify_review h3 {
-  margin: 5px 0 8px;
+#ezd_notify_review {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid rgba(195, 196, 199, 0.4117647059);
+  background: white;
+  padding: 20px;
+}
+#ezd_notify_review p, #ezd_notify_review h3 {
+  margin: 0px 0 5px;
+}
+#ezd_notify_review img {
+  max-height: 120px;
+}
+#ezd_notify_review .action_links {
+  margin: 0px 0 5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+#ezd_notify_review .action_links a:first-child {
+  color: white;
+}
+#ezd_notify_review .btn {
+  text-decoration: none;
+  font-size: 16px;
+  color: #098f3e;
+  font-weight: 400;
+}
+#ezd_notify_review .btn span {
+  font-weight: 500;
+}
+#ezd_notify_review .btn:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+#ezd_notify_review .btn.red {
+  color: red;
 }
 
 .ezd-migration-wrapper {
@@ -778,6 +811,15 @@ p.big-p {
   align-items: center;
   gap: 10px;
   font-size: 16px;
+}
+.ezd-collaboration-data .content-wrapper .inner-content .content-row div:first-child a {
+  color: black;
+  text-decoration: none;
+  font-weight: normal;
+  text-transform: capitalize;
+}
+.ezd-collaboration-data .content-wrapper .inner-content .content-row div:first-child a:hover {
+  color: #002fff;
 }
 .ezd-collaboration-data .content-wrapper .inner-content .content-row div:last-child {
   flex: 1;
