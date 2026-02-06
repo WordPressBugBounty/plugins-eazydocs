@@ -1,6 +1,15 @@
+<?php
+/**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+?>
+
 <section class="h_doc_documentation_area" id="Arrow_slides-<?php echo esc_attr( $this->get_id() ) ?>">
     <div class="tabs_sliders">
-        <span class="scroller-btn left"><i class="arrow_carrot-left"></i></span>
+        <?php ezd_render_scroller_btn( 'left' ); ?>
         <ul class="nav nav-tabs documentation_tab ezd-tab-menu slide_nav_tabs ezd-list-unstyled">
 			<?php
 			$slug_type = $settings['docs_slug_format'] ?? '';
@@ -21,6 +30,12 @@
                     <li class="nav-item">
                         <a data-rel="<?php $this->tab_id_format( $doc_id, 'doc2'); ?>" class="nav-link ezd_tab_title<?php echo esc_attr( $active ) ?>">
 							<?php
+                            // Thumbnail
+                            echo 'th ';
+                            if ( has_post_thumbnail( $doc_id ) ) {
+                                echo get_the_post_thumbnail( $doc_id, 'full', array( 'class' => 'doc-logo' ) );
+                            }
+
 							if ( $settings['is_tab_title_first_word'] == 'yes' ) {
 								echo wp_kses_post( $doc_name[0] );
 							} else {
@@ -46,6 +61,10 @@
                         <li class="nav-item">
                             <a data-rel="<?php $this->tab_id_format( $doc->ID, 'doc2'); ?>" class="nav-link ezd_tab_title<?php echo esc_attr( $active ) ?>">
 								<?php
+                                // Thumbnail
+                                if ( has_post_thumbnail( $doc->ID ) ) {
+                                    echo get_the_post_thumbnail( $doc->ID, 'ezd_searrch_thumb16x16', array( 'class' => 'doc-logo' ) );
+                                }
 								if ( $settings['is_tab_title_first_word'] == 'yes' ) {
 									echo wp_kses_post( $doc_name[0] );
 								} else {
@@ -60,7 +79,7 @@
 			}
 			?>
         </ul>
-        <span class="scroller-btn right"><i class="arrow_carrot-right"></i></span>
+        <?php ezd_render_scroller_btn( 'right' ); ?>
     </div>
     <div class="ezd-tab-content">
 		<?php
@@ -98,7 +117,7 @@
 
 
                             <a href="<?php the_permalink( $main_doc['doc']->ID ); ?>" class="learn_btn ezd_btn">
-								<?php echo esc_html( $settings['read_more'] ); ?> <i class="<?php ezd_arrow() ?>"></i>
+								<?php echo esc_html( $settings['read_more'] ); ?> <i class="<?php echo ezd_arrow() ?>"></i>
                             </a>
                         </div>
                     </div>

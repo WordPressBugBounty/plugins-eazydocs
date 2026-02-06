@@ -1,28 +1,52 @@
 <?php
+/**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 
 // Displays a drag icon for child docs
-function ezd_child_docs_drag_icon(){
-	if ( current_user_can('manage_options') ) :
+function ezd_child_docs_drag_icon() {
+	if ( current_user_can( 'manage_options' ) ) :
 		?>
-		<div class="dd-handle dd3-handle">
-			<svg class="dd-handle-icon" width="12px" height="12px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="<?php esc_attr_e('Hold the mouse and drag to move this doc.', 'eazydocs'); ?>">
-				<path fill="none" stroke="#000" stroke-width="2" d="M15,5 L17,5 L17,3 L15,3 L15,5 Z M7,5 L9,5 L9,3 L7,3 L7,5 Z M15,13 L17,13 L17,11 L15,11 L15,13 Z M7,13 L9,13 L9,11 L7,11 L7,13 Z M15,21 L17,21 L17,19 L15,19 L15,21 Z M7,21 L9,21 L9,19 L7,19 L7,21 Z" />
+		<div class="dd-handle dd3-handle" 
+			 role="button" 
+			 aria-label="<?php esc_attr_e( 'Drag to reorder this documentation item', 'eazydocs' ); ?>"
+			 tabindex="0"
+			 title="<?php esc_attr_e( 'Drag to reorder', 'eazydocs' ); ?>">
+			<svg class="dd-handle-icon" width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<circle cx="9" cy="5" r="2" fill="currentColor"/>
+				<circle cx="15" cy="5" r="2" fill="currentColor"/>
+				<circle cx="9" cy="12" r="2" fill="currentColor"/>
+				<circle cx="15" cy="12" r="2" fill="currentColor"/>
+				<circle cx="9" cy="19" r="2" fill="currentColor"/>
+				<circle cx="15" cy="19" r="2" fill="currentColor"/>
 			</svg>
+			<span class="screen-reader-text"><?php esc_html_e( 'Drag to reorder', 'eazydocs' ); ?></span>
 		</div>
-		<?php 
-	endif;														
+		<?php
+	endif;
 }
 
 // Retrieves child docs by parent id
-function ezd_child_docs_children($parent){
-    return get_children(array(
-         'post_parent'   => $parent,
-         'post_type'     => 'docs',
-         'orderby'       => 'menu_order',
-         'order'         => 'asc',
-         'exclude'       => get_post_thumbnail_id( $parent )
-     ));
- }
+function ezd_child_docs_children($parent) {
+    $children = get_children(array(
+        'post_parent' => $parent,
+        'post_type'   => 'docs',
+        'orderby'     => 'menu_order',
+        'order'       => 'ASC',
+    ));
+
+    // Remove the thumbnail ID manually if needed
+    $thumbnail_id = get_post_thumbnail_id($parent);
+    if ($thumbnail_id && isset($children[$thumbnail_id])) {
+        unset($children[$thumbnail_id]);
+    }
+
+    return $children;
+}
 
 // Displays a progress bar based on positive and negative votes
 function ezd_child_docs_progress_bar( $post_id ) {

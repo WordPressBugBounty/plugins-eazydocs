@@ -1,6 +1,7 @@
 @import "frontend/variables";
 @import "frontend/predefine";
 @import "frontend/doclist";
+@import "frontend/single_file-attached";
 
 .modal-content .shortcode_info .row {
   margin-top: 20px;
@@ -40,11 +41,13 @@ p .footnotes-link::after {
   padding-top: 40px;
 }
 
-.doc_left_sidebarlist h2.doc-title {
+.doc_left_sidebarlist .doc-title {
   font-size: 24px;
   font-weight: 500;
   padding-right: 10px;
-  color: var(--black_800)
+  color: var(--black_800);
+  margin-bottom: 15px;
+  line-height: 1.4;
 }
 
 .page-template-page-onepage #post {
@@ -289,7 +292,7 @@ p .footnotes-link::after {
     padding-bottom: 20px;
 
     li {
-      margin-bottom: 0;
+      margin-bottom: 0 !important;
     }
   }
 
@@ -324,7 +327,7 @@ p .footnotes-link::after {
   }
 
   h2, h3, h4, h5, h6 {
-    scroll-margin: calc(.25rem*28);
+    scroll-margin-top: 0px;
   }
 
   h3 {
@@ -346,7 +349,14 @@ p .footnotes-link::after {
   p {
     font-weight: 400;
     margin-top: 0;
-    line-height: 1.8;
+    line-height: 1.9;
+  }
+}
+body{
+  &.admin-bar {
+    h2, h3, h4, h5, h6 {
+      scroll-margin-top: -32px !important;
+    }
   }
 }
 

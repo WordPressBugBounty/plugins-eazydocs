@@ -120,8 +120,8 @@ form.ezd_search_form {
 				}
 
 				&:focus {
-					background: #fff;
-					color: #242729;
+					background: var(--bs-white)!important;
+					color: var(--black_900);
 					outline: none;
 
 					&::placeholder {
@@ -129,12 +129,12 @@ form.ezd_search_form {
 					}
 
 					+ label i {
-						color: #242729;
+						color: var(--black_900);
 					}
 				}
 
 				&::placeholder {
-					color: #ebebeb;
+					color: var(--black_500);
 					font-size: 14px;
 					font-weight: 400;
 				}
@@ -193,6 +193,7 @@ form.ezd_search_form {
 
 #ezd-search-results {
 	padding: 0;
+	padding-right: 8px;
 	border: none;
 	position: absolute;
 	width: 100%;
@@ -205,6 +206,30 @@ form.ezd_search_form {
 	transition: all 0.4s;
 	z-index: 99;
 	top: calc(100% - 0px);
+	max-height: 100vh;
+    overflow-y: auto;
+
+	// Custom scrollbar styling
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+    }
+	
+	scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 
 	a {
 		text-decoration: none;
@@ -260,7 +285,7 @@ form.ezd_search_form {
 			color: var(--black_700);
 		}
 
-		&:last-child {
+		&:last-of-type {
 			border-bottom: none;
 		}
 
@@ -328,7 +353,7 @@ ol.eazydocs-search-wrapper .breadcrumb .breadcrumb-item:first-child {
 	position: absolute;
 	right: 27px;
 	display: none;
-	background: #fff;
+	background: var(--bs-white);
 	z-index: 999;
 	bottom: 17px;
 	border-width: 2px;
@@ -403,13 +428,13 @@ ol.eazydocs-search-wrapper .breadcrumb .breadcrumb-item:first-child {
 			position: absolute;
 			left: 25px;
 			font-size: 16px;
-			color: #fff;
+			color: var(--black_900);
 			top: 50%;
 			transform: translateY(-50%) rotate(-90deg);
 		}
 
 		input {
-			background: #fff;
+			background: var(--bs-white)!important;
 			border: 0;
 			height: 60px;
 			font-size: 16px;
@@ -418,7 +443,7 @@ ol.eazydocs-search-wrapper .breadcrumb .breadcrumb-item:first-child {
 			border-radius: 45px;
 			padding-right: 155px;
 			background: rgba(255, 255, 255, 0.2);
-			color: rgba(255, 255, 255, 0.7);
+			color: var(--black_900);
 
 			&:hover {
 				background: rgba(255, 255, 255, 0.27);
@@ -438,10 +463,6 @@ body.ezd-search-focused {
 		position: relative;
 		z-index: 999 !important;
 	}
-}
-
-body:not(.ezd-search-focused) #ezd-search-results.ajax-search {
-	display: none;
 }
 
 .focus_overlay {
@@ -477,7 +498,7 @@ body:not(.ezd-search-focused) #ezd-search-results.ajax-search {
 
 			> i {
 				font-size: 16px;
-				color: #fff;
+				color: var(--black_900);
 			}
 
 			> svg {
@@ -527,7 +548,7 @@ body:not(.ezd-search-focused) #ezd-search-results.ajax-search {
 
 	span {
 		font-size: 14px;
-		color: #fff;
+		color: var(--black_900);
 		margin-right: 12px;
 	}
 

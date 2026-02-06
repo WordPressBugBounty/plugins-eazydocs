@@ -1,4 +1,81 @@
 == Changelog ==
+
+= 2.9.0 (03 January 2026) =
+New: Redesigned Setup Wizard with a compact, modern UI and improved progress tracking.
+New: Added floating Quick Tips panel in the Setup Wizard for contextual guidance (visible on desktop).
+New: Added "Import Sample Data" feature to quickly populate documentation with demo content.
+New: Added "Close All/Collapse All" button in the EazyDocs > Docs Builder page to expand/collapse the docs at a single click.
+Fixed: UI alignment and progress indicator issues in the Setup Wizard.
+Improved: Setup Wizard navigation now supports clicking on completed steps to go back.
+Improved: Replaced Forumax with Antimanual in the plugin recommendation step.
+Improved: Redesigned "Create Doc with AI" popup with a modern, feature-rich UI and video preview.
+Improved: Enhanced Antimanual AI integration card on the dashboard with a cleaner layout.
+Improved: Streamlined Setup Wizard steps by removing redundant text and improving layout consistency.
+Added: Sample data import from demo.xml using WordPress Importer with fallback manual import support.
+
+= 2.8.1 (19 December 2025) =
+Tweaked: Settings page reorganized for easier navigation
+Improved: AJAX breadcrumb updated and Russian translations refreshed for accuracy and consistency.
+Improved: Minor tweaks and performance enhancements for smoother usage
+Updated: Dashboard links improved and top docs limited to 10 posts for better overview
+Updated: Freemius SDK updated to 2.13.0
+
+= 2.8.0 (03 December 2025) =
+New: Added dedicated EazyDocs Admin Dashboard page
+New: Added featured image support for the EazyDocs shortcode
+Fixed: Prevented empty search submissions in all EazyDocs search forms
+Fixed: Improved Previous/Next docs navigation markup and resolved structural inconsistencies
+Improved: Major dashboard UI and analytics enhancements
+    – Added “View More” analytics link inside dashboard cards
+    – Fixed active-state issue on the Performance tab
+    – Updated search analytics chart with grey fallback when data is missing
+    – Added Top Ranked Docs section for engagement insights
+Improved: WpEazy AI presentation added inside the Doc Builder
+Improved: Enhanced security with added nonce verification and capability checks across AJAX/admin actions
+Improved: Refactored doc creation logic to unify handlers and simplify Create_Post workflow
+Improved: Strengthened permission checks across review notices, CSF import/export/reset, and one-page edit actions
+Improved: Refactored Google_Login enrollment logic for clarity and maintainability
+Improved: Refreshed search banner and breadcrumb colors for a cleaner look.
+
+= 2.7.4 (14 November 2025) =
+Fixed: Database deadlock issue caused by uppercase SQL column types in CREATE TABLE statements triggering unnecessary dbDelta operations on every request
+Fixed: Local File Inclusion (LFI) vulnerability patched in template loading functions
+Fixed: Resolved Advanced Accordion Block plugin installation issue in FAQ Builder
+Security: Added input validation and path traversal protection to eazydocs_get_template_part() and eazydocs_get_template() functions
+Security: Implemented whitelist validation for template file paths to prevent arbitrary file inclusion
+Improved: Normalized all SQL DDL statements to lowercase to ensure compatibility with WordPress dbDelta function
+Improved: Replaced hardcoded color values with CSS variables for the attached file accordion
+Improved: Sanitized URL hash on docs page load for enhanced security
+
+= 2.7.3 (08 November 2025) =
+Tweaked: Minor CSS and style improvements for visual consistency
+Tweaked: Removed the border-bottom from the last search result item for a cleaner visual appearance
+Improved: Heading scroll offset adjusted for accurate anchor positioning
+Improved: Doc single page typography refined for better readability
+Updated: Attached files feature updated using WordPress hooks for better extensibility
+
+= 2.7.2 (16 October 2025) =
+Fixed: Grid and masonry layout issues resolved in both single and multi-docs Elementor widgets for consistent display
+Fixed: Broken Access Control vulnerability resolved by adding proper permission checks to AJAX endpoints
+Fixed: Single docs layout collapsed issue with WoodMart theme
+Fixed: Vulnerability issues
+Tweaked: Security and code consistency improved
+Tweaked: Refined constant definitions and removed redundant code
+Tweaked: Improved handling of dynamic content and AJAX endpoints
+Tweaked: Doc single page markup updated to make it more SEO friendly
+Enhanced: Documentation builder refined by reorganizing layout rendering logic across multiple templates for better performance and structure
+Enhanced: Icon/featured image added to Docs widget tab on Style 3
+Enhanced: CSS and UI consistency for better user experience
+Improved: Input sanitization and validation to address potential vulnerabilities
+Improved: Setup wizard made smoother and more user-friendly with efficient wrapper functions (ezd_render_setup_step_wrapper, ezd_render_setup_buttons)
+Improved: Admin panel feedback section styling refined with better CSS alignment and layout adjustments for a cleaner interface.
+Improved: Grammar in notices corrected and SCSS styling improved for consistency and visual appeal
+Improved: Doc Sections design improved in the Single doc page
+Reorganized: Repetitive code replaced with reusable helper functions (ezd_get_doc_items, ezd_render_doc_items_list, etc.) to improve maintainability
+Updated: ezd_arrow() function now returns the icon class instead of echoing it, ensuring correct icon rendering in Elementor widgets
+Updated: CSS optimized to make UI elements cleaner and ensure faster loading performance
+Updated: Language files updated
+
 = 2.7.1 (18 September 2025) =
 Tweaked: Docs Builder UI improved
 Tweaked: Improved the review notice design

@@ -1,6 +1,6 @@
 <?php
-$private_doc_mode       = ezd_get_opt( 'private_doc_mode' );
-$private_doc_login_page = ezd_get_opt( 'private_doc_login_page' );
+$private_doc_mode       = ezd_is_premium() ? ezd_get_opt( 'private_doc_mode' ) : 'none';
+$private_doc_login_page = ezd_is_premium() ? ezd_get_opt( 'private_doc_login_page' ) : '';
 $is_subscription 		= ezd_get_opt( 'subscriptions', false );
 $is_btn_show 			= ezd_get_opt('docs-view-all-btn');
 $is_masonry             = '';
@@ -42,7 +42,6 @@ if ( $docs ) :
 						if ( $main_doc['doc']->post_status == 'private' ) {
 							$pd_txt = esc_attr__( 'Private Doc', 'eazydocs' );
 							echo '<div class="private" title="' . esc_attr( $pd_txt ) . '"><i class="icon_lock"></i></div>';
-
 						}
 						if ( ! empty( $main_doc['doc']->post_password ) ) {
 							?>
@@ -58,18 +57,24 @@ if ( $docs ) :
 						}
 						?>
                         <div class="doc-top ezd-d-flex ezd-align-items-start">
+							<?php echo wp_get_attachment_image( get_post_thumbnail_id( $main_doc['doc']->ID ), 'ezd_searrch_thumb50x50' ); ?>
                             <a class="doc_tag_title" href="<?php the_permalink( $main_doc['doc']->ID ); ?>">
-								<?php if ( ! empty( $main_doc['doc']->post_title ) ) : ?>
+								<?php 
+								if ( ! empty( $main_doc['doc']->post_title ) ) : 
+									?>
                                     <h4 class="title">
 										<?php echo wp_kses_post( $main_doc['doc']->post_title ); ?>
                                     </h4>
-								<?php endif;
+									<?php 
+								endif;
 								if ( $show_topic == true ) : ?>
                                     <span class="ezd-badge">
                                         <?php echo count( $doc_counter ) > 0 ? count( $doc_counter ) : '0'; ?>
                                         <?php echo esc_html( $topic_label ); ?>
                                     </span>
-								<?php endif; ?>
+									<?php 
+								endif; 
+								?>
                             </a>
                         </div>
 						<?php

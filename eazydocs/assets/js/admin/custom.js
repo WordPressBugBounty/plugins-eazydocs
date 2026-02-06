@@ -28,32 +28,36 @@
 			createCookie(name, '', -1);
 		}
 
-			// Filter Select
-		$('select').niceSelect();
+		// Filter Select
+		if ($('select').length > 0) {
+			$('select').niceSelect();
+		}
 
 		// Sidebar Tabs [COOKIE]
 		$(document).on('click', '.tab-menu .easydocs-navitem', function () {
+
+			// REMOVE ?tab=something ONLY AFTER CLICK
+			const url = new URL(window.location.href);
+			if (url.searchParams.has('more_state')) {
+				url.searchParams.delete('more_state');
+				window.history.replaceState({}, document.title, url.toString());
+			}
+
 			let target = $(this).attr('data-rel');
 			$('.tab-menu .easydocs-navitem').removeClass('is-active');
 			$(this).addClass('is-active');
-			$('#' + target)
-				.fadeIn('slow')
-				.siblings('.easydocs-tab')
-				.hide();
+			$('.easydocs-tab-content .easydocs-tab').removeClass('tab-active');
+			$('#' + target).addClass('tab-active').fadeIn('slow').siblings('.easydocs-tab').hide();
 
-			let is_active_tab = $('.tab-menu .easydocs-navitem').hasClass(
-				'is-active'
-			);
+			let is_active_tab = $('.tab-menu .easydocs-navitem').hasClass('is-active');
 			if (is_active_tab === true) {
-				let active_tab_id = $('.easydocs-navitem.is-active').attr(
-					'data-rel'
-				);
+				let active_tab_id = $('.easydocs-navitem.is-active').attr('data-rel');
 				createCookie('eazydocs_doc_current_tab', active_tab_id, 999);
 			}
 
 			return true;
 		});
-
+		
 		// Remain the last active doc tab
 		function keep_last_active_doc_tab() {
 			let doc_last_current_tab = readCookie('eazydocs_doc_current_tab');
@@ -73,14 +77,38 @@
 			}
 		}
 
-		keep_last_active_doc_tab();
+		// Check URL parameter tab
+		function ezd_check_url_more_state() {
+			const urlParams  = new URLSearchParams(window.location.search);
+			const more_state = urlParams.get('more_state');
 
-		$('.tab-menu .easydocs-navitem .parent-delete').on(
-			'click',
-			function () {
-				return false;
+			if (more_state) {
+				// Remove previous active
+				$('.tab-menu .easydocs-navitem').removeClass('is-active');
+				$('.easydocs-tab-content .easydocs-tab').removeClass('tab-active');
+
+				// Activate target tab
+				$('.tab-menu .easydocs-navitem[data-rel="' + more_state + '"]').addClass('is-active');
+				$('#' + more_state).addClass('tab-active').show();
+
+				// Save to cookie
+				createCookie('eazydocs_doc_current_tab', more_state, 999);
+
+				return true;
 			}
-		);
+
+			return false;
+		}
+
+		// First check URL parameter tab
+		if ( ! ezd_check_url_more_state() ) {
+			// If no tab in URL, use cookie
+			keep_last_active_doc_tab();
+		}
+
+		$('.tab-menu .easydocs-navitem .parent-delete').on( 'click', function () {
+			return false;
+		} );
 
 		$(document).ready(function (e) {
 			function t(t) {
@@ -121,6 +149,33 @@
 						'active'
 					);
 			});
+
+			// Active new created doc tab				
+			const urlParams  = new URLSearchParams(window.location.search);
+			const newDocId 	 = urlParams.get('new_doc_id');
+
+			if (newDocId) {
+				const tabId = 'tab-' + newDocId;
+
+				// Active menu item
+				$('.tab-menu .easydocs-navitem').removeClass('is-active');
+				$('.tab-menu .easydocs-navitem[data-rel="' + tabId + '"]').addClass('is-active');
+
+				// Active tab content
+				$('.easydocs-tab-content .easydocs-tab').removeClass('tab-active').hide();
+				$('#' + tabId).addClass('tab-active').fadeIn('slow');
+
+				// Save to cookie for persistence
+				createCookie('eazydocs_doc_current_tab', tabId, 999);
+
+				// Clean URL
+				const url = new URL(window.location.href);
+				url.searchParams.delete('new_doc_id');
+				window.history.replaceState({}, document.title, url.toString());
+			} else {
+				// Fallback to previously active tab
+				keep_last_active_doc_tab();
+			}
 		});
 
 		// NEW DOC
@@ -506,6 +561,16 @@
 			}
 		});
 	}
+
+	// Analytics Stats Filter Active Class Toggle
+	$(".ezd-stat-filter-container ul li").on("click", function() {
+        // Remove active class from all
+        $(".ezd-stat-filter-container ul li").removeClass("is-active");
+		
+        // Add active class to the clicked one
+        $(this).addClass("is-active");
+    });
+
 })(jQuery);
 
 function menuToggle() {
@@ -524,7 +589,7 @@ var config = {
 	},
 };
 
-if (docContainer.length) {
+if ( docContainer.length > 0 ) {
 	for (let i = 0; i < docContainer.length; i++) {
 		var mixer1 = mixitup(docContainer[i], config);
 	}

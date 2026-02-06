@@ -36,6 +36,16 @@
     @include hover {
       --btn-icon: var(--clr-white);
     }
+
+    &.filled {
+        --btn-bg: var(--clr-blue);
+        --btn-clr: var(--clr-white);
+        --btn-bc: var(--clr-blue);
+
+        @include hover {
+            --btn-bg: #1818AAFF;
+        }
+    }
   }
 }
 
@@ -73,7 +83,7 @@
 
     svg {
       position: relative;
-      top: 0.300rem;
+      top: 1px;
     }
   }
 }

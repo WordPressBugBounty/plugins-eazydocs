@@ -1,4 +1,11 @@
 <?php
+/**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $optionReview = get_option('ezd_notify_review');
 if ( time() >= (int)$optionReview && $optionReview !== '0' ) {
 	$ezd_installed = get_option('eazyDocs_installed');
@@ -138,6 +145,11 @@ function ezd_notify_save_review() {
 
 		if ( ! wp_verify_nonce( $nonce, 'eazydocs-admin-nonce' ) ) {
 			wp_send_json_error( array( 'status' => 'Wrong nonce validate!' ) );
+			exit();
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Unauthorized user' ) );
 			exit();
 		}
 

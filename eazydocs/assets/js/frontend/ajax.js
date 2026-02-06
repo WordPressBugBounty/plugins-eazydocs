@@ -7,11 +7,16 @@
          * Load Doc single page via ajax
          */
         if ( eazydocs_local_object.is_doc_ajax == '1' ) {
+            const elementorDocs = eazydocs_local_object.elementor_docs || [];
             $('.single-docs .nav-sidebar .nav-item .nav-link, .single-docs .nav-sidebar .nav-item .dropdown_nav li a').on('click', function (e) {
-                e.preventDefault();
                 let self    = $(this);
+                const postid = parseInt( self.attr('data-postid'), 10 );
+                if ( isNaN( postid ) || elementorDocs.indexOf( postid ) !== -1 ) {
+                    return;
+                }
+
+                e.preventDefault();
                 let title   = self.text();
-                let postid  = $(this).attr('data-postid');
 
                 function changeurl(page_title) {
                     let new_url = self.attr('href');
@@ -37,7 +42,12 @@
                         $('#reading-progress-fill').css({ display: 'none' });
                         $('.doc-middle-content').html(response.data.content);
                         $('.ezd-breadcrumb time span').text(response.data.modified_date);
+                        $('nav .breadcrumb .breadcrumb-item:last-child').text(title);
                         changeurl(title);
+
+                        if (typeof window.ezd_heading_anchors === 'function') {
+                            window.ezd_heading_anchors();
+                        }
 
                         // Remove 'active' classes from all links and items
                         $('.nav-sidebar .nav-item').removeClass('current_page_item active');
@@ -67,6 +77,11 @@
                             $nav: $('#eazydocs-toc'),
                             $scope: $('.doc-scrollable'),
                         });
+
+                        if (typeof window.ezd_refresh_scrollspy === 'function') {
+                            window.ezd_refresh_scrollspy();
+                        }
+                        
                     },
                     error: function () {
                         console.log('Oops! Something wrong, try again!');

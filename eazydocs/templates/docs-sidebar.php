@@ -10,7 +10,7 @@ if ( $post->post_parent ) {
 	$parent     	= $post->ID;
 }
 
-$walker = new eazyDocs\Frontend\Walker_Docs();
+$walker = new EazyDocs\Frontend\Walker_Docs();
 $children = array(
     'title_li'    => '',
     'order'       => 'menu_order',
@@ -21,7 +21,7 @@ $children = array(
 );
 
 // If 'Self Docs' is selected, set 'child_of' to filter by the current doc.
-$sidebar_source = ezd_get_opt('docs_to_view', 'self_docs');
+$sidebar_source = ezd_is_premium() ? ezd_get_opt('docs_to_view', 'self_docs') : 'self_docs';
 if ( $sidebar_source === 'self_docs' || ! class_exists( 'EZD_EazyDocsPro' )  ) {
     $children['child_of'] = $parent;
 }
@@ -51,7 +51,7 @@ if ( $credit_enable == '1' ) {
             <i class="arrow_carrot-right"></i>
             <i class="arrow_carrot-left"></i>
         </div>
-        <h2 class="doc-title">
+        <div class="doc-title">
             <?php 
             if ( ezd_is_premium() && ! empty ( get_post_meta( $parent, 'ezd_doc_secondary_title', true ) ) ) {
                 echo esc_html( get_post_meta( $parent, 'ezd_doc_secondary_title', true ) );
@@ -59,7 +59,7 @@ if ( $credit_enable == '1' ) {
                 echo esc_html(get_post_field( 'post_title', $parent, 'display' ));
             }
             ?>
-        </h2>
+        </div>
         <?php
         if ( $sidebar_search == 1 ) :
             ?>

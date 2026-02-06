@@ -93,17 +93,45 @@
 			// 'data-bs-spy': 'scroll',
 			'data-bs-target': '#eazydocs-toc',
 		});
+		
+		// Sanitize URL hash on page load
+		if ( window.location.hash ) {
+			try {
+				// Decode the percent-encoded hash
+				const decoded = decodeURIComponent(window.location.hash.substring(1));
+				const safe 	  = decoded.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\-]/g, '');
+
+				// If sanitized differs, rewrite it before any plugin runs
+				if (safe && safe !== window.location.hash.substring(1)) {
+					// Update the URL fragment instantly (no reload)
+					history.replaceState(null, '', '#' + safe);
+				}
+			} catch (e) {
+				console.warn('Invalid hash encoding:', e);
+			}
+		}
 
 		/**
 		 * Make the Titles clickable with anchor js
 		 * If no selector is provided, it falls back to a default selector of:
 		 * 'h2, h3, h4, h5, h6'
-		 */
-		if ( $('.doc-scrollable h2, .doc-scrollable h3, .doc-scrollable h4').length ) {
-			anchors.add(
-					'.doc-scrollable h2, .doc-scrollable h3, .doc-scrollable h4'
-			);
+		*/
+		const ezdHeadingSelector = '.doc-scrollable h2, .doc-scrollable h3, .doc-scrollable h4';
+		function ezdSetupHeadingAnchors() {
+			const $headings = $(ezdHeadingSelector);
+			$headings.each(function () {
+				const text = $(this).text();
+				const clean = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+				if (clean) {
+					$(this).attr('id', clean);
+				}
+			});
+			$headings.find('.anchorjs-link').remove();
+			anchors.add(ezdHeadingSelector);
 		}
+
+		window.ezd_heading_anchors = ezdSetupHeadingAnchors;
+		ezdSetupHeadingAnchors();
 
 		// Anchor JS scroll
 		var urlHash = window.location.href.split('#')[1];
@@ -112,7 +140,7 @@
 				scrollTop: $('#' + urlHash).offset().top
 			}, 30);
 		}
-
+		
 		/**
 		 * Feedback Contact Form Ajax Handler
 		 */
@@ -257,7 +285,6 @@
 			parentLi.siblings().removeClass('active');
 		});
 
-
 		/**
 		 * Print doc
 		 */
@@ -294,22 +321,50 @@
 		 * Handle link click for internal page navigation
 		 * Applies to both .doc_menu and .ezd-note-indicator mean footnote elements.
 		 */
-		$('.doc_menu a[href^="#"]:not([href="#"]), .ezd-note-indicator').on('click', function (event) {
-			event.preventDefault();
-			ezdSetNavbarMarginTop(true); // Set navbar margin on link click
-			$('html, body').stop().animate({
-				scrollTop: $($(this).attr('href')).offset().top
-			}, 900); // Smooth scroll animation
+		function normalize(str) {
+			return str
+				.replace(/–/g, '-')                // EN DASH → dash
+				.normalize('NFD')                  // normalize accents
+				.replace(/[\u0300-\u036f]/g, '')   // remove accents
+				.replace(/[^a-z0-9\s-]/gi, '')     // clean symbols
+				.replace(/\s+/g, ' ')              // normalize spaces
+				.trim()
+				.toLowerCase();
+		}
+
+		/**
+		 * Build a map from normalized heading TEXT → real ID
+		 */
+		const headingTextMap = {};
+		document.querySelectorAll('h1[id], h2[id], h3[id]').forEach(h => {
+			headingTextMap[normalize(h.textContent)] = h.id;
 		});
 
 		/**
-		 * Handle click outside the target links
-		 * Reset navbar margin when clicking outside the links.
+		 * Docs menu click handler
 		 */
-		$(document).on('click', function (event) {
-			if (!$(event.target).closest('.doc_menu a, .ezd-note-indicator').length) {
-				ezdSetNavbarMarginTop(false);
+		$('.doc_menu a[href^="#"]:not([href="#"]), .ezd-note-indicator').on('click', function (event) {
+			event.preventDefault();
+			ezdSetNavbarMarginTop(true);
+
+			const linkText = normalize($(this).text());
+
+			// Find matching heading by text
+			const realId = Object.keys(headingTextMap).find(key =>
+				key.includes(linkText) || linkText.includes(key)
+			);
+
+			if (!realId) {
+				// Parent menu or grouping item → do nothing
+				return;
 			}
+
+			const $el = $('#' + CSS.escape(headingTextMap[realId]));
+			if (!$el.length) return;
+
+			$('html, body').stop().animate({
+				scrollTop: $el.offset().top
+			}, 900);
 		});
 
 		/**
@@ -560,7 +615,6 @@
 				var leftSidebarScrollOffset = leftSidebarScrollElement.position().top;
 				var maxHeightLeftSidebar = `calc(100vh - ${leftSidebarScrollOffset }px)`;
 				leftSidebarScrollElement.css('max-height', maxHeightLeftSidebar );
-
 			}
 
 			var rightSidebarScrollElement = $('.single-docs .doc_rightsidebar .toc_right');
@@ -569,10 +623,8 @@
 				var maxHeightRightSidebar = `calc(100vh - ${rightSidebarScrollOffset + 70}px)`;
 				rightSidebarScrollElement.css('max-height', maxHeightRightSidebar);
 			}
-
 		}
 		tocSidebarScrollHeight();
-
 
 		/*  Menu Click js  */
 		if ($('.submenu').length) {
@@ -630,6 +682,10 @@
 			$('#ezd_dark_switch').prop('checked', false);
 		}
 		function applyNight() {
+
+			// Check if dark mode switcher is enabled
+			if ( eazydocs_local_object.ezd_dark_switcher !== '1' ) return;
+			
 			$('body.single-docs, body.single-onepage-docs').addClass('body_dark');
 			$('body.single-onepage-docs').addClass('body_dark');
 			$('.light-mode').removeClass('active');
@@ -788,6 +844,44 @@
 				$btn.css("opacity", "1");
 			}, 10000);
 		});
+
+        /**
+         * EazyDocs Accordion Functionality
+         * Sync with updated markup: .ezd-doc-attached-files-accordion
+         * Maintains ARIA states and toggle icons.
+         */
+        function ezdDocAttachedFile() {
+            const $accordion = $('.ezd-doc-attached-files-accordion');
+
+            // Set initial collapsed state
+            $accordion.find('.accordion__content').addClass('is-collapsed').hide();
+            $accordion.find('.accordion__header').attr('aria-expanded', 'false');
+            $accordion.find('.accordion__toggle i')
+                .removeClass('arrow_carrot-up')
+                .addClass('arrow_carrot-down');
+
+            // Click on header or toggle button
+            $accordion.on('click', '.accordion__header, .accordion__toggle', function (e) {
+                e.preventDefault();
+                const $wrapper = $(this).closest('.ezd-doc-attached-files-accordion');
+                const $content = $wrapper.find('.accordion__content');
+                const $header = $wrapper.find('.accordion__header');
+                const $icon = $wrapper.find('.accordion__toggle i');
+                const expanded = $header.attr('aria-expanded') === 'true';
+
+                if (expanded) {
+                    $content.slideUp(250).addClass('is-collapsed');
+                    $header.attr('aria-expanded', 'false');
+                    $icon.removeClass('arrow_carrot-up').addClass('arrow_carrot-down'); 
+                } else {
+                    $content.slideDown(250).removeClass('is-collapsed');
+                    $header.attr('aria-expanded', 'true');
+                    $icon.removeClass('arrow_carrot-down').addClass('arrow_carrot-up');
+                }
+            });
+        }
+        // Initialize accordion functionality
+        ezdDocAttachedFile();
 	});
 })(jQuery);
 

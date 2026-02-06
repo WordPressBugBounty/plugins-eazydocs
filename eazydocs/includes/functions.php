@@ -1,5 +1,12 @@
 <?php
 /**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/**
  * Get the value of a settings field.
  *
  * @param string $option  settings field name
@@ -149,9 +156,18 @@ function ezd_get_page_by_title( $title, $post_type = 'page' ) {
  * @param $template
  */
 function eazydocs_get_template_part( $template ) {
+	// Sanitize template name to prevent directory traversal attacks
+	// Remove any directory traversal sequences and null bytes
+	$template = str_replace( array( '..', "\0" ), '', $template );
+	
 	// Get the slug
 	$template_slug = rtrim( $template, '.php' );
 	$template      = $template_slug . '.php';
+
+	// Validate that template name only contains safe characters (alphanumeric, hyphens, underscores, and forward slashes for subdirectories)
+	if ( ! preg_match( '/^[a-zA-Z0-9_\-\/]+\.php$/', $template ) ) {
+		return;
+	}
 
 	// Check if a custom template exists in the theme folder, if not, load the plugin template file
 	if ( $theme_file = locate_template( array( 'eazydocs/' . $template ) ) ) {
@@ -160,10 +176,20 @@ function eazydocs_get_template_part( $template ) {
 		//here path to '/single-paper.php'
 		$file = EAZYDOCS_PATH . "/templates/" . $template;
 	}
-	//create a new filter so the devs can filter this
 
-	if ( $file ) {
-		load_template( $file, false );
+	// Verify the file exists and is within the expected directory
+	if ( $file && file_exists( $file ) ) {
+		$real_file = realpath( $file );
+		$real_templates_dir = realpath( EAZYDOCS_PATH . '/templates' );
+		
+		// Ensure the resolved file path is within the templates directory or theme directory
+		if ( $real_file && ( 
+			strpos( $real_file, $real_templates_dir ) === 0 || 
+			strpos( $real_file, get_template_directory() ) === 0 ||
+			strpos( $real_file, get_stylesheet_directory() ) === 0
+		) ) {
+			load_template( $file, false );
+		}
 	}
 }
 
@@ -176,6 +202,14 @@ function eazydocs_get_template_part( $template ) {
  */
 function eazydocs_get_template( $template_name, $args = [] ) {
 	$ezd_obj = EazyDocs::init();
+
+	// Sanitize template name to prevent directory traversal attacks
+	$template_name = str_replace( array( '..', "\0" ), '', $template_name );
+	
+	// Validate that template name only contains safe characters
+	if ( ! preg_match( '/^[a-zA-Z0-9_\-\/]+\.php$/', $template_name ) ) {
+		return;
+	}
 
 	if ( $args && is_array( $args ) ) {
 		extract( $args );
@@ -190,8 +224,19 @@ function eazydocs_get_template( $template_name, $args = [] ) {
 		$template = $ezd_obj->template_path() . $template_name;
 	}
 
+	// Verify the file exists and is within the expected directory
 	if ( file_exists( $template ) ) {
-		include $template;
+		$real_template = realpath( $template );
+		$real_templates_dir = realpath( $ezd_obj->template_path() );
+		
+		// Ensure the resolved file path is within the templates directory or theme directory
+		if ( $real_template && ( 
+			strpos( $real_template, $real_templates_dir ) === 0 || 
+			strpos( $real_template, get_template_directory() ) === 0 ||
+			strpos( $real_template, get_stylesheet_directory() ) === 0
+		) ) {
+			include $template;
+		}
 	}
 }
 
@@ -524,7 +569,7 @@ if ( ! function_exists( 'docs_root_title' ) ) {
  * @param string $context How to sanitize - raw|edit|db|display|attribute|js
  *
  * @return string Field value
- * @since 1.0.1 eazyDocs
+ * @since 1.0.1 EazyDocs
  *
  */
 function eazydocs_get_global_post_field( $field = 'ID', $context = 'edit' ) {
@@ -640,7 +685,7 @@ add_action( 'admin_footer', function () {
  * @return string
  */
 function eazydocs_pro_doc_list() {
-	$args      = array(
+	$args = array(
 		'posts_per_page' => - 1,
 		'post_type'      => array( 'docs' ),
 		'post_parent'    => 0
@@ -652,7 +697,7 @@ function eazydocs_pro_doc_list() {
 	foreach ( $docs as $doc ) {
 		if ( ! get_page_by_path( $doc->post_name, OBJECT, 'onepage-docs' ) ) {
 			$doc_item_count ++;
-			$doc_items .= '<option _wpnonce="'.wp_create_nonce($doc->ID).'" value="' . $doc->ID . '">' . $doc->post_title . '</option>';
+			$doc_items .= '<option _wpnonce="'.wp_create_nonce('ezd_make_onepage').'" value="' . $doc->ID . '">' . $doc->post_title . '</option>';
 		}
 	}
 	if ( $doc_item_count === 0 ) {
@@ -669,9 +714,8 @@ function eazydocs_one_page( $doc_id ) {
 	$one_page_title = get_the_title( $doc_id );
 	$docs           = get_post( $doc_id );
 	$post_name      = $docs->post_name;
+	$post_status    = get_post_status( $doc_id );
 
-
-	$post_status   = get_post_status( $doc_id );
 	$one_page_docs = get_posts( [
 		'post_type'   => 'onepage-docs',
 		'post_status' => 'publish',
@@ -680,15 +724,36 @@ function eazydocs_one_page( $doc_id ) {
 
 	if ( $post_status != 'draft' ) :
 		if ( count( $one_page_docs ) < 1 ) :
+
+			// Generate a secure URL with nonce
+			$onepage_url = wp_nonce_url(
+				add_query_arg(
+					[
+						'parentID'         => $doc_id,
+						'single_doc_title' => $one_page_title,
+						'make_onepage'     => 'yes',
+					],
+					admin_url( 'admin.php' )
+				),
+				'ezd_make_onepage' // must match wp_verify_nonce action name
+			);
 			?>
-			<button class="button button-info one-page-doc" id="one-page-doc" name="submit" data-url="<?php echo esc_url(admin_url( 'admin.php' )); ?>?parentID=<?php echo esc_attr($doc_id); ?>&single_doc_title=<?php echo esc_html($one_page_title); ?>&make_onepage=yes">
+			<button
+				class="button button-info one-page-doc"
+				id="one-page-doc"
+				name="submit"
+				data-url="<?php echo esc_url( $onepage_url ); ?>">
 				<?php esc_html_e( 'Make OnePage Doc', 'eazydocs' ); ?>
 			</button>
 			<?php
 		else :
 			foreach ( $one_page_docs as $single_docs ) :
 				?>
-				<a class="button button-info view-page-doc" id="view-page-doc" href="<?php the_permalink( $single_docs ); ?>" target="_blank">
+				<a
+					class="button button-info view-page-doc"
+					id="view-page-doc"
+					href="<?php echo esc_url( get_permalink( $single_docs ) ); ?>"
+					target="_blank">
 					<?php esc_html_e( 'View OnePage Doc', 'eazydocs' ); ?>
 				</a>
 				<?php
@@ -743,50 +808,6 @@ function ezd_hex2rgba( $color, $opacity = false ) {
 
 	//Return rgb(a) color string
 	return $output;
-}
-
-/**
- * Encode special characters
- *
- * @param $data
- *
- * @return array|string|string[]
- */
-function ezd_chrEncode( $data ) {
-	$data = str_replace( 'â€™', '&#39;', $data );
-	$data = str_replace( 'Ã©', 'é', $data );
-	$data = str_replace( 'â€', '-', $data );
-	$data = str_replace( '-œ', '&#34;', $data );
-	$data = str_replace( 'â€œ', '&#34;', $data );
-	$data = str_replace( 'Ãª', 'ê', $data );
-	$data = str_replace( 'Ã¶', 'ö', $data );
-	$data = str_replace( 'â€¦', '...', $data );
-	$data = str_replace( '-¦', '...', $data );
-	$data = str_replace( 'â€“', '–', $data );
-	$data = str_replace( 'â€²s', '’', $data );
-	$data = str_replace( '-²s', '’', $data );
-	$data = str_replace( 'â€˜', '&#39;', $data );
-	$data = str_replace( '-˜', '&#39;', $data );
-	$data = str_replace( '-“', '-', $data );
-	$data = str_replace( 'Ã¨', 'è', $data );
-	$data = str_replace( 'ï¼ˆ', '(', $data );
-	$data = str_replace( 'ï¼‰', ')', $data );
-	$data = str_replace( 'â€¢', '&bull;', $data );
-	$data = str_replace( '-¢', '&bull;', $data );
-	$data = str_replace( 'Â§ï‚§', '&bull;', $data );
-	$data = str_replace( 'Â®', '&reg;', $data );
-	$data = str_replace( 'â„¢', '&trade;', $data );
-	$data = str_replace( 'Ã±', 'ñ', $data );
-	$data = str_replace( 'Å‘s', 'ő', $data );
-	$data = str_replace( '\\\"', '&quot;', $data );
-	$data = str_replace( "\r", '', $data );
-	$data = str_replace( "\\r", '', $data );
-	$data = str_replace( "\n", '', $data );
-	$data = str_replace( "\\n", '', $data );
-	$data = str_replace( "\\\'", '', $data );
-	$data = str_replace( "\\", "", $data );
-
-	return $data;
 }
 
 /**
@@ -964,9 +985,9 @@ function ezd_password_form($output, $post = 0) {
         return $output;
     }
 
-	$protected_form_switcher = ezd_get_opt( 'protected_doc_form' );
-	$protected_form_title    = ezd_get_opt( 'protected_form_title', esc_html__( 'Enter Password & Read this Doc', 'eazydocs' ) );
-	$protected_form_subtitle = ezd_get_opt( 'protected_form_subtitle', esc_html__( 'This content is password protected. To view it please enter your password below:', 'eazydocs' ) );
+	$protected_form_switcher = ezd_is_premium() ? ezd_get_opt( 'protected_doc_form' ) : 'default';
+	$protected_form_title    = ezd_is_premium() ? ezd_get_opt( 'protected_form_title', esc_html__( 'Enter Password & Read this Doc', 'eazydocs' ) ) : esc_html__( 'Enter Password & Read this Doc', 'eazydocs' );
+	$protected_form_subtitle = ezd_is_premium() ? ezd_get_opt( 'protected_form_subtitle', esc_html__( 'This content is password protected. To view it please enter your password below:', 'eazydocs' ) ) : esc_html__( 'This content is password protected. To view it please enter your password below:', 'eazydocs' );
 
 	if ( ! empty( $protected_form_switcher == 'eazydocs-form' ) ) :
 		ob_start();
@@ -1027,13 +1048,13 @@ function ezd_admin_pages( $pages = [] ) {
 
     if ( empty( $pages ) ) {
         // Default admin pages of EazyDocs
-	    $admin_pages = !empty($_GET['page']) ? in_array( $_GET['page'], [
-		    'eazydocs', 'eazydocs-settings', 'ezd-user-feedback', 'ezd-user-feedback-archived',
-            'ezd-analytics', 'ezd-onepage-presents', 'onepage-docs', 'eazydocs-initial-setup', 'eazydocs-account', 'eazydocs-migration'
-	    ] ) : '';
+	    $admin_pages = !empty($_GET['page']) ? in_array( sanitize_text_field( $_GET['page'] ), [
+		    'eazydocs-builder', 'eazydocs-settings', 'ezd-user-feedback', 'ezd-user-feedback-archived',
+            'ezd-analytics', 'ezd-onepage-presents', 'onepage-docs', 'eazydocs-initial-setup', 'eazydocs-account', 'eazydocs-migration', 'ezd-faq-builder', 'ezd-integrated-themes', 'eazydocs'
+	    ], true ) : '';
     } else {
         // Selected admin pages of EazyDocs
-	    $admin_pages = !empty($_GET['page']) ? in_array( $_GET['page'], $pages ) : '';
+	    $admin_pages = !empty($_GET['page']) ? in_array( sanitize_text_field( $_GET['page'] ), $pages, true ) : '';
     }
 
 	if ( $admin_pages ) {
@@ -1055,12 +1076,12 @@ function ezd_admin_post_types( $post_types = [] ) {
 
     if ( empty( $post_types ) ) {
         // Default post types of EazyDocs
-        $admin_post_types = !empty($_GET['post_type']) ? in_array( $_GET['post_type'], [
+        $admin_post_types = !empty($_GET['post_type']) ? in_array( sanitize_text_field( $_GET['post_type'] ), [
             'docs', 'onepage-docs'
-        ] ) : '';
+        ], true ) : '';
     } else {
         // Selected post types of EazyDocs
-        $admin_post_types = !empty($_GET['post_type']) ? in_array( $_GET['post_type'], $post_types ) : '';
+        $admin_post_types = !empty($_GET['post_type']) ? in_array( sanitize_text_field( $_GET['post_type'] ), $post_types, true ) : '';
     }
 
     if ( $admin_post_types ) {
@@ -1082,12 +1103,12 @@ function ezd_admin_taxonomy( $tax = [] ) {
 
     if ( empty( $tax ) ) {
         // Default taxonomies of EazyDocs
-        $admin_tax = !empty($_GET['taxonomy']) ? in_array( $_GET['taxonomy'], [
+        $admin_tax = !empty($_GET['taxonomy']) ? in_array( sanitize_text_field( $_GET['taxonomy'] ), [
             'doc_tag', 'doc_category', 'doc_badge'
-        ] ) : '';
+        ], true ) : '';
     } else {
         // Selected taxonomies of EazyDocs
-        $admin_tax = !empty($_GET['taxonomy']) ? in_array( $_GET['taxonomy'], $tax ) : '';
+        $admin_tax = !empty($_GET['taxonomy']) ? in_array( sanitize_text_field( $_GET['taxonomy'] ), $tax, true ) : '';
     }
 
     if ( $admin_tax ) {
@@ -1163,9 +1184,10 @@ function ezd_widget_excerpt( $settings_key, $limit = 10 ) {
  * @return void
  */
 function ezd_arrow() {
-	$arrow_icon = is_rtl() ? 'arrow_left' : 'arrow_right';
-	echo esc_attr( $arrow_icon );
+    $arrow_icon = is_rtl() ? 'arrow_left' : 'arrow_right';
+    return esc_attr( $arrow_icon );
 }
+
 
 /**
  * Elementor Title Tag Options
@@ -1208,38 +1230,6 @@ function ezd_el_image( $settings_key = '', $alt = '', $class = '', $atts = [] ) 
 		}
 		echo '<img src="' . esc_url( $settings_key['url'] ) . '" ' . esc_attr( $class ) . ' alt="' . esc_attr( $alt ) . '" ' . esc_attr( trim( $attss ) ) . '>';
 	}
-}
-
-/**
- * Docs Layout Options based on license for Elementor Widget
- *
- * @return array[]
- */
-function ezd_docs_layout_option() {
-	$base_options = [
-		'1' => [
-			'title' => esc_html__( 'Docs without tab', 'eazydocs' ),
-			'icon'  => 'free-doc-tab'
-		]
-	];
-
-	$pro_options = [
-		'2' => [ 'title' => esc_html__( 'Tabbed with doc lists', 'eazydocs' ) ],
-		'3' => [ 'title' => esc_html__( 'Flat tabbed docs', 'eazydocs' ) ],
-		'4' => [ 'title' => esc_html__( 'Boxed Style', 'eazydocs' ) ],
-		'5' => [ 'title' => esc_html__( 'Book Chapters / Tutorials', 'eazydocs' ) ],
-		'6' => [ 'title' => esc_html__( 'List Style', 'eazydocs' ) ]
-	];
-
-	foreach ( $pro_options as $key => $option ) {
-		$icon_suffix = ezd_unlock_themes('docy','docly') ? '' : ' ezd-pro-docs';
-		$base_options[ $key ] = [
-			'title' => $option['title'],
-			'icon'  => "docs-" . ( $key - 1 ) . $icon_suffix
-		];
-	}
-
-	return $base_options;
 }
 
 /**
@@ -1477,6 +1467,9 @@ function ezd_get_doc_parent_id( $doc_id = 0 ) {
  * Get all conditional items
  */
  function ezd_get_conditional_items() {
+	if ( ! ezd_is_promax() ) {
+		return array();
+	}
 	$conditional_items 	= ezd_get_opt('condition_options');
 	$conditional_array 	= [];
 
@@ -1667,6 +1660,8 @@ function customizer_visibility_callback() {
  * Setup wizard save settings
  */
 function ezd_setup_wizard_save_settings() {
+
+	check_ajax_referer( 'eazydocs-admin-nonce', 'security' );
 
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_send_json_error( 'Unauthorized user' );
@@ -1865,11 +1860,15 @@ function ezd_private_docs_access() {
  * @return string The sanitized docs slug.
  */
 function ezd_docs_slug() {
+	if ( ! ezd_is_premium() ) {
+		return '';
+	}
+
 	$docs_url	  = ezd_get_opt( 'docs-url-structure', 'custom-slug' );
 	$permalink    = get_option( 'permalink_structure' );
     $custom_slug  = ezd_get_opt( 'docs-type-slug' );
     $safe_slug 	  = preg_replace( '/[^a-zA-Z0-9-_]/', '-', $custom_slug );
-
+	
 	if ( $docs_url == 'custom-slug' || $permalink === '' || $permalink === '/archives/%post_id%' ) {
 		return $safe_slug ?: 'docs';
 	}
@@ -1954,30 +1953,24 @@ function ezd_get_all_descendant_ids( $parent_id, $post_type = 'docs', $post_stat
 function ezd_prev_next_docs( $current_post_id ) {
 	$post_type = get_post_type( $current_post_id );
 
-	// Step 1: Get the top-level parent (root post)
-	$root_id = $current_post_id;
-	while ( $parent = wp_get_post_parent_id( $root_id ) ) {
-		$root_id = $parent;
-	}
-
-	// Step 2: Get all top-level docs (siblings of root)
+	// Step 1: Get all top-level docs
 	$top_level_docs = get_posts( array(
 		'post_type'   => $post_type,
 		'post_status' => 'publish',
-		'post_parent' => $root_id,
-		'orderby'     => 'menu_order',
+		'post_parent' => 0,
+		'orderby'     => 'menu_order title',
 		'order'       => 'ASC',
 		'fields'      => 'ids',
 		'numberposts' => -1,
 	) );
 
-	// Step 3: Recursively build a flat ordered list
+	// Step 2: Recursively build a flat ordered list
 	$ordered_ids = [];
 	foreach ( $top_level_docs as $top_id ) {
 		ezd_docs_build_tree_flat( $top_id, $ordered_ids );
 	}
 
-	// Step 4: Find current index and prev/next IDs
+	// Step 3: Find current index and prev/next IDs
 	$current_index = array_search( $current_post_id, $ordered_ids );
 	$prev_id = $ordered_ids[ $current_index - 1 ] ?? null;
 	$next_id = $ordered_ids[ $current_index + 1 ] ?? null;
@@ -1997,7 +1990,7 @@ function ezd_docs_build_tree_flat( $post_id, &$list ) {
 		'post_type'   => get_post_type( $post_id ),
 		'post_status' => 'publish',
 		'post_parent' => $post_id,
-		'orderby'     => 'menu_order',
+		'orderby'     => 'menu_order title',
 		'order'       => 'ASC',
 		'fields'      => 'ids',
 		'numberposts' => -1,
@@ -2013,6 +2006,12 @@ function ezd_docs_build_tree_flat( $post_id, &$list ) {
  * This function will create parent docs for each category and re-parent existing docs.
  */
 add_action('wp_ajax_ezd_migrate_to_eazydocs', function () {
+
+	check_ajax_referer( 'eazydocs-admin-nonce', 'security' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( ['message' => 'Unauthorized user'] );
+	}
 
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -2161,3 +2160,217 @@ add_action('wp_ajax_ezd_migrate_to_eazydocs', function () {
 
     wp_send_json_success('Migration completed');
 });
+
+
+/**
+ * AJAX handler to install and activate Advanced Accordion Block plugin
+ */
+add_action('wp_ajax_ezd_install_advanced_accordion', 'ezd_install_advanced_accordion');
+function ezd_install_advanced_accordion() {
+    check_ajax_referer( 'ezd_install_accordion_nonce', 'nonce' );
+
+    if ( ! current_user_can( 'install_plugins' ) ) {
+        return;
+    }
+
+    $plugin_basename = 'advanced-accordion-block' . '/' . 'advanced-accordion-block.php';
+    include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+    include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+    include_once ABSPATH . 'wp-admin/includes/file.php';
+    if (!function_exists('WP_Filesystem')) { require_once ABSPATH . 'wp-admin/includes/file.php'; }
+    WP_Filesystem();
+
+    if ( ! file_exists( WP_PLUGIN_DIR . '/' . $plugin_basename ) ) {
+        $api = plugins_api( 'plugin_information', [ 'slug' => 'advanced-accordion-block', 'fields' => [ 'sections' => false ] ] );
+        if ( ! is_wp_error( $api ) ) {
+            $upgrader = new Plugin_Upgrader( new Automatic_Upgrader_Skin() );
+            $upgrader->install( $api->download_link );
+        }
+    }
+
+    if ( ! is_plugin_active( $plugin_basename ) ) {
+        activate_plugin( $plugin_basename );
+    }
+}
+
+/**
+ * AJAX handler to import sample data from demo.xml
+ *
+ * This function imports the sample documentation data from the
+ * sample-data/demo.xml file using WordPress Importer.
+ *
+ * @since 2.8.3
+ */
+add_action( 'wp_ajax_ezd_import_sample_data', 'ezd_import_sample_data' );
+
+/**
+ * Import sample data from demo.xml.
+ *
+ * @return void
+ */
+function ezd_import_sample_data() {
+	// Verify nonce for security.
+	check_ajax_referer( 'eazydocs-admin-nonce', 'security' );
+
+	// Check user capabilities.
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => esc_html__( 'You do not have permission to import data.', 'eazydocs' ) ) );
+	}
+
+	// Path to the sample data XML file.
+	$sample_data_file = EAZYDOCS_PATH . '/sample-data/demo.xml';
+
+	// Check if the file exists.
+	if ( ! file_exists( $sample_data_file ) ) {
+		wp_send_json_error( array( 'message' => esc_html__( 'Sample data file not found.', 'eazydocs' ) ) );
+	}
+
+	// Include WordPress importer files.
+	if ( ! defined( 'WP_LOAD_IMPORTERS' ) ) {
+		define( 'WP_LOAD_IMPORTERS', true );
+	}
+
+	// Load WordPress Importer class.
+	require_once ABSPATH . 'wp-admin/includes/import.php';
+
+	// Check if the WordPress Importer class exists.
+	if ( ! class_exists( 'WP_Import' ) ) {
+		// Try to load the importer plugin.
+		$importer_plugin = ABSPATH . 'wp-content/plugins/wordpress-importer/wordpress-importer.php';
+
+		if ( file_exists( $importer_plugin ) ) {
+			require_once $importer_plugin;
+		} else {
+			// Importer not available, use manual import.
+			$result = ezd_manual_import_sample_data( $sample_data_file );
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+			}
+			wp_send_json_success( array( 'message' => esc_html__( 'Sample data imported successfully!', 'eazydocs' ) ) );
+		}
+	}
+
+	// If WP_Import class exists, use it.
+	if ( class_exists( 'WP_Import' ) ) {
+		$wp_import                    = new WP_Import();
+		$wp_import->fetch_attachments = false;
+
+		ob_start();
+		$wp_import->import( $sample_data_file );
+		ob_end_clean();
+
+		wp_send_json_success( array( 'message' => esc_html__( 'Sample data imported successfully!', 'eazydocs' ) ) );
+	} else {
+		// Fallback to manual import.
+		$result = ezd_manual_import_sample_data( $sample_data_file );
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+		wp_send_json_success( array( 'message' => esc_html__( 'Sample data imported successfully!', 'eazydocs' ) ) );
+	}
+}
+
+/**
+ * Manual import of sample data by parsing XML.
+ *
+ * @param string $file Path to the XML file.
+ * @return bool|WP_Error True on success, WP_Error on failure.
+ */
+function ezd_manual_import_sample_data( $file ) {
+	// Load the XML file.
+	$xml_content = file_get_contents( $file );
+
+	if ( empty( $xml_content ) ) {
+		return new WP_Error( 'empty_file', esc_html__( 'The sample data file is empty.', 'eazydocs' ) );
+	}
+
+	// Parse XML.
+	libxml_use_internal_errors( true );
+	$xml = simplexml_load_string( $xml_content );
+
+	if ( ! $xml ) {
+		return new WP_Error( 'xml_parse_error', esc_html__( 'Failed to parse the sample data file.', 'eazydocs' ) );
+	}
+
+	// Get namespaces.
+	$namespaces = $xml->getNamespaces( true );
+	$wp         = $xml->channel->children( isset( $namespaces['wp'] ) ? $namespaces['wp'] : '' );
+	$content_ns = isset( $namespaces['content'] ) ? $namespaces['content'] : '';
+
+	// Track old ID to new ID mapping for parent relationships.
+	$id_mapping = array();
+
+	// First pass: Create all docs without parent relationships.
+	foreach ( $xml->channel->item as $item ) {
+		$wp_data = $item->children( isset( $namespaces['wp'] ) ? $namespaces['wp'] : '' );
+
+		// Only import 'docs' post type.
+		if ( (string) $wp_data->post_type !== 'docs' ) {
+			continue;
+		}
+
+		$old_id = (int) $wp_data->post_id;
+		$title  = (string) $item->title;
+
+		// Check if a doc with the same title already exists.
+		$existing = get_posts(
+			array(
+				'post_type'   => 'docs',
+				'title'       => $title,
+				'post_status' => 'any',
+				'numberposts' => 1,
+			)
+		);
+
+		if ( ! empty( $existing ) ) {
+			$id_mapping[ $old_id ] = $existing[0]->ID;
+			continue;
+		}
+
+		// Get content.
+		$content_data = $item->children( $content_ns );
+		$post_content = isset( $content_data->encoded ) ? (string) $content_data->encoded : '';
+
+		// Create the doc post.
+		$post_data = array(
+			'post_title'   => sanitize_text_field( $title ),
+			'post_content' => wp_kses_post( $post_content ),
+			'post_status'  => ( (string) $wp_data->status === 'private' ) ? 'publish' : sanitize_text_field( (string) $wp_data->status ),
+			'post_type'    => 'docs',
+			'menu_order'   => (int) $wp_data->menu_order,
+			'post_parent'  => 0, // Will be updated in second pass.
+		);
+
+		$new_id = wp_insert_post( $post_data );
+
+		if ( ! is_wp_error( $new_id ) ) {
+			$id_mapping[ $old_id ] = $new_id;
+
+			// Store the original parent ID for later.
+			$original_parent = (int) $wp_data->post_parent;
+			if ( $original_parent > 0 ) {
+				update_post_meta( $new_id, '_ezd_temp_parent', $original_parent );
+			}
+		}
+	}
+
+	// Second pass: Update parent relationships.
+	foreach ( $id_mapping as $old_id => $new_id ) {
+		$temp_parent = get_post_meta( $new_id, '_ezd_temp_parent', true );
+
+		if ( ! empty( $temp_parent ) && isset( $id_mapping[ $temp_parent ] ) ) {
+			wp_update_post(
+				array(
+					'ID'          => $new_id,
+					'post_parent' => $id_mapping[ $temp_parent ],
+				)
+			);
+		}
+
+		// Clean up temp meta.
+		delete_post_meta( $new_id, '_ezd_temp_parent' );
+	}
+
+	return true;
+}

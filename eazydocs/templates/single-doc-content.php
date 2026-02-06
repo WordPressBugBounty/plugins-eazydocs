@@ -5,7 +5,7 @@ $views_visibility        = ezd_get_opt( 'enable-views', '1' );
 $sidebar_toggle          = ezd_get_opt( 'toggle_visibility', '1' );
 $layout                  = ezd_get_opt( 'docs_single_layout', 'both_sidebar' );
 $is_doc_title			 = ezd_get_opt( 'is_doc_title', true );
-$is_doc_contribution	 = ezd_get_opt( 'is_doc_contribution', false );
+$is_doc_contribution	 = ezd_is_promax() ? ezd_get_opt( 'is_doc_contribution', false ) : false;
 $is_selected_comment 	 = ezd_get_opt( 'enable-selected-comment', false );
 $selected_comment_active = $is_selected_comment == true ? 'selected-comment-active' : '';
 $current_parent_id  	 = wp_get_post_parent_id( get_the_ID() );
@@ -54,7 +54,7 @@ endif;
 					<div class="ezd-meta dot-sep">
 						<?php
 						if ( $reading_time_visibility == '1' ) : ?>
-							<span class="read-time">
+							<span class="read-time ezd-sep">
 								<?php esc_html_e( 'Estimated reading: ', 'eazydocs' );
 								ezd_reading_time(); ?>
 							</span>
@@ -62,7 +62,7 @@ endif;
 						endif;
 
 						if ( $views_visibility == '1' ) : ?>
-							<span class="views sep">
+							<span class="views ezd-sep">
 								<?php echo esc_html(eazydocs_get_post_view()); ?>
 							</span>
 							<?php
@@ -103,13 +103,19 @@ endif;
 					<?php
 				}
 				the_content();
-				?>	
+				?>
 			</div>
 
-			<?php			
+            <?php
+            // Attachment Accordion
+            if ( ezd_is_premium() ) {
+                do_action( 'eazydocs_attachment_accordion', get_the_ID() );
+            }
+            
 			// Footnote
 			do_action( 'eazydocs_footnote', get_the_ID() );
 
+            // Single Doc Home
 			eazydocs_get_template_part( 'single-doc-home' );
 
 			global $post;
@@ -148,3 +154,4 @@ if ( $comment_visibility == '1' )  :
 	<?php
 	endif;
 endif;
+

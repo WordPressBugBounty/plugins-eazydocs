@@ -1,9 +1,16 @@
 <?php
-namespace eazyDocs\Admin;
+namespace EazyDocs\Admin;
+
+/**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Class Delete_Post
- * @package eazyDocs\Admin
+ * @package EazyDocs\Admin
  */
 class Delete_Post {
 
@@ -60,7 +67,7 @@ class Delete_Post {
 							wp_trash_post( $deletes, true );
 						}
 					}
-					wp_safe_redirect( admin_url( 'admin.php?page=eazydocs' ) );
+					wp_safe_redirect( admin_url( 'admin.php?page=eazydocs-builder' ) );
 					exit;
 				}
 			}
@@ -107,7 +114,7 @@ class Delete_Post {
 							wp_trash_post( $deletes, true );
 						}
 					}
-					wp_safe_redirect( admin_url( 'admin.php?page=eazydocs' ) );
+					wp_safe_redirect( admin_url( 'admin.php?page=eazydocs-builder' ) );
 					exit;
 				}
 			}
@@ -128,7 +135,7 @@ class Delete_Post {
 					if ( get_post( $last_doc_id ) ) {
 						wp_trash_post( $last_doc_id, true );
 					}
-					wp_safe_redirect( admin_url( 'admin.php?page=eazydocs' ) );
+					wp_safe_redirect( admin_url( 'admin.php?page=eazydocs-builder' ) );
 					exit;
 				}
 			}

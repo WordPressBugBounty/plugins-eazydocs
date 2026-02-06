@@ -1,6 +1,13 @@
 <?php
 namespace EazyDocs\Elementor;
 
+/**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Widgets{
     public function __construct() {
         // Register Widgets
@@ -15,6 +22,9 @@ class Widgets{
 
     // Register Widgets
     public function register_widgets( $widgets_manager ) {
+        // Include Helper Functions
+        require_once( __DIR__ . '/template-helpers.php' );
+
         // Include Widget files
         require_once( __DIR__ . '/Docs/Doc_Widget.php' ); 
         require_once( __DIR__ . '/Search/Search_Widget.php' ); 
@@ -35,10 +45,10 @@ class Widgets{
 
     // Register editor styles
     public function ezd_elementor_editor_styles(){   
-        wp_enqueue_style( 'ezd-docs-editor', EAZYDOCS_ASSETS . '/css/elementor/ezd-elementor-editor.css' ); 
+        wp_enqueue_style( 'ezd-docs-editor', EAZYDOCS_ASSETS . '/css/elementor/ezd-elementor-editor.css', array(), EAZYDOCS_VERSION ); 
 
         if ( ezd_unlock_themes('docy','docly') ) {
-            wp_enqueue_style( 'ezd-docs-pro-editor', EAZYDOCS_ASSETS . '/css/elementor/ezd-pro-elementor-editor.css' );
+            wp_enqueue_style( 'ezd-docs-pro-editor', EAZYDOCS_ASSETS . '/css/elementor/ezd-pro-elementor-editor.css', array(), EAZYDOCS_VERSION );
         }
     }
 }

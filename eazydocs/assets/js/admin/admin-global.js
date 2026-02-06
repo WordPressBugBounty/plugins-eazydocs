@@ -20,7 +20,6 @@
                         icon: "warning",
                         buttons: [false, "Close"],
                         dangerMode: true,
-                        //footer: '<a href="https://spider-themes.net/eazydocs/" target="_blank"> Learn More </a>',
                     })
                 })
             } else {
@@ -50,7 +49,6 @@
                     icon: "warning",
                     buttons: [false, "Close"],
                     dangerMode: true,
-                    //footer: '<a href="https://spider-themes.net/eazydocs/" target="_blank"> Learn More </a>',
                 })
             })
         }
@@ -70,7 +68,7 @@
                 showCloseButton: true,
                 confirmButtonText:
                     '<a href="admin.php?page=eazydocs-pricing">Upgrade to Premium</a>',
-                footer: '<a href="https://spider-themes.net/eazydocs/" target="_blank"> Learn More </a>',
+                footer: '<a href="https://eazydocs.spider-themes.net/" target="_blank"> Learn More </a>',
 
                 customClass: {
                     title: 'upgrade-premium-heading',
@@ -199,6 +197,34 @@
                         Swal.fire('Error', 'AJAX request failed. Please try again.', 'error');
                     }
                 });
+            });
+        });
+        
+        // Create Doc with AI Popup
+        $(document).on('click', '#ezd-create-doc-with-ai', function(e) {
+            e.preventDefault();
+
+			const popupContent = (typeof eazydocs_local_object !== 'undefined' && eazydocs_local_object.aiPopupHtml)
+				? eazydocs_local_object.aiPopupHtml
+				: '';
+
+			if (!popupContent) {
+				return;
+			}
+            
+            Swal.fire({
+                title: '',
+                html: popupContent,
+                showConfirmButton: false,
+                showCloseButton: true,
+                width: '800px',
+                padding: '0',
+                customClass: {
+                    container: 'ezd-ai-popup-container',
+                    popup: 'ezd-ai-popup-wrapper',
+                    content: 'ezd-ai-popup-body-content',
+                    closeButton: 'ezd-ai-popup-close'
+                }
             });
         });
         

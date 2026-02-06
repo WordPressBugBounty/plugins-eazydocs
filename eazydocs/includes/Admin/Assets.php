@@ -1,5 +1,12 @@
 <?php
-namespace eazyDocs\Admin;
+namespace EazyDocs\Admin;
+
+/**
+ * Cannot access directly.
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Class Assets
@@ -23,32 +30,32 @@ class Assets {
 	 **/
 	public function dashboard_scripts() {
 		// Doc Builder Assets
-		if ( ezd_admin_pages('eazydocs') ) {
+		if ( ezd_admin_pages('eazydocs-builder') ) {
 			wp_enqueue_script( 'ezd-accordion', EAZYDOCS_ASSETS . '/js/admin/accordion.min.js', array( 'jquery' ), EAZYDOCS_VERSION, true );
-			wp_enqueue_script( 'ezd-nestable', EAZYDOCS_ASSETS . '/js/admin/jquery.nestable.js', array('jquery'), true, true );
-			wp_enqueue_script( 'ezd-nestable-script', EAZYDOCS_ASSETS . '/js/admin/nestable-script.js', array('jquery'), true, true );
+			wp_enqueue_script( 'ezd-nestable', EAZYDOCS_ASSETS . '/js/admin/jquery.nestable.js', array('jquery'), EAZYDOCS_VERSION, true );
+			wp_enqueue_script( 'ezd-drag-drop-enhanced', EAZYDOCS_ASSETS . '/js/admin/drag-drop-enhanced.js', array('jquery', 'ezd-nestable'), EAZYDOCS_VERSION, true );
 		}
 
-		if ( ezd_admin_pages( ['eazydocs', 'ezd-analytics'] )) {
+		if ( ezd_admin_pages( ['eazydocs-builder', 'ezd-analytics'] )) {
 			wp_enqueue_script( 'mixitup', EAZYDOCS_VEND . '/mixitup/mixitup.min.js', array( 'jquery' ), '2.1.11', true );
-			wp_enqueue_script( 'mixitup-multifilter', EAZYDOCS_ASSETS . '/js/admin/mixitup-multifilter.js', array( 'jquery' ), '2.1.11', true );
-		}
-
-		if ( ezd_admin_pages( ['eazydocs', 'ezd-analytics'] ) ) {
+			wp_enqueue_script( 'mixitup-multifilter', EAZYDOCS_ASSETS . '/js/admin/mixitup-multifilter.js', array( 'jquery' ), '2.1.11', true );			
 			wp_enqueue_script( 'modernizr', EAZYDOCS_ASSETS . '/js/admin/modernizr-3.11.2.min.js', array( 'jquery' ), '3.11.2', true );
 			wp_enqueue_script( 'tabby-polyfills', EAZYDOCS_ASSETS . '/js/admin/tabby.polyfills.min.js', array( 'jquery' ), '12.0.3', true );
+		}
+
+		if ( ezd_admin_pages( ['eazydocs-builder', 'ezd-analytics', 'eazydocs'] ) ) {
 			wp_enqueue_script( 'ezd-admin-custom', EAZYDOCS_ASSETS . '/js/admin/custom.js', array( 'jquery' ), EAZYDOCS_VERSION, true );
 		}
 
-		if ( ezd_admin_pages( ['eazydocs', 'ezd-analytics', 'eazydocs-initial-setup'] ) ) {
-			wp_enqueue_style( 'nice-select', EAZYDOCS_ASSETS . '/css/admin/nice-select.css' );
+		if ( ezd_admin_pages( ['eazydocs-builder', 'ezd-analytics', 'eazydocs-initial-setup'] ) ) {
+			wp_enqueue_style( 'nice-select', EAZYDOCS_ASSETS . '/css/admin/nice-select.css', array(), EAZYDOCS_VERSION );
 			wp_enqueue_script( 'jquery-nice-select', EAZYDOCS_ASSETS . '/js/admin/jquery.nice-select.min.js', array( 'jquery' ), '1.0', true );
 		}
 
-		wp_register_style( 'sweetalert', EAZYDOCS_ASSETS . '/css/admin/sweetalert.css' );
+		wp_register_style( 'sweetalert', EAZYDOCS_ASSETS . '/css/admin/sweetalert.css', array(), EAZYDOCS_VERSION );
 		wp_register_script( 'sweetalert', EAZYDOCS_ASSETS . '/js/admin/sweetalert.min.js', array( 'jquery' ), EAZYDOCS_VERSION, true );
 
-		if ( ezd_admin_pages( ['eazydocs', 'eazydocs-settings', 'eazydocs-initial-setup', 'ezd-analytics', 'ezd-user-feedback'] ) || ezd_admin_post_types('onepage-docs') ) {			
+		if ( ezd_admin_pages( ['eazydocs-builder', 'eazydocs-settings', 'eazydocs', 'eazydocs-initial-setup', 'ezd-analytics', 'ezd-user-feedback'] ) || ezd_admin_post_types('onepage-docs') ) {			
 			wp_enqueue_style( 'sweetalert' );
 			wp_enqueue_script( 'sweetalert' );
 		}
@@ -56,14 +63,15 @@ class Assets {
 		if ( ezd_admin_pages() ) {
 			wp_deregister_style('csf-fa5');
 			wp_deregister_style('csf-fa5-v4-shims');
+        	wp_enqueue_script( 'apexchart', EAZYDOCS_ASSETS . '/js/apexchart.js', array( 'jquery' ), EAZYDOCS_VERSION, false );
 		}
 
-		if ( ezd_admin_pages( ['eazydocs'] ) || ezd_admin_post_types('onepage-docs') ) {
-			wp_enqueue_script( 'ezd-admin-onepage', EAZYDOCS_ASSETS . '/js/admin/one_page.js', array( 'jquery' ), EAZYDOCS_VERSION );
+		if ( ezd_admin_pages( ['eazydocs-builder'] ) || ezd_admin_post_types('onepage-docs') ) {
+			wp_enqueue_script( 'ezd-admin-onepage', EAZYDOCS_ASSETS . '/js/admin/one_page.js', array( 'jquery' ), EAZYDOCS_VERSION, true );
 		}
 
 		wp_enqueue_style( 'ezd-main', EAZYDOCS_ASSETS . '/css/admin.css', array(), EAZYDOCS_VERSION );
-		wp_enqueue_style( 'ezd-custom', EAZYDOCS_ASSETS . '/css/admin/custom.css' );
+		wp_enqueue_style( 'ezd-custom', EAZYDOCS_ASSETS . '/css/admin/custom.css', array(), EAZYDOCS_VERSION );
 
 		// Enqueue scripts and styles for initial setup page
 		if ( ezd_admin_pages('eazydocs-initial-setup') ) {
@@ -76,9 +84,11 @@ class Assets {
 			wp_enqueue_style( 'wp-color-picker' );
 			wp_enqueue_script( 'wp-color-picker' );
 			wp_enqueue_script( 'smartwizard', EAZYDOCS_ASSETS . '/js/admin/jquery.smartWizard.min.js', array('jquery'), true, true );
-			// Custom styles and scripts
-			wp_enqueue_style( 'ezd_setup_wizard', EAZYDOCS_ASSETS . '/css/admin_setup_wizard.css', array(), EAZYDOCS_VERSION );
-			wp_enqueue_script( 'ezd_setup_wizard', EAZYDOCS_ASSETS . '/js/admin/setup_wizard_config.js', array( 'jquery', 'smartwizard' ), EAZYDOCS_VERSION );
+			// Custom styles and scripts (use filemtime for cache busting during development)
+			$setup_wizard_css_ver = filemtime( EAZYDOCS_PATH . '/assets/css/admin_setup_wizard.css' );
+			$setup_wizard_js_ver  = filemtime( EAZYDOCS_PATH . '/assets/js/admin/setup_wizard_config.js' );
+			wp_enqueue_style( 'ezd_setup_wizard', EAZYDOCS_ASSETS . '/css/admin_setup_wizard.css', array(), $setup_wizard_css_ver );
+			wp_enqueue_script( 'ezd_setup_wizard', EAZYDOCS_ASSETS . '/js/admin/setup_wizard_config.js', array( 'jquery', 'smartwizard' ), $setup_wizard_js_ver, true );
 		}
 	}
 
@@ -112,7 +122,7 @@ class Assets {
 		wp_enqueue_style( 'eazydocs-admin-global', EAZYDOCS_ASSETS . '/css/admin-global.css', array(), EAZYDOCS_VERSION );
 		wp_enqueue_style( 'elegant-icon', EAZYDOCS_ASSETS . '/vendors/elegant-icon/style.css', array(), EAZYDOCS_VERSION );
 
-		wp_enqueue_script( 'eazydocs-admin-global', EAZYDOCS_ASSETS . '/js/admin/admin-global.js', array( 'jquery' ), EAZYDOCS_VERSION );
+		wp_enqueue_script( 'eazydocs-admin-global', EAZYDOCS_ASSETS . '/js/admin/admin-global.js', array( 'jquery' ), EAZYDOCS_VERSION, true );
 
 		// Localize the script with new data
 		$ajax_url              = admin_url( 'admin-ajax.php' );
@@ -120,6 +130,34 @@ class Assets {
 		if ( ! empty( $wpml_current_language ) ) {
 			$ajax_url = add_query_arg( 'wpml_lang', $wpml_current_language, $ajax_url );
 		}
+		
+		// Check if Antimanual is active
+		$antimanual_active = is_plugin_active( 'antimanual/antimanual.php' );
+
+		// Shared "Create Doc with AI" popup HTML (single source)
+		$ai_popup_html = '';
+		$ai_popup_template = EAZYDOCS_PATH . '/includes/Admin/template/partials/ai-create-doc-popup.php';
+		if ( file_exists( $ai_popup_template ) ) {
+			$antimanual_settings_url = admin_url( 'admin.php?page=antimanual' );
+			$antimanual_docs_url     = 'https://helpdesk.spider-themes.net/docs/antimanual';
+			$antimanual_install_url  = add_query_arg(
+				array(
+					's'    => 'antimanual',
+					'tab'  => 'search',
+					'type' => 'term',
+				),
+				admin_url( 'plugin-install.php' )
+			);
+			$antimanual_learn_more    = 'https://antimanual.spider-themes.net';
+			$antimanual_demo_url      = 'https://www.youtube.com/watch?v=X9HMPBkzDeM';
+			$antimanual_video_mp4_url = 'https://antimanual.spider-themes.net/wp-content/uploads/2025/08/AI-Doc-generate.mp4';
+
+			ob_start();
+			$is_antimanual_active = $antimanual_active;
+			require $ai_popup_template;
+			$ai_popup_html = (string) ob_get_clean();
+		}
+		
 		wp_localize_script(
 			'jquery',
 			'eazydocs_local_object',
@@ -127,6 +165,8 @@ class Assets {
 				'ajaxurl'                   => $ajax_url,
 				'EAZYDOCS_FRONT_CSS'        => EAZYDOCS_FRONT_CSS,
 				'EAZYDOCS_ASSETS'           => EAZYDOCS_ASSETS,
+				'antimanualActive'          => $antimanual_active,
+				'aiPopupHtml'               => $ai_popup_html,
 				'create_prompt_title'       => esc_html__( 'Enter Doc Title', 'eazydocs' ),
 				'delete_prompt_title'       => esc_html__( 'Are you sure to delete?', 'eazydocs' ),
 				'no_revert_title'           => esc_html__( "This doc will be trashed with the child docs and you will be able to restore it later from the trash!", "eazydocs" ),
