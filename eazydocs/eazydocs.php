@@ -5,7 +5,7 @@
  * Plugin URI: https://eazydocs.spider-themes.net
  * Author: spider-themes
  * Author URI: https://eazydocs.spider-themes.net
- * Version: 2.9.0
+ * Version: 2.10.0
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -71,7 +71,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.9.0';
+		const version = '2.10.0';
 		public $plugin_path;
 		public $theme_dir_path;
 
@@ -87,7 +87,10 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			add_filter( 'plugin_row_meta', [ $this, 'eazydocs_row_meta' ], 10, 2 );
 
 			add_action( 'admin_head', function () {
-				if ( ezd_admin_pages() ) {
+				// Check if we're on any EazyDocs admin page, taxonomy page, or post type page
+				$is_ezd_page = ezd_admin_pages() || ezd_admin_taxonomy() || ezd_admin_post_types();
+
+				if ( $is_ezd_page ) {
 					remove_all_actions( 'admin_notices' );
 					remove_all_actions( 'all_admin_notices' );
 
@@ -96,11 +99,16 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 						\EazyDocs\Admin\AntimanualNotice::init();
 					}
 
-					if ( ! ezd_is_premium() && ezd_is_plugin_installed_for_days( 12 ) && ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'eazydocs-initial-setup' ) ) {
+					$is_dev_mode = defined( 'DEVELOPER_MODE' ) && DEVELOPER_MODE;
+					if ( $is_dev_mode || ( ! ezd_is_premium() && ezd_is_plugin_installed_for_days( 12 ) && ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'eazydocs-initial-setup' ) ) ) {
 						add_action( 'admin_notices', 'ezd_offer_notice' );
 					}
+
+					if ( function_exists( 'ezd_gutenberg_info_notice' ) ) {
+						add_action( 'admin_notices', 'ezd_gutenberg_info_notice' );
+					}
 				}
-			} );
+			});
 		}
 
 		public static function get_instance() {
@@ -143,7 +151,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 				$docs_url   = ezd_get_opt( 'docs-url-structure', 'custom-slug' );
 				$permalink  = get_option( 'permalink_structure' );
 
-				if ( $docs_url === 'post-name' && ! empty( $permalink ) && $permalink !== '/archives/%post_id%' ) {
+				if ( 'post-name' === $docs_url && ! empty( $permalink ) && $permalink !== '/archives/%post_id%' ) {
 					require_once __DIR__ . '/includes/Root_Conversion.php';
 				}
 			}
@@ -198,6 +206,9 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			return $instance ?: ( $instance = new self() );
 		}
 
+		/**
+		 * Initialize the plugin
+		 */
 		public function init_plugin() {
 			$this->theme_dir_path = apply_filters( 'eazydocs_theme_dir_path', 'eazydocs/' );
 			if ( is_admin() ) {
@@ -220,6 +231,9 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			}
 		}
 
+		/**
+		 * Initialize hooked classes
+		 */
 		public function init_hooked() {
 			new EazyDocs\Frontend\Ajax();
 		}
@@ -321,7 +335,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			// @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$view_exists = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name3 ) );
 
-			if ( $keyword_exists != $table_name || $logs_exists != $table_name2 || $view_exists != $table_name3 ) {
+			if ( $keyword_exists !== $table_name || $logs_exists !== $table_name2 || $view_exists !== $table_name3 ) {
 				?>
                 <div class="notice notice-error is-dismissible eazydocs_table_error">
                     <p><?php esc_html_e( 'EazyDocs database needs an update. Please click the Update button to update your database.', 'eazydocs' ); ?></p>
@@ -352,6 +366,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 		public function eazydocs_row_meta( $links, $file ) {
 			if ( plugin_basename( __FILE__ ) === $file ) {
 				$links[] = '<a href="https://helpdesk.spider-themes.net/docs/eazydocs-wordpress-plugin/" target="_blank">Documentation</a>';
+				$links[] = '<a href="' . admin_url( 'admin.php?page=eazydocs' ) . '">Dashboard</a>';
 			}
 			return $links;
 		}

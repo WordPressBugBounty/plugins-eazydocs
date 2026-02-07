@@ -65,7 +65,7 @@ class Ajax {
 
 			update_post_meta( $post_id, $type, $count + 1 );
 
-			if ( $type == 'positive' ) {
+			if ( 'positive' === $type ) {
 				$voters = get_post_meta( $post_id, 'positive_voter', true );
 				$voters = is_array( $voters ) ? $voters : [];
 
@@ -108,7 +108,10 @@ class Ajax {
 
 		$keyword     = isset($_POST['keyword']) ? sanitize_text_field($_POST['keyword']) : '';
 		$search_mode = ezd_is_premium() ? ezd_get_opt( 'search_by', 'title_and_content' ) : 'title_and_content';
-		$post_status = is_user_logged_in() ? ['publish', 'private', 'protected'] : ['publish', 'protected'];
+
+		// Sentinel: Prevent unauthorized access to private docs
+		$can_read_private = current_user_can( 'read_private_docs' ) || current_user_can( 'read_private_posts' );
+		$post_status      = $can_read_private ? [ 'publish', 'private', 'protected' ] : [ 'publish', 'protected' ];
 
 		if ( empty($keyword) ) {
 			wp_send_json_error(['message' => 'No keyword provided']);
@@ -150,9 +153,7 @@ class Ajax {
 		if ( empty($final_ids) ) $final_ids = [0];
 
 		// Add tag matches (appended after)
-		$getTags  = get_terms(['taxonomy' => 'doc_tag', 'hide_empty' => false]);
-		$checkTags = wp_list_pluck($getTags, 'name');
-		if ( in_array($keyword, $checkTags, true) ) {
+		if ( get_term_by( 'name', $keyword, 'doc_tag' ) ) {
 			$tag_posts = new WP_Query([
 				'post_type'      => 'docs',
 				'posts_per_page' => -1,
@@ -280,19 +281,52 @@ class Ajax {
 		}
 
 		// Check private doc access
-		if ( get_post_status( $postid ) == 'private' && ezd_is_premium() ) {
-			$user_group  = ezd_get_opt('private_doc_user_restriction');
-			$is_all_user = $user_group['private_doc_all_user'] ?? 0;
-			if ( $is_all_user == 0 ) {
-				$current_user_id    = get_current_user_id();
-				$current_user       = new \WP_User( $current_user_id );
-				$current_roles      = ( array ) $current_user->roles;
-				$private_doc_roles  = $user_group['private_doc_roles'] ?? [];
-				$matching_roles 	= array_intersect($current_roles, $private_doc_roles);
-				if ( empty( $matching_roles ) ) {
-					wp_send_json_error(array('message' => esc_html__('You don\'t have permission to access this document!', 'eazydocs')));
-					return;
+		if ( 'private' === get_post_status( $postid ) && ezd_is_premium() ) {
+			// Try new settings first
+			$access_type = ezd_get_opt( 'private_doc_access_type', '' );
+			$has_access  = false;
+			
+			if ( ! empty( $access_type ) ) {
+				// Using new settings
+				if ( 'all_users' === $access_type ) {
+					// All logged-in users can access
+					$has_access = is_user_logged_in();
+				} else {
+					// Specific roles only
+					$allowed_roles   = ezd_get_opt( 'private_doc_allowed_roles', array( 'administrator', 'editor' ) );
+					if ( ! is_array( $allowed_roles ) ) {
+						$allowed_roles = array( $allowed_roles );
+					}
+					
+					$current_user_id = get_current_user_id();
+					$current_user    = new \WP_User( $current_user_id );
+					$current_roles   = (array) $current_user->roles;
+					$matching_roles  = array_intersect( $current_roles, $allowed_roles );
+					
+					$has_access = ! empty( $matching_roles ) || current_user_can( 'manage_options' );
 				}
+			} else {
+				// Fallback to legacy settings
+				$user_group  = ezd_get_opt( 'private_doc_user_restriction' );
+				$is_all_user = $user_group['private_doc_all_user'] ?? 0;
+				
+				if ( '1' === $is_all_user || 1 === $is_all_user || true === $is_all_user ) {
+					$has_access = is_user_logged_in();
+				} else {
+					$current_user_id   = get_current_user_id();
+					$current_user      = new \WP_User( $current_user_id );
+					$current_roles     = (array) $current_user->roles;
+					$private_doc_roles = $user_group['private_doc_roles'] ?? array();
+					$matching_roles    = array_intersect( $current_roles, $private_doc_roles );
+					
+					$has_access = ! empty( $matching_roles ) || current_user_can( 'manage_options' );
+				}
+			}
+			
+			if ( ! $has_access ) {
+				$denied_message = ezd_get_opt( 'role_visibility_denied_message', esc_html__( 'You don\'t have permission to access this document!', 'eazydocs' ) );
+				wp_send_json_error( array( 'message' => esc_html( $denied_message ) ) );
+				return;
 			}
 		}
 

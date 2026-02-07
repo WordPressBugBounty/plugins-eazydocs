@@ -52,7 +52,22 @@
                 })
             })
         }
-        eazydocs_pro_notice();
+
+         /* ------------------------------
+        * Init (Admin + Customizer)
+        * ------------------------------ */
+
+        // Normal admin / frontend load
+        $(document).ready(function () {
+            eazydocs_pro_notice();
+        });
+
+        // Customizer support (controls load dynamically)
+        if (typeof wp !== 'undefined' && wp.customize) {
+            wp.customize.bind('ready', function () {
+                eazydocs_pro_notice();
+            });
+        }
 
         // Notification pro alert
         $('.easydocs-notification.pro-notification-alert').on('click', function (e) {
@@ -200,8 +215,19 @@
             });
         });
         
-        // Create Doc with AI Popup
+        // Create Doc with AI Popup (only when Antimanual isn't active)
         $(document).on('click', '#ezd-create-doc-with-ai', function(e) {
+			const antimanualActive = !!(
+				typeof eazydocs_local_object !== 'undefined' &&
+				eazydocs_local_object.antimanualActive
+			);
+
+			// When Antimanual is active, the control becomes a normal link to atml-docs.
+			// Do not prevent navigation.
+			if (antimanualActive) {
+				return;
+			}
+
             e.preventDefault();
 
 			const popupContent = (typeof eazydocs_local_object !== 'undefined' && eazydocs_local_object.aiPopupHtml)
@@ -227,6 +253,36 @@
                 }
             });
         });
+        
+
+        // ADD PARENT DOC
+        function add_parent_doc() {
+            $(document).on('click', '#parent-doc', function (e) {
+                e.preventDefault();
+                let href = $(this).attr('data-url');
+                Swal.fire({
+                    title: eazydocs_local_object.create_prompt_title,
+                    input: 'text',
+                    showCancelButton: true,
+                    inputAttributes: {
+                        name: 'parent_title',
+                    },
+                }).then((result) => {
+                    if (result.value) {
+                        let results = result.value.replaceAll(
+                            '&',
+                            'ezd_ampersand'
+                        );
+                        results = results.replaceAll('#', 'ezd_hash');
+                        results = results.replaceAll('+', 'ezd_plus');
+
+                        document.location.href = href + results;
+                    }
+                });
+            });
+        }
+
+        add_parent_doc();
         
     });
 })(jQuery);

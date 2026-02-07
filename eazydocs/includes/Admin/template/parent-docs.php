@@ -25,6 +25,7 @@ $count = $query->found_posts;
             $i++;
             $depth_one_parents[]    = get_the_ID();
             $is_active              = $i == 1 ? 'is-active' : '';
+            $aria_selected          = $i == 1 ? 'true' : 'false';
             $doc_counter            = get_pages([
                 'child_of'          => get_the_ID(),
                 'post_type'         => 'docs',
@@ -56,7 +57,7 @@ $count = $query->found_posts;
                 $doc_status = esc_html__('Password Protected Doc', 'eazydocs');
             }
             ?>
-            <li class="easydocs-navitem dd-item dd3-item <?php echo esc_attr($is_active); ?>" data-rel="tab-<?php the_ID(); ?>" data-id="<?php the_ID(); ?>">
+            <li class="easydocs-navitem dd-item dd3-item <?php echo esc_attr($is_active); ?>" data-rel="tab-<?php the_ID(); ?>" data-id="<?php the_ID(); ?>" role="tab" tabindex="0" aria-selected="<?php echo esc_attr($aria_selected); ?>" aria-controls="tab-<?php the_ID(); ?>">
                 <div class="title">
                     <span title="<?php echo esc_attr($doc_status); ?>" class="dashicons dashicons-<?php echo esc_attr($post_format); ?>"></span>
                     <?php the_title(); ?>
@@ -76,14 +77,14 @@ $count = $query->found_posts;
                     
                      if ( ezd_is_admin_or_editor(get_the_ID(), 'edit') ) :
                         ?>
-                        <a href="<?php echo esc_url(get_edit_post_link(get_the_ID())); ?>" class="link edit" target="_blank" title="<?php esc_attr_e('Edit this doc', 'eazydocs'); ?>">
+                        <a href="<?php echo esc_url(get_edit_post_link(get_the_ID())); ?>" class="link edit" target="_blank" aria-label="<?php esc_attr_e('Edit this doc', 'eazydocs'); ?>" title="<?php esc_attr_e('Edit this doc', 'eazydocs'); ?>">
                             <span class="dashicons dashicons-edit"></span>
                         </a>
                         <?php
                     endif;
                     ?>
 
-                    <a href="<?php the_permalink(); ?>" class="link external-link" target="_blank" data-id="tab-<?php the_ID(); ?>" title="<?php esc_attr_e('View this doc item in new tab', 'eazydocs') ?>">
+                    <a href="<?php the_permalink(); ?>" class="link external-link" target="_blank" data-id="tab-<?php the_ID(); ?>" aria-label="<?php esc_attr_e('View this doc item in new tab', 'eazydocs') ?>" title="<?php esc_attr_e('View this doc item in new tab', 'eazydocs') ?>">
                         <span class="dashicons dashicons-external"></span>
                     </a>
 
@@ -92,7 +93,7 @@ $count = $query->found_posts;
                         $delete_id = get_the_ID();
                         $nonce     = wp_create_nonce( $delete_id );
                         ?>
-                        <a href="<?php echo esc_url( admin_url( 'admin.php' ) . '?Doc_Delete=yes&_wpnonce=' . $nonce . '&DeleteID=' . $delete_id ); ?>" class="link delete parent-delete" title="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>">
+                        <a href="<?php echo esc_url( admin_url( 'admin.php' ) . '?Doc_Delete=yes&_wpnonce=' . $nonce . '&DeleteID=' . $delete_id ); ?>" class="link delete parent-delete" aria-label="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>" title="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>">
                             <span class="dashicons dashicons-trash"></span>
                         </a>
                         <?php 
@@ -100,8 +101,8 @@ $count = $query->found_posts;
 
                     if ( current_user_can('manage_options') ) :
                         ?>  
-                        <span class="ezd-admin-bulk-options link" id="bulk-options-<?php echo esc_attr(get_the_ID()); ?>">
-                            <span class="dashicons dashicons-arrow-down-alt2"></span>
+                        <span class="ezd-admin-bulk-options link" id="bulk-options-<?php echo esc_attr(get_the_ID()); ?>" role="button" tabindex="0" aria-label="<?php esc_attr_e('More options', 'eazydocs'); ?>" aria-expanded="false">
+                            <span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
                             <span class="ezd-admin-bulk-actions">
                                 <?php
                                 if ( ezd_is_premium() ) :
@@ -123,15 +124,15 @@ $count = $query->found_posts;
                                     do_action('eazydocs_doc_sidebar', get_the_ID(), $left_type, $left_content, $right_type, $right_content);
                                 else :
                                     ?>
-                                    <a href="admin.php?page=eazydocs-pricing" target="_blank" class="docs-duplicate eazydocs-pro-notice" title="<?php esc_attr_e('Duplicate this doc with the child docs.', 'eazydocs'); ?>">
+                                    <a href="admin.php?page=eazydocs-pricing" target="_blank" class="docs-duplicate eazydocs-pro-notice" aria-label="<?php esc_attr_e('Duplicate this doc with the child docs.', 'eazydocs'); ?>" title="<?php esc_attr_e('Duplicate this doc with the child docs.', 'eazydocs'); ?>">
                                         <span class="dashicons dashicons-admin-page"></span>
                                         <span><?php esc_html_e('Duplicate', 'eazydocs'); ?></span>
                                     </a>
-                                    <a href="admin.php?page=eazydocs-pricing" target="_blank" class="docs-visibility eazydocs-pro-notice" title="<?php esc_attr_e('Docs visibility', 'eazydocs'); ?>">
+                                    <a href="admin.php?page=eazydocs-pricing" target="_blank" class="docs-visibility eazydocs-pro-notice" aria-label="<?php esc_attr_e('Docs visibility', 'eazydocs'); ?>" title="<?php esc_attr_e('Docs visibility', 'eazydocs'); ?>">
                                         <span class="dashicons dashicons-visibility"></span>
                                         <span> <?php esc_html_e( 'Visibility', 'eazydocs' ); ?> </span>
                                     </a>
-                                    <a href="admin.php?page=eazydocs-pricing" target="_blank" class="docs-sidebar eazydocs-pro-notice" title="<?php esc_attr_e('Docs sidebar', 'eazydocs'); ?>">
+                                    <a href="admin.php?page=eazydocs-pricing" target="_blank" class="docs-sidebar eazydocs-pro-notice" aria-label="<?php esc_attr_e('Docs sidebar', 'eazydocs'); ?>" title="<?php esc_attr_e('Docs sidebar', 'eazydocs'); ?>">
                                         <span class="dashicons dashicons-welcome-widgets-menus"></span>
                                         <span> <?php esc_html_e('Sidebar', 'eazydocs'); ?> </span>
                                     </a>

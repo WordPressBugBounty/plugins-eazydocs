@@ -11,6 +11,12 @@ $current_user = wp_get_current_user();
 $user_name    = $current_user->display_name ?: $current_user->user_login;
 $greeting     = ezd_get_greeting();
 
+if ( ! function_exists( 'is_plugin_active' ) ) {
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
+}
+
+$ezd_antimanual_active = function_exists( 'is_plugin_active' ) && ( is_plugin_active( 'antimanual/antimanual.php' ) || is_plugin_active( 'antimanual-pro/antimanual.php' ) );
+
 /**
  * Get time-based greeting
  *
@@ -64,7 +70,7 @@ function ezd_get_greeting() {
 	<div class="ezd-header-actions">
 		<div class="ezd-action-item">
 			<?php
-			if ( current_user_can( 'edit_posts' ) ) :
+			if ( current_user_can( 'publish_docs' ) ) :
 				$nonce = wp_create_nonce( 'parent_doc_nonce' );
 				?>
 				<button type="button"
@@ -76,10 +82,18 @@ function ezd_get_greeting() {
 				<?php
 			endif;
 			?>
-			<button type="button" id="ezd-create-doc-with-ai"
-				class="easydocs-btn easydocs-btn-ai-gold">
-				<span>🪄</span> <?php esc_html_e( 'Create Doc with AI', 'eazydocs' ); ?>
-			</button>
+			<?php if ( $ezd_antimanual_active ) : ?>
+				<a id="ezd-create-doc-with-ai"
+					href="<?php echo esc_url( admin_url( 'admin.php?page=atml-docs' ) ); ?>"
+					class="easydocs-btn easydocs-btn-ai-gold" role="button">
+					<span>🪄</span> <?php esc_html_e( 'Create Doc with AI', 'eazydocs' ); ?>
+				</a>
+			<?php else : ?>
+				<button type="button" id="ezd-create-doc-with-ai"
+					class="easydocs-btn easydocs-btn-ai-gold">
+					<span>🪄</span> <?php esc_html_e( 'Create Doc with AI', 'eazydocs' ); ?>
+				</button>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

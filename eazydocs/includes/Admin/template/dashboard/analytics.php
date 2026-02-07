@@ -6,10 +6,10 @@
 		</h2>
 		<div class="ezd-stat-filter-container">
 			<ul>
-				<li class="is-active" data-filter="weekly" onclick="OverviewWeekly()">
+				<li class="is-active" role="button" tabindex="0" data-filter="weekly" onclick="OverviewWeekly()" onkeydown="if(event.key === 'Enter' || event.key === ' ') { this.click(); event.preventDefault(); }">
 					<?php esc_html_e( 'This Week', 'eazydocs' ); ?>
 				</li>
-				<li data-filter=".lastmonth" onclick="OverviewLastmonth()">
+				<li role="button" tabindex="0" data-filter=".lastmonth" onclick="OverviewLastmonth()" onkeydown="if(event.key === 'Enter' || event.key === ' ') { this.click(); event.preventDefault(); }">
 					<?php esc_html_e( 'Last Month', 'eazydocs' ); ?>
 				</li>
 			</ul>
@@ -227,6 +227,10 @@
 			$searchCount[]         = 0;
 			$searchCountNotFound[] = 0;
 		}
+
+		// Pre-fetch metadata for all posts
+		$post_ids = wp_list_pluck( $posts, 'post_id' );
+		ezd_update_post_meta_cache( $post_ids );
 
 		foreach ( $posts as $key => $item ) {
 			$dates = gmdate( 'd M, Y', strtotime( $item->created_at ) );

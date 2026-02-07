@@ -55,10 +55,15 @@ class Shortcode {
             'parent_docs_order'    => $args['parent_docs_order'] ?? 'menu_order',
             'parent_docs_order_by' => $args['parent_docs_order_by'] ?? 'ASC',
             'child_docs_order'     => $args['child_docs_order'] ?? 'ASC',
+            'img_size'             => $args['img_size'] ?? 'ezd_searrch_thumb50x50',
         ];
 
         $args       = wp_parse_args( $args, $defaults );
         $arranged   = [];
+
+        // Normalize numeric limits after parsing shortcode attributes.
+        $args['show_docs']     = is_numeric( $args['show_docs'] ) ? (int) $args['show_docs'] : -1;
+        $args['show_articles'] = is_numeric( $args['show_articles'] ) ? (int) $args['show_articles'] : 5;
 
         // Parent Docs Query Args
         $parent_args = [
@@ -95,15 +100,37 @@ class Shortcode {
         }
 
         // Fetch Child Docs (Articles)
-        foreach ( $parent_docs as $root ) {
-            $sections = get_children( [
-                'post_parent'    => $root->ID,
-                'post_type'      => 'docs',
-                'numberposts'    => $args['show_articles'],
-                'post_status'    => [ 'publish', 'private' ],
-                'orderby'        => $args['parent_docs_order'],
-                'order'          => strtoupper( $args['child_docs_order'] ),
+        $parent_ids = wp_list_pluck( $parent_docs, 'ID' );
+        $all_children = [];
+
+        if ( ! empty( $parent_ids ) ) {
+            $orderby = [
+                'post_parent'                => 'ASC',
+                $args['parent_docs_order']   => strtoupper( $args['child_docs_order'] ),
+            ];
+
+            $all_children = get_posts( [
+                'post_parent__in' => $parent_ids,
+                'post_type'       => 'docs',
+                'posts_per_page'  => -1,
+                'post_status'     => [ 'publish', 'private' ],
+                'orderby'         => $orderby,
             ] );
+        }
+
+        // Group children by parent
+        $children_by_parent = [];
+        foreach ( $all_children as $child ) {
+            $children_by_parent[ $child->post_parent ][] = $child;
+        }
+
+        foreach ( $parent_docs as $root ) {
+            $sections = $children_by_parent[ $root->ID ] ?? [];
+
+            // Slice if show_articles is set (and not -1)
+            if ( $args['show_articles'] !== -1 && count( $sections ) > $args['show_articles'] ) {
+                $sections = array_slice( $sections, 0, $args['show_articles'] );
+            }
 
             $arranged[] = [
                 'doc'      => $root,
@@ -119,6 +146,7 @@ class Shortcode {
             'show_topic'  => $args['show_topic'] ?? true,
             'topic_label' => $args['topic_label'] ?? esc_html__( 'Topics', 'eazydocs' ),
             'layout'      => $args['docs_layout'] ?? 'grid',
+            'img_size'    => $args['img_size'],
         ] );
     }
 }

@@ -26,6 +26,45 @@ function ezd_get_opt( $option, $default = '' ) {
 }
 
 /**
+ * Prime the post meta cache with backward compatibility.
+ *
+ * @param array|int|WP_Post $post_ids Post IDs or post objects.
+ * @return void
+ */
+function ezd_update_post_meta_cache( $post_ids ) {
+	if ( empty( $post_ids ) ) {
+		return;
+	}
+
+	if ( is_object( $post_ids ) && isset( $post_ids->ID ) ) {
+		$post_ids = array( $post_ids->ID );
+	} elseif ( is_array( $post_ids ) ) {
+		$first = reset( $post_ids );
+		if ( is_object( $first ) && isset( $first->ID ) ) {
+			$post_ids = wp_list_pluck( $post_ids, 'ID' );
+		}
+	}
+
+	if ( empty( $post_ids ) ) {
+		return;
+	}
+
+	if ( function_exists( 'update_post_meta_cache' ) ) {
+		update_post_meta_cache( $post_ids );
+		return;
+	}
+
+	if ( function_exists( 'update_postmeta_cache' ) ) {
+		update_postmeta_cache( $post_ids );
+		return;
+	}
+
+	if ( function_exists( 'update_meta_cache' ) ) {
+		update_meta_cache( 'post', $post_ids );
+	}
+}
+
+/**
  * Get post-meta value or theme option value.
  *
  * This function first attempts to retrieve a post-meta value. If the post meta
@@ -75,6 +114,17 @@ function ezd_unlock_themes( ...$themes ) {
 }
 
 /**
+ * Check if footnotes are unlocked
+ * Condition: Promax Active OR (Docy Theme OR Docly Theme)
+ *
+ * @return bool
+ */
+function ezd_is_footnotes_unlocked() {
+	$current_theme = strtolower( get_template() );
+	return ezd_is_promax() || in_array( $current_theme, array( 'docy', 'docly' ), true );
+}
+
+/**
  * Check if the pro plugin and plan is active
  *
  * @return bool|void
@@ -83,6 +133,17 @@ function ezd_is_promax() {
 	if ( class_exists( 'EZD_EazyDocsPro' ) && eaz_fs()->can_use_premium_code() && eaz_fs()->is_plan( 'promax' ) ) {
 		return true;
 	}
+}
+
+/**
+ * Check if footnotes are unlocked
+ * Condition: Promax Active OR (Docy Theme OR Docly Theme)
+ *
+ * @return bool
+ */
+function eazydocs_is_footnotes_unlocked() {
+	$current_theme = strtolower( get_template() );
+	return ezd_is_promax() || in_array( $current_theme, array( 'docy', 'docly' ), true );
 }
 
 /**
@@ -246,9 +307,9 @@ function eazydocs_get_template( $template_name, $args = [] ) {
 function ezd_reading_time() {
     $content     = get_post_field( 'post_content', get_the_ID() );
     $word_count  = str_word_count( wp_strip_all_tags( $content ) );
-    $readingtime = ceil( $word_count / 200 );
+    $readingtime = (int) ceil( $word_count / 200 );
 
-    if ( $readingtime == 1 ) {
+    if ( 1 === $readingtime ) {
         $timer = esc_html__( " minute", 'eazydocs' );
     } else {
         $timer = esc_html__( " minutes", 'eazydocs' );
@@ -265,6 +326,10 @@ function ezd_reading_time() {
  * @return mixed|void
  */
 function ezd_list_pages( $args = '' ) {
+	// Sentinel: Prevent unauthorized access to private docs
+	$can_read_private = current_user_can( 'read_private_docs' ) || current_user_can( 'read_private_posts' );
+	$post_status      = $can_read_private ? [ 'publish', 'private' ] : [ 'publish' ];
+
 	$defaults = array(
 		'depth'        => 0,
 		'show_date'    => '',
@@ -279,7 +344,7 @@ function ezd_list_pages( $args = '' ) {
 		'link_after'   => '',
 		'item_spacing' => 'preserve',
 		'walker'       => '',
-		'post_status'  => ['publish', 'private']
+		'post_status'  => $post_status
 	);
 
 	$r = wp_parse_args( $args, $defaults );
@@ -519,8 +584,8 @@ if ( ! function_exists( 'docs_root_title' ) ) {
 		$breadcrumb_position = 1;
 
 		$is_parents = get_ancestors( $post->ID, 'docs' );
-		$is_parent  = $is_parents[0];
-		if ( $is_parent == 0 ) {
+		$is_parent  = ! empty( $is_parents ) ? $is_parents[0] : 0;
+		if ( 0 === $is_parent ) {
 			$parent_id = $post->ID;
 		} else {
 			$parent_id = $is_parent;
@@ -722,7 +787,7 @@ function eazydocs_one_page( $doc_id ) {
 		'name'        => $post_name,
 	] );
 
-	if ( $post_status != 'draft' ) :
+	if ( 'draft' !== $post_status ) :
 		if ( count( $one_page_docs ) < 1 ) :
 
 			// Generate a secure URL with nonce
@@ -763,13 +828,17 @@ function eazydocs_one_page( $doc_id ) {
 }
 
 /**
- * Convert hexdec color string to rgb(a) string
+ * Convert hexdec color string to rgb(a) string.
  *
- * @param       $color
- * @param false $opacity
- * Convert hexdec color string to rgb(a) string
+ * @deprecated 2.9.0 Use CSS custom properties instead: var(--ezd_brand_color_XX) where XX is the opacity percentage.
+ *                   CSS color-mix() function is now used in SCSS to generate dynamic RGBA colors
+ *                   that automatically inherit from the --ezd_brand_color CSS variable.
+ *                   This function is kept for backward compatibility only.
  *
- * @return string
+ * @param string $color   The hex color value (with or without #).
+ * @param float  $opacity Optional. The opacity value (0-1). Default false.
+ *
+ * @return string RGB or RGBA color string.
  */
 function ezd_hex2rgba( $color, $opacity = false ) {
 	$default = 'rgb(0,0,0)';
@@ -780,14 +849,14 @@ function ezd_hex2rgba( $color, $opacity = false ) {
 	}
 
 	//Sanitize $color if "#" is provided
-	if ( $color[0] == '#' ) {
+	if ( '#' === $color[0] ) {
 		$color = substr( $color, 1 );
 	}
 
 	//Check if color has 6 or 3 characters and get values
-	if ( strlen( $color ) == 6 ) {
+	if ( 6 === strlen( $color ) ) {
 		$hex = array( $color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5] );
-	} elseif ( strlen( $color ) == 3 ) {
+	} elseif ( 3 === strlen( $color ) ) {
 		$hex = array( $color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2] );
 	} else {
 		return $default;
@@ -918,8 +987,7 @@ function ezd_onepage_docs() {
 
     <p>
         <label for="ezd_doc_content_type"><?php esc_html_e( 'Content Type', 'eazydocs' ); ?></label><br/>
-        <input type="text" disabled name="ezd_doc_content_type" id="ezd_doc_content_type"
-               value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'ezd_doc_content_type', true ) ); ?>" class="widefat"/>
+        <input type="text" disabled name="ezd_doc_content_type" id="ezd_doc_content_type" value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'ezd_doc_content_type', true ) ); ?>" class="widefat"/>
     </p>
 
     <p>
@@ -1250,9 +1318,9 @@ function eaz_get_nestable_parent_id( $page_id ) {
 
 	// Execute the query
 	// @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery.DirectQuery
-	$parent = $wpdb->get_var( $query );
+	$parent = (int) $wpdb->get_var( $query );
 
-	if ( $parent == 0 ) {
+	if ( 0 === $parent ) {
 		return $page_id;
 	} else {
 		return eaz_get_nestable_parent_id( $parent );
@@ -1293,6 +1361,68 @@ function ezd_all_shortcodes( $content ) {
 	}
 
 	return $return;
+}
+
+/**
+ * Allowed HTML for docs navigation markup.
+ *
+ * We generate the docs sidebar tree markup ourselves (via wp_list_pages + custom Walker).
+ * Some templates were using wp_kses_post(), which strips <svg> tags and causes our
+ * visibility lock icons to disappear.
+ *
+ * @return array
+ */
+function ezd_kses_allowed_docs_nav_html() {
+	$allowed = wp_kses_allowed_html( 'post' );
+
+	// Allow inline SVG icons used by docs navigation.
+	$allowed['svg'] = array(
+		'class'            => true,
+		'xmlns'            => true,
+		'width'            => true,
+		'height'           => true,
+		'viewbox'          => true,
+		'viewBox'          => true,
+		'fill'             => true,
+		'stroke'           => true,
+		'stroke-width'     => true,
+		'stroke-linecap'   => true,
+		'stroke-linejoin'  => true,
+		'role'             => true,
+		'aria-hidden'      => true,
+		'focusable'        => true,
+	);
+	$allowed['path'] = array(
+		'd'               => true,
+		'fill'            => true,
+		'stroke'          => true,
+		'stroke-width'    => true,
+		'stroke-linecap'  => true,
+		'stroke-linejoin' => true,
+	);
+	$allowed['rect'] = array(
+		'x'      => true,
+		'y'      => true,
+		'width'  => true,
+		'height' => true,
+		'rx'     => true,
+		'ry'     => true,
+		'fill'   => true,
+		'stroke' => true,
+	);
+	$allowed['circle'] = array(
+		'cx'    => true,
+		'cy'    => true,
+		'r'     => true,
+		'fill'  => true,
+		'stroke'=> true,
+	);
+	$allowed['g'] = array(
+		'fill'   => true,
+		'stroke' => true,
+	);
+
+	return apply_filters( 'ezd_kses_allowed_docs_nav_html', $allowed );
 }
 
 add_filter( 'body_class', function( $classes ) {
@@ -1373,46 +1503,91 @@ add_filter('body_class', 'ezd_single_banner');
  * Editor & Administrator access
  */
 function ezd_is_admin_or_editor( $post_id = '', $action = '' ) {
-	if ( $action == 'delete' && get_current_user_id() == get_post_field( 'post_author', $post_id ) ) {
-		return true;
-	} elseif ( $action == 'edit' && current_user_can('edit_posts') ) {
-		return true;
-	} elseif ( current_user_can('manage_options') ) {
-		return true;
+	if ( empty( $post_id ) ) {
+		return current_user_can( 'edit_docs' ) || current_user_can( 'manage_options' );
 	}
-	return false;
+
+	if ( $action == 'delete' ) {
+		return current_user_can( 'delete_doc', $post_id ) || current_user_can( 'manage_options' );
+	}
+
+	return current_user_can( 'edit_doc', $post_id ) || current_user_can( 'manage_options' );
 }
 
 /**
  * Internal doc secured by user role
+ * 
+ * Uses new settings: private_doc_access_type, private_doc_allowed_roles
+ * Falls back to legacy settings: private_doc_user_restriction for backward compatibility
+ * 
  * @param int $doc_id
  */
-function ezd_internal_doc_security( $doc_id =  0 ) {
+function ezd_internal_doc_security( $doc_id = 0 ) {
 	// Private doc restriction
 	if ( get_post_status( $doc_id ) == 'private' ) {
-
-		$user_group  = ezd_get_opt('private_doc_user_restriction');
-		$is_all_user = $user_group['private_doc_all_user'] ?? 0;
-		if ( $is_all_user == 0 ) {
-
-			// current user role
-			$current_user_id    = get_current_user_id();
-			$current_user       = new WP_User( $current_user_id );
-			$current_roles      = ( array ) $current_user->roles;
-
-			// All selected roles
-			$private_doc_roles  = $user_group['private_doc_roles'] ?? [];
-			$matching_roles 	= array_intersect($current_roles, $private_doc_roles);
-
-			if ( empty( $matching_roles )) {
-				if ( is_singular( 'docs' ) ) {
-					$message = esc_html__("You don't have permission to access this document!", 'eazydocs');
-					$output = sprintf('<div class="ezd-lg-col-9"><span class="ezd-doc-warning-wrap"><i class="icon_lock"></i><span>%s</span></span></div>', $message);
-					echo wp_kses_post($output);
+		
+		// Try new settings first
+		$access_type = ezd_get_opt( 'private_doc_access_type', '' );
+		
+		if ( ! empty( $access_type ) ) {
+			// Using new settings
+			if ( $access_type === 'all_users' ) {
+				// All logged-in users can access - just check if logged in
+				if ( is_user_logged_in() ) {
+					return true;
 				}
-				return null;
+			} else {
+				// Specific roles only
+				$allowed_roles = ezd_get_opt( 'private_doc_allowed_roles', array( 'administrator', 'editor' ) );
+				if ( ! is_array( $allowed_roles ) ) {
+					$allowed_roles = array( $allowed_roles );
+				}
+				
+				// Current user roles
+				$current_user_id = get_current_user_id();
+				$current_user    = new WP_User( $current_user_id );
+				$current_roles   = (array) $current_user->roles;
+				
+				// Check if user has any allowed role
+				$matching_roles = array_intersect( $current_roles, $allowed_roles );
+				
+				if ( ! empty( $matching_roles ) || current_user_can( 'manage_options' ) ) {
+					return true;
+				}
+			}
+		} else {
+			// Fallback to legacy settings
+			$user_group  = ezd_get_opt( 'private_doc_user_restriction' );
+			$is_all_user = $user_group['private_doc_all_user'] ?? 0;
+			
+			if ( $is_all_user === '1' || $is_all_user === 1 || $is_all_user === true ) {
+				// All logged-in users can access
+				if ( is_user_logged_in() ) {
+					return true;
+				}
+			} else {
+				// Current user role
+				$current_user_id = get_current_user_id();
+				$current_user    = new WP_User( $current_user_id );
+				$current_roles   = (array) $current_user->roles;
+
+				// All selected roles
+				$private_doc_roles = $user_group['private_doc_roles'] ?? array();
+				$matching_roles    = array_intersect( $current_roles, $private_doc_roles );
+
+				if ( ! empty( $matching_roles ) || current_user_can( 'manage_options' ) ) {
+					return true;
+				}
 			}
 		}
+		
+		// Access denied - show message
+		if ( is_singular( 'docs' ) ) {
+			$denied_message = ezd_get_opt( 'role_visibility_denied_message', esc_html__( "You don't have permission to access this document!", 'eazydocs' ) );
+			$output = sprintf( '<div class="ezd-lg-col-9"><span class="ezd-doc-warning-wrap"><i class="icon_lock"></i><span>%s</span></span></div>', esc_html( $denied_message ) );
+			echo wp_kses_post( $output );
+		}
+		return null;
 	}
 	return true;
 }
@@ -1425,8 +1600,8 @@ function ezd_perform_edit_delete_actions( $action = 'delete', $docID = 0 ){
 	$current_user_id = get_current_user_id();
 	$inline_styles   = "margin: 50px auto; background: #f5f3f3;padding: 10px 80px;	width: max-content;	font-size: 16px;font-weight: 500;font-family: system-ui;border-radius: 3px;	color: #363636;";
 
-	// Check if the current user has the 'delete_posts' capability
-	if ( current_user_can($action.'_posts') && $docID ) {
+	// Check if the current user has the documentation specific capability
+	if ( current_user_can( $action . '_doc', $docID ) && $docID ) {
 		// Check if the current user is the author of the post
 		$post_author_id = (int) get_post_field('post_author', $docID);
 
@@ -1614,46 +1789,38 @@ add_filter('the_content', 'ezd_update_footnotes_content');
  * Used in the settings page
  */
 function customizer_visibility_callback() {
-    $archive_url  = 'javascript:void(0)';
-    $single_url   = 'javascript:void(0)';
-    $target       = '_self';
-    $no_access    = 'no-customizer-access';
+	$archive_url = 'javascript:void(0)';
+	$single_url  = 'javascript:void(0)';
+	$target      = '_self';
+	$no_access   = 'no-customizer-access';
 
-    // Get current user data
-    if ( current_user_can( 'manage_options' ) ) {
-        $doc_id   = ezd_get_opt( 'docs-slug' );
-        $doc_page = get_post_field( 'post_name', $doc_id );
+	if ( current_user_can( 'manage_options' ) ) {
+		$archive_id = ezd_get_opt( 'docs-slug' );
 
-        $args = array(
-            'post_type'      => 'docs',
-            'posts_per_page' => -1,
-            'orderby'        => 'menu_order',
-            'order'          => 'asc'
-        );
+		$first_doc = get_posts( array(
+			'post_type'      => 'docs',
+			'posts_per_page' => 1,
+			'orderby'        => 'menu_order',
+			'order'          => 'ASC',
+			'post_status'    => 'publish',
+		) );
 
-        $recent_posts = get_posts( $args );
-        $post_url     = '';
-        $post_count   = 0;
+		$doc_id = ! empty( $first_doc ) ? $first_doc[0]->ID : $archive_id;
 
-        foreach ( $recent_posts as $recent ) {
-            $post_url  = $recent->ID;
-            $post_count++;
-        }
-
-        $no_access  = '';
-        $docs_url   = ( $post_count > 0 ) ? $post_url : $doc_id;
-        $archive_url = admin_url('customize.php?url=') . site_url('/') . '?p=' . $doc_id . '&autofocus[panel]=docs-page&autofocus[section]=docs-archive-page';
-        $single_url  = admin_url('customize.php?url=') . site_url('/') . '?p=' . $docs_url . '&autofocus[panel]=docs-page&autofocus[section]=docs-single-page';
-        $target      = '_blank';
-    }
-    ?>
-    <a href="<?php echo esc_attr( $archive_url ); ?>" class="<?php echo esc_attr( $no_access ); ?>" target="<?php echo esc_attr( $target ); ?>" id="get_docs_archive">
-        <?php echo esc_html__( 'Docs Archive', 'eazydocs' ); ?>
-    </a>
-    <a href="<?php echo esc_attr( $single_url ); ?>" class="<?php echo esc_attr( $no_access ); ?>" target="<?php echo esc_attr( $target ); ?>" id="get_docs_single">
-        <?php echo esc_html__( 'Single Doc', 'eazydocs' ); ?>
-    </a>
-    <?php
+		$customize_base = admin_url( 'customize.php?url=' ) . site_url( '/' );
+		$archive_url    = $customize_base . '?p=' . $archive_id . '&autofocus[panel]=docs-page&autofocus[section]=docs-archive-page';
+		$single_url     = $customize_base . '?p=' . $doc_id . '&autofocus[panel]=docs-page&autofocus[section]=docs-single-page';
+		$no_access      = '';
+		$target         = '_blank';
+	}
+	?>
+	<a href="<?php echo esc_attr( $archive_url ); ?>" class="<?php echo esc_attr( $no_access ); ?>" target="<?php echo esc_attr( $target ); ?>" id="get_docs_archive">
+		<?php echo esc_html__( 'Docs Archive', 'eazydocs' ); ?>
+	</a>
+	<a href="<?php echo esc_attr( $single_url ); ?>" class="<?php echo esc_attr( $no_access ); ?>" target="<?php echo esc_attr( $target ); ?>" id="get_docs_single">
+		<?php echo esc_html__( 'Single Doc', 'eazydocs' ); ?>
+	</a>
+	<?php
 }
 
 /**
@@ -1729,19 +1896,54 @@ function has_ezd_mark_text_class() {
 }
 
 /**
+ * Render comments template for docs pages
+ */
+function ezd_get_comments_template() {
+	
+	// Block theme → render comments block (loads correct styles)
+	if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+		echo do_blocks( '<!-- wp:comments /--><!-- wp:post-comments-form /-->' );
+	} else {
+		// Classic theme → native comments.php
+		comments_template();
+	}
+}
+
+/**
  * Assigns or removes the 'read_private_docs' capability to user roles
- * based on the EazyDocs 'private_doc_user_restriction' settings.
+ * based on the EazyDocs private doc settings.
+ * 
+ * Uses new settings: private_doc_access_type, private_doc_allowed_roles
+ * Falls back to legacy settings: private_doc_user_restriction for backward compatibility
  */
 function ezd_read_private_docs_cap_to_user() {
-    $user_group  = ezd_get_opt('private_doc_user_restriction');
-    $is_all_user = $user_group['private_doc_all_user'] ?? 0;
-
-    if ( $is_all_user === '1' ) {
-        $get_users_role = array_values(array_keys(eazydocs_user_role_names()));
+    // Try new settings first
+    $access_type = ezd_get_opt( 'private_doc_access_type', '' );
+    
+    if ( ! empty( $access_type ) ) {
+        // Using new settings
+        if ( $access_type === 'all_users' ) {
+            // All logged-in users can access
+			$get_users_role = function_exists( 'eazydocs_user_role_names' ) ? array_values( array_keys( eazydocs_user_role_names() ) ) : array();
+        } else {
+            // Specific roles only
+            $get_users_role = ezd_get_opt( 'private_doc_allowed_roles', array( 'administrator', 'editor' ) );
+            if ( ! is_array( $get_users_role ) ) {
+                $get_users_role = array( $get_users_role );
+            }
+        }
     } else {
-        $get_users_role = $user_group['private_doc_roles'] ?? [];
-        if ( ! is_array($get_users_role) ) {
-            $get_users_role = [$get_users_role]; // Cast to array if not already
+        // Fallback to legacy settings for backward compatibility
+        $user_group  = ezd_get_opt( 'private_doc_user_restriction' );
+        $is_all_user = $user_group['private_doc_all_user'] ?? 0;
+
+        if ( $is_all_user === '1' || $is_all_user === 1 || $is_all_user === true ) {
+			$get_users_role = function_exists( 'eazydocs_user_role_names' ) ? array_values( array_keys( eazydocs_user_role_names() ) ) : array();
+        } else {
+            $get_users_role = $user_group['private_doc_roles'] ?? array();
+            if ( ! is_array( $get_users_role ) ) {
+                $get_users_role = array( $get_users_role );
+            }
         }
     }
 
@@ -1766,49 +1968,75 @@ add_action( 'init', 'ezd_read_private_docs_cap_to_user' );
  * Assigns or removes the 'add or edit_docs' capability to user roles
  */
 function ezd_docs_cap_to_user() {
-    $users_role 	= ezd_get_opt( 'ezd_add_editable_roles' );
-	$default_roles 	= ['administrator', 'editor', 'author'];
-	$active_roles 	= is_array( $users_role ) && ! empty( $users_role ) ? $users_role : $default_roles;
+	$collaboration_roles = ezd_get_opt( 'ezd_add_editable_roles' );
+	$write_access_roles  = ezd_get_opt( 'docs-write-access' );
+	$default_roles       = array( 'administrator', 'editor', 'author' );
 
-    $doc_caps = [
-        'edit_doc',
-        'edit_docs',
-        'edit_others_docs',
-        'edit_private_docs',
-        'publish_docs',
-        'edit_published_docs',
-        'delete_doc',
-        'delete_docs',
-        'delete_others_docs',
-        'delete_private_docs',
-        'delete_published_docs'
-    ];
+	if ( ! is_array( $collaboration_roles ) ) {
+		$collaboration_roles = array_filter( array( $collaboration_roles ) );
+	}
 
-    // Get all roles
-    global $wp_roles;
-    if ( ! isset( $wp_roles ) ) {
-        $wp_roles = new WP_Roles();
-    }
+	if ( ! is_array( $write_access_roles ) ) {
+		$write_access_roles = array_filter( array( $write_access_roles ) );
+	}
 
-    foreach ( $wp_roles->roles as $role_key => $role_data ) {
-        $role = get_role( $role_key );
-        if ( ! $role ) {
-            continue;
-        }
+	$active_roles = array_unique( array_merge( $collaboration_roles, $write_access_roles ) );
+	$active_roles = ! empty( $active_roles ) ? $active_roles : $default_roles;
 
-        // Assign or remove caps based on role
-        if ( in_array( $role_key, $active_roles, true ) ) {
-            // Add capabilities to active roles
-            foreach ( $doc_caps as $cap ) {
-                $role->add_cap( $cap );
-            }
-        } else {
-            // Remove capabilities from inactive roles
-            foreach ( $doc_caps as $cap ) {
-                $role->remove_cap( $cap );
-            }
-        }
-    }
+	$author_caps = array(
+		'edit_doc',
+		'edit_docs',
+		'publish_docs',
+		'delete_doc',
+		'delete_docs',
+		'edit_published_docs',
+		'delete_published_docs'
+	);
+
+	$manager_caps = array(
+		'edit_others_docs',
+		'delete_others_docs',
+		'edit_private_docs',
+		'read_private_docs',
+		'delete_private_docs',
+	);
+
+	// Get all roles
+	global $wp_roles;
+	if ( ! isset( $wp_roles ) ) {
+		$wp_roles = new WP_Roles();
+	}
+
+	foreach ( $wp_roles->roles as $role_key => $role_data ) {
+		$role = get_role( $role_key );
+		if ( ! $role ) {
+			continue;
+		}
+
+		if ( in_array( $role_key, $active_roles, true ) ) {
+			// Grant Author capabilities to all active roles
+			foreach ( $author_caps as $cap ) {
+				$role->add_cap( $cap );
+			}
+
+			// Grant Manager capabilities only to roles that can normally edit others' posts
+			if ( $role->has_cap( 'edit_others_posts' ) ) {
+				foreach ( $manager_caps as $cap ) {
+					$role->add_cap( $cap );
+				}
+			} else {
+				foreach ( $manager_caps as $cap ) {
+					$role->remove_cap( $cap );
+				}
+			}
+		} else {
+			// Remove all documentation capabilities from inactive roles
+			$all_caps = array_merge( $author_caps, $manager_caps );
+			foreach ( $all_caps as $cap ) {
+				$role->remove_cap( $cap );
+			}
+		}
+	}
 }
 add_action( 'init', 'ezd_docs_cap_to_user' );
 
@@ -1827,7 +2055,8 @@ add_filter('show_admin_bar', function( $show ) {
 
 
 /**
- * 404 should return if the user has not private docs readability
+ * Handle private docs access based on settings.
+ * Respects private_doc_mode setting: 'login' redirects to login page, 'none' shows 404.
  */
 add_action( 'template_redirect', 'ezd_private_docs_access' );
 
@@ -1840,8 +2069,34 @@ function ezd_private_docs_access() {
 
             // If user does not have permission to read private docs
             if ( ! current_user_can( 'read_private_docs' ) ) {
+                
+                // Get the private doc mode setting (only for pro users)
+                $private_doc_mode = ezd_is_premium() ? ezd_get_opt( 'private_doc_mode', 'none' ) : 'none';
+                
+                // If mode is 'login', redirect to login page instead of showing 404
+                if ( $private_doc_mode === 'login' ) {
+                    $login_page_id = ezd_get_opt( 'private_doc_login_page', '' );
+                    
+                    if ( ! empty( $login_page_id ) ) {
+                        $login_page_url = get_permalink( $login_page_id );
+                        
+                        if ( $login_page_url ) {
+                            // Add redirect parameters
+                            $permalink_structure = get_option( 'permalink_structure' );
+                            $separator = empty( $permalink_structure ) ? '&' : '?';
+                            $redirect_url = $login_page_url . $separator . 'post_id=' . $post->ID . '&private_doc=yes';
+                            
+                            wp_safe_redirect( $redirect_url );
+                            exit;
+                        }
+                    }
+                    
+                    // Fallback to WordPress login if no custom login page set
+                    wp_safe_redirect( wp_login_url( get_permalink( $post->ID ) ) );
+                    exit;
+                }
 
-                // Show 404
+                // Default behavior: Show 404
                 global $wp_query;
                 $wp_query->set_404();
                 status_header( 404 );
@@ -1869,7 +2124,7 @@ function ezd_docs_slug() {
     $custom_slug  = ezd_get_opt( 'docs-type-slug' );
     $safe_slug 	  = preg_replace( '/[^a-zA-Z0-9-_]/', '-', $custom_slug );
 	
-	if ( $docs_url == 'custom-slug' || $permalink === '' || $permalink === '/archives/%post_id%' ) {
+	if ( 'custom-slug' === $docs_url || $permalink === '' || $permalink === '/archives/%post_id%' ) {
 		return $safe_slug ?: 'docs';
 	}
 
@@ -2373,4 +2628,69 @@ function ezd_manual_import_sample_data( $file ) {
 	}
 
 	return true;
+}
+if ( ! class_exists( 'EazyDocs_Article_Walker' ) ) {
+	class EazyDocs_Article_Walker extends Walker_Page {
+		public function start_el( &$output, $data_object, $depth = 0, $args = array(), $current_object_id = 0 ) {
+			$page = $data_object;
+			$css_class = array( 'page_item', 'page-item-' . $page->ID );
+
+			if ( isset( $args['pages_with_children'][ $page->ID ] ) ) {
+				$css_class[] = 'page_item_has_children';
+			}
+
+			if ( ! empty( $current_object_id ) ) {
+				$_current_page = get_post( $current_object_id );
+				if ( $_current_page && in_array( $page->ID, $_current_page->ancestors ) ) {
+					$css_class[] = 'current_page_ancestor';
+				}
+				if ( $page->ID == $current_object_id ) {
+					$css_class[] = 'current_page_item';
+				} elseif ( $_current_page && $page->ID == $_current_page->post_parent ) {
+					$css_class[] = 'current_page_parent';
+				}
+			} elseif ( get_option( 'page_for_posts' ) == $page->ID ) {
+				$css_class[] = 'current_page_parent';
+			}
+
+			$css_classes = implode( ' ', apply_filters( 'page_css_class', $css_class, $page, $depth, $args, $current_object_id ) );
+			$css_classes = $css_classes ? ' class="' . esc_attr( $css_classes ) . '"' : '';
+
+			if ( '' === $page->post_title ) {
+				$page->post_title = sprintf( __( '#%d (no title)', 'eazydocs' ), $page->ID );
+			}
+
+			$args['link_before'] = empty( $args['link_before'] ) ? '' : $args['link_before'];
+			$args['link_after']  = empty( $args['link_after'] ) ? '' : $args['link_after'];
+
+			$badge_html = '';
+			if ( function_exists( 'ezdpro_badge' ) && ezd_is_premium() ) {
+				$badge_html = ezdpro_badge( $page->ID );
+			}
+
+			$atts                 = array();
+			$atts['href']         = get_permalink( $page->ID );
+			$atts['aria-current'] = ( $page->ID == $current_object_id ) ? 'page' : '';
+
+			$atts = apply_filters( 'page_menu_link_attributes', $atts, $page, $depth, $args, $current_object_id );
+
+			$attributes = '';
+			foreach ( $atts as $attr => $value ) {
+				if ( is_scalar( $value ) && '' !== $value && false !== $value ) {
+					$value       = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
+					$attributes .= ' ' . $attr . '="' . $value . '"';
+				}
+			}
+
+			$output .= sprintf(
+				'<li%s><a%s>%s%s%s%s</a>',
+				$css_classes,
+				$attributes,
+				$args['link_before'],
+				apply_filters( 'the_title', $page->post_title, $page->ID ),
+				$args['link_after'],
+				$badge_html
+			);
+		}
+	}
 }

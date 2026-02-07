@@ -76,7 +76,7 @@ function ezd_child_docs_progress_bar( $post_id ) {
      echo '<span class="progress-text">';
 
      if ( $positive || $negative ) {
-         echo '<progress id="file" value="' . esc_attr($positive) . '" max="' . esc_attr($sum_votes) . '" title="' . esc_attr($positive_title . $negative_title) . '"> </progress>';
+         echo '<progress value="' . esc_attr($positive) . '" max="' . esc_attr($sum_votes) . '" title="' . esc_attr($positive_title . $negative_title) . '" aria-label="' . esc_attr($positive_title . $negative_title) . '"> </progress>';
      } else {
          esc_html_e( 'No rates', 'eazydocs' );
      }
@@ -110,6 +110,56 @@ function ezd_child_docs_left_content( $doc_item, $depth = 1, $item = []) {
                  <?php echo esc_html( get_the_title( $doc_item ) ); ?>
              </a>
              <?php 
+             // Get the post status to determine visibility
+             $post_status = get_post_status( $doc_item );
+             
+             // Check for role-based visibility (PRO MAX feature)
+             $has_role_visibility = false;
+             $role_visibility_roles = [];
+             if ( function_exists( 'ezd_is_promax' ) && ezd_is_promax() ) {
+                 $role_visibility_roles = get_post_meta( $doc_item, 'ezd_role_visibility', true );
+                 if ( ! empty( $role_visibility_roles ) && is_array( $role_visibility_roles ) ) {
+                     $has_role_visibility = true;
+                 }
+             }
+             
+             // Show visibility badges
+             if ( $post_status === 'private' ) :
+                 ?>
+                 <span class="ezd-visibility-badge ezd-visibility-private" title="<?php esc_attr_e( 'Private Doc - Visible to logged-in users only', 'eazydocs' ); ?>">
+                     <span class="dashicons dashicons-lock"></span>
+                 </span>
+                 <?php 
+                 if ( $has_role_visibility ) : 
+                     $roles_count = count( $role_visibility_roles );
+                     $roles_list = implode( ', ', array_slice( $role_visibility_roles, 0, 3 ) );
+                     if ( $roles_count > 3 ) {
+                         $roles_list .= '...';
+                     }
+                     ?>
+                     <span class="ezd-visibility-badge ezd-visibility-role" title="<?php echo esc_attr( sprintf( __( 'Role-Based Access: %s', 'eazydocs' ), $roles_list ) ); ?>">
+                         <span class="dashicons dashicons-groups"></span>
+                     </span>
+                     <?php 
+                 endif;
+             elseif ( $post_status === 'draft' ) :
+                 ?>
+                 <span class="ezd-visibility-badge ezd-visibility-draft" title="<?php esc_attr_e( 'Draft', 'eazydocs' ); ?>">
+                     <span class="dashicons dashicons-edit"></span>
+                 </span>
+                 <?php
+             endif;
+             
+             // Check if password protected
+             $post = get_post( $doc_item );
+             if ( ! empty( $post->post_password ) ) :
+                 ?>
+                 <span class="ezd-visibility-badge ezd-visibility-protected" title="<?php esc_attr_e( 'Password Protected', 'eazydocs' ); ?>">
+                     <span class="dashicons dashicons-admin-network"></span>
+                 </span>
+                 <?php
+             endif;
+             
              if ( $child_count > 0 ) : 
                 ?>
                  <span class="count ezd-badge">
@@ -128,7 +178,7 @@ function ezd_child_docs_left_content( $doc_item, $depth = 1, $item = []) {
                      </li>
                  <?php else : ?>
                      <li class="duplicate">
-                         <a href="javascript:void(0);" class="eazydocs-pro-notice" title="<?php esc_attr_e('Duplicate this doc with the child docs.', 'eazydocs'); ?>">
+                         <a href="javascript:void(0);" class="eazydocs-pro-notice" aria-label="<?php esc_attr_e('Duplicate this doc with the child docs.', 'eazydocs'); ?>" title="<?php esc_attr_e('Duplicate this doc with the child docs.', 'eazydocs'); ?>">
                              <span class="dashicons dashicons-admin-page"></span>
                          </a>
                      </li>
@@ -137,7 +187,7 @@ function ezd_child_docs_left_content( $doc_item, $depth = 1, $item = []) {
                  if ( $is_premium ) :
                      ?>
                      <li>
-                         <a href="<?php echo esc_url(admin_url('admin.php')); ?>?Create_Child=yes&childID=<?php echo esc_attr($doc_item); ?>&_wpnonce=<?php echo esc_attr(wp_create_nonce($doc_item)); ?>&child=" class="child-doc" title="<?php esc_attr_e('Add new doc under this doc', 'eazydocs'); ?>">
+                         <a href="<?php echo esc_url(admin_url('admin.php')); ?>?Create_Child=yes&childID=<?php echo esc_attr($doc_item); ?>&_wpnonce=<?php echo esc_attr(wp_create_nonce($doc_item)); ?>&child=" class="child-doc" aria-label="<?php esc_attr_e('Add new doc under this doc', 'eazydocs'); ?>" title="<?php esc_attr_e('Add new doc under this doc', 'eazydocs'); ?>">
                              <span class="dashicons dashicons-plus-alt2"></span>
                          </a>
                      </li>
@@ -156,7 +206,7 @@ function ezd_child_docs_left_content( $doc_item, $depth = 1, $item = []) {
              ?>
 
              <li>
-                 <a href="<?php the_permalink( $doc_item ); ?>" target="_blank" title="<?php esc_attr_e('View this doc item in new tab', 'eazydocs'); ?>">
+                 <a href="<?php the_permalink( $doc_item ); ?>" target="_blank" aria-label="<?php esc_attr_e('View this doc item in new tab', 'eazydocs'); ?>" title="<?php esc_attr_e('View this doc item in new tab', 'eazydocs'); ?>">
                      <span class="dashicons dashicons-external"></span>
                  </a>
              </li>
@@ -165,7 +215,7 @@ function ezd_child_docs_left_content( $doc_item, $depth = 1, $item = []) {
              if ( ezd_is_admin_or_editor( $doc_item, 'delete' ) ) : 
                 ?>
                  <li class="delete">
-                     <a href="<?php echo esc_url(admin_url('admin.php')); ?>?Section_Delete=yes&_wpnonce=<?php echo esc_attr( wp_create_nonce( $doc_item ) ); ?>&ID=<?php echo esc_attr( $doc_item ); ?>" class="section-delete" title="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>">
+                     <a href="<?php echo esc_url(admin_url('admin.php')); ?>?Section_Delete=yes&_wpnonce=<?php echo esc_attr( wp_create_nonce( $doc_item ) ); ?>&ID=<?php echo esc_attr( $doc_item ); ?>" class="section-delete" aria-label="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>" title="<?php esc_attr_e( 'Move to Trash', 'eazydocs' ); ?>">
                          <span class="dashicons dashicons-trash"></span>
                      </a>
                  </li>

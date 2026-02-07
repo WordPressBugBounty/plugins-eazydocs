@@ -24,24 +24,24 @@ if ( is_array( $depth_one_parents ) ) :
         ?>
         <div class="easydocs-tab<?php echo esc_attr( $active ); ?>" id="tab-<?php echo esc_attr( $item ); ?>">
             <div class="easydocs-filter-container">
-                <ul class="single-item-filter">
-                    <li class="easydocs-btn easydocs-btn-black-light easydocs-btn-rounded easydocs-btn-sm is-active" data-filter="all">
+                <ul class="single-item-filter" role="group" aria-label="<?php esc_attr_e('Filter documentation by status', 'eazydocs'); ?>">
+                    <li class="easydocs-btn easydocs-btn-black-light easydocs-btn-rounded easydocs-btn-sm is-active" data-filter="all" role="button" tabindex="0" aria-pressed="true" aria-controls="nestable-<?php echo esc_attr( $item ); ?>">
                         <span class="dashicons dashicons-media-document"></span>
                         <?php esc_html_e('All articles', 'eazydocs'); ?>
                     </li>
-                    <li class="easydocs-btn easydocs-btn-green-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".publish">
+                    <li class="easydocs-btn easydocs-btn-green-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".publish" role="button" tabindex="0" aria-pressed="false" aria-controls="nestable-<?php echo esc_attr( $item ); ?>">
                         <span class="dashicons dashicons-admin-site-alt3"></span>
                         <?php esc_html_e('Public', 'eazydocs'); ?>
                     </li>
-                    <li class="easydocs-btn easydocs-btn-blue-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".private">
+                    <li class="easydocs-btn easydocs-btn-blue-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".private" role="button" tabindex="0" aria-pressed="false" aria-controls="nestable-<?php echo esc_attr( $item ); ?>">
                         <span class="dashicons dashicons-privacy"></span>
                         <?php esc_html_e('Private', 'eazydocs'); ?>
                     </li>
-                    <li class="easydocs-btn easydocs-btn-orange-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".protected">
+                    <li class="easydocs-btn easydocs-btn-orange-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".protected" role="button" tabindex="0" aria-pressed="false" aria-controls="nestable-<?php echo esc_attr( $item ); ?>">
                         <span class="dashicons dashicons-lock"></span>
                         <?php esc_html_e('Protected', 'eazydocs'); ?>
                     </li>
-                    <li class="easydocs-btn easydocs-btn-gray-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".draft">
+                    <li class="easydocs-btn easydocs-btn-gray-light easydocs-btn-rounded easydocs-btn-sm" data-filter=".draft" role="button" tabindex="0" aria-pressed="false" aria-controls="nestable-<?php echo esc_attr( $item ); ?>">
                         <span class="dashicons dashicons-edit-page"></span>
                         <?php esc_html_e('Draft', 'eazydocs'); ?>
                     </li>
@@ -159,11 +159,11 @@ if ( is_array( $depth_one_parents ) ) :
             </div>
 
             <?php 
-            if ( current_user_can( 'edit_posts' ) ) :                
+            if ( current_user_can( 'publish_docs' ) ) :                
                 $parent_id   = absint( $item );
                 $nonce       = wp_create_nonce( $parent_id );
                 ?>
-                <button class="button button-info section-doc" id="section-doc" name="submit" data-url="<?php echo esc_url( admin_url( 'admin.php' ) . "?Create_Section=yes&_wpnonce={$nonce}&parentID={$parent_id}&is_section=" );; ?>">
+                <button class="button button-info section-doc" name="submit" data-url="<?php echo esc_url( admin_url( 'admin.php' ) . "?Create_Section=yes&_wpnonce={$nonce}&parentID={$parent_id}&is_section=" );; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Add Section to %s', 'eazydocs' ), $parent_title ) ); ?>">
                     <?php esc_html_e( 'Add Section', 'eazydocs' ); ?>
                 </button>
                 <?php

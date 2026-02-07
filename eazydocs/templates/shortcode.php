@@ -56,8 +56,10 @@ if ( $docs ) :
 							<?php
 						}
 						?>
-                        <div class="doc-top ezd-d-flex ezd-align-items-start">
-							<?php echo wp_get_attachment_image( get_post_thumbnail_id( $main_doc['doc']->ID ), 'ezd_searrch_thumb50x50' ); ?>
+                        <div class="doc-top ezd-d-flex ezd-align-items-start<?php echo $img_size === 'full' ? ' ezd-img-full' : ''; ?>">
+							<?php 
+							echo wp_get_attachment_image( get_post_thumbnail_id( $main_doc['doc']->ID ), $img_size );
+							 ?>
                             <a class="doc_tag_title" href="<?php the_permalink( $main_doc['doc']->ID ); ?>">
 								<?php 
 								if ( ! empty( $main_doc['doc']->post_title ) ) : 
@@ -87,6 +89,7 @@ if ( $docs ) :
                                     <li>
                                         <a href="<?php the_permalink( $item->ID ); ?>">
 											<?php echo esc_html( $item->post_title ); ?>
+											<?php if ( function_exists('ezdpro_badge') && ezd_is_premium() ) echo ezdpro_badge( $item->ID ); ?>
                                         </a>
                                     </li>
 								    <?php

@@ -4,7 +4,7 @@ Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.9.0
+Stable tag: 2.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -48,59 +48,61 @@ From small teams to enterprise organizations, EazyDocs is the go-to solution for
 3. Go to **EazyDocs > Getting Started**.
 4. Create your first knowledge base and organize with drag-and-drop.
 
-**Need Help?**
-*   [📚 Full Documentation](https://helpdesk.spider-themes.net/docs/eazydocs-wordpress-plugin/)
-*   [🎥 Video Tutorials](https://www.youtube.com/playlist?list=PLeCjxMdg411XgYy-AekTE-bhvCXQguZWJ)
-*   [💬 Support Forum](https://wordpress.org/support/plugin/eazydocs/)
-*   [🚀 Live Demo](https://wordpress-plugins.spider-themes.net/eazydocs-pro/)
-*   [⭐ Upgrade to Premium](https://eazydocs.spider-themes.net/)
+==Need Help?==
+*   [Full Documentation](https://helpdesk.spider-themes.net/docs/eazydocs-wordpress-plugin/)
+*   [Video Tutorials](https://www.youtube.com/playlist?list=PLeCjxMdg411XgYy-AekTE-bhvCXQguZWJ)
+*   [Support Forum](https://wordpress.org/support/plugin/eazydocs/)
+*   [Live Demo](https://wordpress-plugins.spider-themes.net/eazydocs-pro/)
+*   [Upgrade to Premium](https://eazydocs.spider-themes.net/)
 
-== Core Features ==
+== Core Features👇==
 
-### 🤖 AI-Powered Capabilities (via Antimanual)
+### AI-Powered Capabilities (via Antimanual)
 *   **Intelligent AI Chatbot** – Instant, accurate answers trained on your documentation (GPT-4, GPT-5, Gemini support).
 *   **AI Documentation Generator** – Create comprehensive docs automatically with custom tone and language.
 *   **AI-Powered Search** – Semantic search that understands user intent, not just keywords.
 *   **Auto-Posting & Content Automation** – Schedule and publish AI-generated documentation.
-*   **bbPress Forum Integration** – Convert forum discussions into permanent knowledge base articles.
+*   **Forum Integration** – Convert forum discussions into permanent knowledge base articles.
 
-### 📂 Documentation Management
+### Documentation Management
 *   **Unlimited Knowledge Bases** – Create as many as you need without limitations.
 *   **Hierarchical Organization** – Support for 4-level doc depth (5 levels with Pro).
 *   **Smart Doc Ordering** – Intuitive drag-and-drop interface for restructuring docs.
 *   **Bulk Operations** – Duplicate, manage visibility, and organize docs in bulk.
 *   **Revision History** – Track all changes and restore previous versions anytime.
 
-### 🧭 User Experience & Navigation
+### User Experience & Navigation
 *   **Live Search with AJAX** – Fast, intelligent search with instant results.
 *   **Sticky Navigation Sidebar** – Effortless navigation while scrolling.
 *   **Automatic Table of Contents** – Built-in TOC for easy content scanning.
 *   **Collapsible Sidebar** – Focus on content without distractions.
 *   **Recently Viewed Articles** – Quick access to browsing history.
 
-### 🛠️ Reader Experience Tools
+### Reader Experience Tools
 *   **Reading Time Estimates** – Show how long each article takes to read.
 *   **Views Counter** – Display article popularity.
 *   **Font Size Adjustment** – Customizable reading comfort.
 *   **Print Functionality** – One-click optimized printing.
 *   **Reader Feedback & Voting** – Collect valuable insights on article helpfulness.
 
-### 🎨 Customization & Design
+### Customization & Design
 *   **Live Customizer** – Change colors, fonts, and settings without coding.
 *   **Advanced Settings Page** – Extensive customization with real-time search.
 *   **Dark Mode Support** – Professional dark mode for better readability (Pro feature).
 *   **Page Builder Compatible** – Works seamlessly with Gutenberg and Elementor.
 
-### 🚀 Technical & SEO Features
+### Technical & SEO Features
 *   **SEO Optimized** – Built with search engine ranking in mind.
 *   **Schema.org Integration** – Rich snippets for better search visibility.
 *   **Multilingual Ready** – Full WPML and RTL language support.
 *   **On-Demand Asset Loading** – Lightweight footprint for fast performance.
 
 ### Page Builder Integration
-*   **Gutenberg Blocks** – Pre-built blocks for dynamic doc page creation.
-*   **Elementor Widgets** – Drag-and-drop widgets for Elementor page builder.
+*   **Gutenberg Blocks** – Comprehensive pre-built blocks for dynamic doc page creation. **No third-party page builder required!**
+*   **Elementor Widgets (Optional)** – Optional drag-and-drop widgets if you prefer Elementor.
 *   **Shortcodes** – Flexible shortcode system for advanced customization.
+
+**Note:** EazyDocs works perfectly with WordPress's native Gutenberg editor. You do NOT need Elementor or any other third-party page builder to create beautiful documentation and helpdesk landing pages.
 
 ### Documentation Performance Tools
 *   **Email Reporting** – Receive analytics reports directly to your inbox.
@@ -170,8 +172,9 @@ Integrate EazyDocs with [Antimanual](https://antimanual.spider-themes.net) to tr
 
 EazyDocs comes with flexible pricing to suit businesses of all sizes:
 
-### EazyDocs Pro - Advanced Features
-Unlock professional features perfect for growing businesses:
+==EazyDocs Pro - Advanced Features==
+***Unlock professional features perfect for growing businesses:***
+
 *   Doc Root URL customization.
 *   Book Chapter Elementor widgets.
 *   Voting & Comments notifications.
@@ -196,8 +199,9 @@ Unlock professional features perfect for growing businesses:
 *   Users Feedback Database.
 *   Attach documents to any page.
 
-### EazyDocs Promax - Complete Solution
-Everything in Pro, plus advanced analytics and management:
+==EazyDocs Promax - Complete Solution==
+***Everything in Pro, plus advanced analytics and management:***
+
 *   Subscribe to Docs feature.
 *   Feedback on Selected Text.
 *   Complete Analytics Dashboard.
@@ -217,7 +221,7 @@ Everything in Pro, plus advanced analytics and management:
 
 EazyDocs is developed by [Spider Themes](https://spider-themes.net), a team of experienced WordPress developers dedicated to creating powerful, user-friendly plugins. Our mission is to help businesses and creators build professional documentation without complexity.
 
-**Why You Can Trust EazyDocs:**
+==Why You Can Trust EazyDocs:==
 *   Over 2,000+ active installations.
 *   Trusted by businesses worldwide.
 *   Continuously updated and improved.
@@ -264,7 +268,11 @@ Yes! EazyDocs includes a built-in one-click migration tool that transfers all yo
 Yes! EazyDocs includes pre-built widgets and blocks for both Elementor and Gutenberg page builders, making it easy to create custom documentation pages.
 
 = Does EazyDocs have AI capabilities? =
-Yes! EazyDocs seamlessly integrates with Antimanual, our advanced AI plugin. This integration provides intelligent chatbot support, AI-powered documentation generation, semantic search, and automated content creation. Unlike basic AI features in other documentation plugins, Antimanual offers enterprise-grade capabilities including GPT-5 support, multi-source training, conversation history, and bbPress forum automation. See the "AI Integration" section above for complete details.
+Yes! EazyDocs seamlessly integrates with Antimanual, our advanced AI plugin. This integration provides intelligent chatbot support, AI-powered documentation generation, semantic search, and automated content creation. Unlike basic AI features in other documentation plugins, Antimanual offers enterprise-grade capabilities including GPT-5 support, multi-source training, conversation history, and forum automation. See the "AI Integration" section above for complete details.
+
+= Why is the AI functionality a separate plugin (Antimanual)? =
+If you want to use the AI features, you can install the Antimanual plugin alongside EazyDocs. However, it is not mandatory.
+We created Antimanual as a standalone plugin to enable AI features throughout your entire website, rather than integrating them only with EazyDocs content. For instance, you can use the Bulk Rewrite tools, Chatbot, Knowledge Base, AI Search, and Auto Posting features of Antimanual with any post type, not just Docs. This unified approach helps you consolidate AI functionalities and avoid the need for multiple AI tools on your website.
 
 = How do I get support if I have issues? =
 EazyDocs has multiple support channels:
@@ -333,6 +341,39 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 == Changelog ==
 
+= 2.10.0 (08 February 2026) =
+*   New: Added Pro badge indicator in admin menu when EazyDocs Pro is active for better visibility.
+*   New: Added informational notice clarifying that EazyDocs works with Gutenberg blocks and doesn't require Elementor.
+*   New: Added 'Tabbed Docs' block for organizing documentation content in a tab-based layout.
+*   New: Added EazyDocs Shortcode block option to display featured images as 50x50 thumbnails or full size.
+*   New: Added Ddoc theme to the integrated themes list.
+*   Improved: Setup Wizard page redesigned and optimized to be fully responsive on all desktop screen sizes.
+*   Improved: Docs Builder now remembers the last active documentation item in the sidebar on page reload.
+*   Improved: Email settings reorganized under a new “Email Settings” parent section for better clarity.
+*   Improved: Dashboard page UI and overall user experience refined.
+*   Improved: Private docs are now visible in the frontend sidebar navigation.
+*   Improved: Pro and ProMax badges and notices fixed in both Admin Settings and Customizer.
+*   Improved: Accessibility enhanced across admin actions, bulk options, doc builder filters, analytics filters, and sidebar tabs with proper ARIA roles, keyboard navigation, and focus indicators.
+*   Improved: Doc Builder UI now fully support keyboard interaction (Enter/Space).
+*   Improved: Asset loading optimized to load scripts only where needed, reducing unnecessary overhead.
+*   Improved: Doc IDs processing optimized using map/join logic, reducing memory usage and improving speed.
+*   Improved: Core files standardized with strict comparisons, Yoda conditions, and improved type safety.
+*   Improved: Updated documentation to clarify that no third-party page builder is required.
+*   Fixed: Review reminder now properly hides after user clicks "Ok, you deserve" and rates the plugin.
+*   Fixed: Search form spinner alignment issue.
+*   Fixed: IDOR vulnerability in nestable callback functions by enforcing proper permission checks.
+*   Fixed: Information disclosure issue by restricting private docs visibility based on user capabilities.
+*   Fixed: Prevented unauthorized user creation via Google Login when registration is disabled.
+*   Fixed: Accessibility issue with duplicate IDs and missing ARIA labels in child docs list.
+*   Fixed: Undefined function errors related to update_post_meta_cache.
+*   Fixed: Dark mode compatibility issue with Docly theme.
+*   Performance: Optimized AJAX tag search by replacing get_terms with direct database lookup.
+*   Performance: Optimized doc builder queries for faster load times.
+*   Updated: Added admin-settings.css and limited settings styling to the Settings page only.
+*   Updated: Twitter logo replaced with the X logo in admin UI.
+*   [Read the full v2.10.0 release article](https://eazydocs.spider-themes.net/eazydocs-2-10-0/).
+
+
 = 2.9.0 (03 January 2026) =
 *   New: Redesigned Setup Wizard with a compact, modern UI and improved progress tracking.
 *   New: Added floating Quick Tips panel in the Setup Wizard for contextual guidance (visible on desktop).
@@ -345,7 +386,6 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 *   Improved: Enhanced Antimanual AI integration card on the dashboard with a cleaner layout.
 *   Improved: Streamlined Setup Wizard steps by removing redundant text and improving layout consistency.
 *   Added: Sample data import from demo.xml using WordPress Importer with fallback manual import support.
-*   [Read the full v2.9.0 release article ](https://eazydocs.spider-themes.net/eazydocs-v2-9-0-a-deep-dive-into-the-transformation/).
 
 = 2.8.1 (19 December 2025) =
 *   Tweaked: Settings page reorganized for easier navigation.
@@ -376,13 +416,6 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 *   Improved: Normalized all SQL DDL statements to lowercase to ensure compatibility with WordPress dbDelta function.
 *   Improved: Replaced hardcoded color values with CSS variables for the attached file accordion.
 *   Improved: Sanitized URL hash on docs page load for enhanced security.
-
-= 2.7.3 (08 November 2025) =
-*   Tweaked: Minor CSS and style improvements for visual consistency.
-*   Tweaked: Removed the border-bottom from the last search result item for a cleaner visual appearance.
-*   Improved: Heading scroll offset adjusted for accurate anchor positioning.
-*   Improved: Doc single page typography refined for better readability.
-*   Updated: Attached files feature updated using WordPress hooks for better extensibility.
 
 [See changelog for all versions](https://eazydocs.spider-themes.net/changelog/).
 

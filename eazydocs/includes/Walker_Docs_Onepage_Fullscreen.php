@@ -28,12 +28,18 @@ class Walker_Onepage_Fullscren extends Walker_Page {
 	 * @var array
 	 *
 	 * @see Walker::$db_fields
-	 * @todo Decouple this.
 	 */
-	public $db_fields = array(
-		'parent' => 'post_parent',
-		'id'     => 'ID',
-	);
+	public $db_fields;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->db_fields = apply_filters( 'ezd_walker_onepage_fullscreen_db_fields', array(
+			'parent' => 'post_parent',
+			'id'     => 'ID',
+		) );
+	}
 
 	public static $parent_item = false;
 	public static $parent_item_class = '';
@@ -286,6 +292,9 @@ function ezd_list_pages_onepage_others( $args = '' ) {
 	$pages             = get_pages( $r );
 
 	if ( ! empty( $pages ) ) {
+		// Optimization: Prime the meta cache to avoid N+1 queries in the walker
+		ezd_update_post_meta_cache( $pages );
+
 		if ( $r['title_li'] ) {
 			$output .= '<li class="pagenav">' . $r['title_li'] . '<ul>';
 		}
@@ -319,9 +328,12 @@ function ezd_list_pages_onepage_others( $args = '' ) {
 	 * @param array  $pages  List of WP_Post objects returned by `get_pages()`
 	 */
 
+	// Allow more tags (SVGs) for docs nav
+	$allowed_html = function_exists( 'ezd_kses_allowed_docs_nav_html' ) ? ezd_kses_allowed_docs_nav_html() : wp_kses_allowed_html( 'post' );
+
 	if ( $r['echo'] ) {
-		echo wp_kses_post(apply_filters( 'ezd_list_pages_onepage_others', $output, $r, $pages ));
+		echo wp_kses( apply_filters( 'ezd_list_pages_onepage_others', $output, $r, $pages ), $allowed_html );
 	} else {
-		return wp_kses_post(apply_filters( 'ezd_list_pages_onepage_others', $output, $r, $pages ));
+		return wp_kses( apply_filters( 'ezd_list_pages_onepage_others', $output, $r, $pages ), $allowed_html );
 	}
 }
