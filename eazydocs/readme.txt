@@ -4,7 +4,7 @@ Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.10.0
+Stable tag: 2.10.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -341,12 +341,27 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 == Changelog ==
 
+= 2.10.1 (27 February 2026) =
+*   Improved: Feedback modal design refreshed with cleaner UI and better usability.
+*   Optimized: Implemented transient caching for EazyDocs search results to reduce database load.
+*   Optimized: Added 60-second transient cache for AJAX search results with user-aware cache keys.
+*   Optimized: Improved docs sidebar existence check for faster rendering.
+*   Optimized: Search performance improved using ID caching and query limits.
+*   Refactored: Enforced strict comparisons and better type safety in core functions.
+*   Fixed: Import conflict with WoodMart theme resolved.
+*   Fixed: Stored XSS vulnerability in OnePage Docs module.
+*   Fixed: Strengthened nonce security for document creation and deletion actions.
+*   Fixed: Memory leak issue in search banner event listeners resolved.
+*   Added: Admin notification for negative user feedback submissions.
+*   Added: Docblocks across core files with WPCS standard documentation.
+*   Updated: HTML Notice SDK upgraded to latest version.
+
 = 2.10.0 (08 February 2026) =
-*   New: Added Pro badge indicator in admin menu when EazyDocs Pro is active for better visibility.
-*   New: Added informational notice clarifying that EazyDocs works with Gutenberg blocks and doesn't require Elementor.
-*   New: Added 'Tabbed Docs' block for organizing documentation content in a tab-based layout.
-*   New: Added EazyDocs Shortcode block option to display featured images as 50x50 thumbnails or full size.
-*   New: Added Ddoc theme to the integrated themes list.
+*   New: Pro badge indicator in admin menu when EazyDocs Pro is active for better visibility.
+*   New: informational notice clarifying that EazyDocs works with Gutenberg blocks and doesn't require Elementor.
+*   New: "Tabbed Docs" block for organizing documentation content in a tab-based layout.
+*   New: EazyDocs Shortcode block option to display featured images as 50x50 thumbnails or full size.
+*   New: Ddoc theme to the integrated themes list.
 *   Improved: Setup Wizard page redesigned and optimized to be fully responsive on all desktop screen sizes.
 *   Improved: Docs Builder now remembers the last active documentation item in the sidebar on page reload.
 *   Improved: Email settings reorganized under a new “Email Settings” parent section for better clarity.
@@ -406,16 +421,6 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 *   Improved: Strengthened permission checks across review notices, CSF import/export/reset, and one-page edit actions.
 *   Improved: Refactored Google_Login enrollment logic for clarity and maintainability.
 *   Improved: Refreshed search banner and breadcrumb colors for a cleaner look.
-
-= 2.7.4 (14 November 2025) =
-*   Fixed: Database deadlock issue caused by uppercase SQL column types in CREATE TABLE statements triggering unnecessary dbDelta operations on every request.
-*   Fixed: Local File Inclusion (LFI) vulnerability patched in template loading functions.
-*   Fixed: Resolved Advanced Accordion Block plugin installation issue in FAQ Builder.
-*   Security: Added input validation and path traversal protection to eazydocs_get_template_part() and eazydocs_get_template() functions.
-*   Security: Implemented whitelist validation for template file paths to prevent arbitrary file inclusion.
-*   Improved: Normalized all SQL DDL statements to lowercase to ensure compatibility with WordPress dbDelta function.
-*   Improved: Replaced hardcoded color values with CSS variables for the attached file accordion.
-*   Improved: Sanitized URL hash on docs page load for enhanced security.
 
 [See changelog for all versions](https://eazydocs.spider-themes.net/changelog/).
 

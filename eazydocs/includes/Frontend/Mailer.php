@@ -8,6 +8,56 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_action( 'wp_ajax_eazydocs_feedback_email', 'eazydocs_feedback_email' );    //execute when wp logged in
 add_action( 'wp_ajax_nopriv_eazydocs_feedback_email', 'eazydocs_feedback_email' ); //execute when logged out
+add_action( 'ezd_negative_feedback_notification', 'ezd_send_negative_feedback_notification' );
+
+/**
+ * Send email notification when negative feedback threshold is reached.
+ *
+ * @param int $post_id The post ID.
+ * @return void
+ */
+function ezd_send_negative_feedback_notification( $post_id ) {
+	$post = get_post( $post_id );
+	if ( ! $post || 'docs' !== $post->post_type ) {
+		return;
+	}
+
+	$negative_count = (int) get_post_meta( $post_id, 'negative', true );
+	$admin_email    = ezd_get_opt( 'feedback-admin-email', get_option( 'admin_email' ) );
+
+	if ( ! is_email( $admin_email ) ) {
+		return;
+	}
+
+	$subject = sprintf(
+		/* translators: 1: Site Name, 2: Doc Title */
+		esc_html__( '[%1$s] Alert: High Negative Feedback for "%2$s"', 'eazydocs' ),
+		get_bloginfo( 'name' ),
+		$post->post_title
+	);
+
+	$message  = sprintf( esc_html__( 'Hello,', 'eazydocs' ) ) . "\r\n\r\n";
+	$message .= sprintf(
+		/* translators: %s: Doc Title */
+		esc_html__( 'The document "%s" has received a significant number of negative feedback votes.', 'eazydocs' ),
+		$post->post_title
+	) . "\r\n";
+
+	$message .= sprintf(
+		/* translators: %d: Negative feedback count */
+		esc_html__( 'Current Negative Feedback Count: %d', 'eazydocs' ),
+		$negative_count
+	) . "\r\n\r\n";
+
+	$message .= esc_html__( 'You may want to review and update this document to address user concerns.', 'eazydocs' ) . "\r\n";
+	$message .= sprintf( esc_html__( 'View Doc: %s', 'eazydocs' ), get_permalink( $post_id ) ) . "\r\n";
+	$message .= sprintf( esc_html__( 'Edit Doc: %s', 'eazydocs' ), admin_url( 'post.php?post=' . $post_id . '&action=edit' ) ) . "\r\n\r\n";
+
+	$message .= esc_html__( 'Regards,', 'eazydocs' ) . "\r\n";
+	$message .= get_bloginfo( 'name' );
+
+	wp_mail( $admin_email, $subject, $message );
+}
 
 /**
  * Send email feedback on a document.
@@ -96,9 +146,9 @@ function eazydocs_feedback_email() {
 
 		];
 
-		$feedback = wp_insert_post( $args, $wp_error = '' );
+		$feedback = wp_insert_post( $args );
 
-		if ( $feedback != 0 ) {
+		if ( 0 !== $feedback ) {
 
 			if ( ! empty( $doc_id ) ) {
 				update_post_meta( $feedback, 'ezd_feedback_id', $doc_id );
@@ -119,4 +169,33 @@ function eazydocs_feedback_email() {
 		}
 		wp_send_json_success( __( 'Your feedback has been submitted successfully.', 'eazydocs' ) );
 	}
+}
+
+add_action( 'ezd_negative_feedback_notification', 'ezd_send_negative_feedback_email', 10, 2 );
+
+/**
+ * Send email notification to admin on high negative feedback
+ *
+ * @param int $post_id The post ID
+ * @param int $count   The negative feedback count
+ */
+function ezd_send_negative_feedback_email( $post_id, $count ) {
+	$admin_email = ezd_get_opt( 'feedback-admin-email', get_option( 'admin_email' ) );
+
+	if ( ! is_email( $admin_email ) ) {
+		return;
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post ) {
+		return;
+	}
+
+	$subject = sprintf( __( '[%s] Alert: High Negative Feedback on Doc', 'eazydocs' ), get_bloginfo( 'name' ) );
+
+	$message  = sprintf( __( 'The document "%s" has received %d negative feedback votes.', 'eazydocs' ), $post->post_title, $count ) . "\r\n\r\n";
+	$message .= sprintf( __( 'View Document: %s', 'eazydocs' ), get_permalink( $post_id ) ) . "\r\n";
+	$message .= sprintf( __( 'Edit Document: %s', 'eazydocs' ), admin_url( 'post.php?post=' . $post_id . '&action=edit' ) ) . "\r\n";
+
+	wp_mail( $admin_email, $subject, $message );
 }

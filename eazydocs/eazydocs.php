@@ -5,7 +5,7 @@
  * Plugin URI: https://eazydocs.spider-themes.net
  * Author: spider-themes
  * Author URI: https://eazydocs.spider-themes.net
- * Version: 2.10.0
+ * Version: 2.10.1
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -31,7 +31,7 @@ if ( function_exists( 'eaz_fs' ) ) {
 		global $eaz_fs;
 
 		if ( ! isset( $eaz_fs ) ) {
-			require_once dirname( __FILE__ ) . '/vendor/fs/start.php';
+			require_once dirname( __FILE__ ) . '/vendor/freemius/wordpress-sdk/start.php';
 
 			$eaz_fs = fs_dynamic_init( [
 				'id'                      => '10290',
@@ -71,7 +71,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.10.0';
+		const version = '2.10.1';
 		public $plugin_path;
 		public $theme_dir_path;
 
@@ -100,7 +100,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 					}
 
 					$is_dev_mode = defined( 'DEVELOPER_MODE' ) && DEVELOPER_MODE;
-					if ( $is_dev_mode || ( ! ezd_is_premium() && ezd_is_plugin_installed_for_days( 12 ) && ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'eazydocs-initial-setup' ) ) ) {
+					if ( $is_dev_mode || ( ! ezd_is_premium() && ezd_is_plugin_installed_for_days( 12 ) && ( ! isset( $_GET['page'] ) || 'eazydocs-initial-setup' !== $_GET['page'] ) ) ) {
 						add_action( 'admin_notices', 'ezd_offer_notice' );
 					}
 
@@ -151,7 +151,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 				$docs_url   = ezd_get_opt( 'docs-url-structure', 'custom-slug' );
 				$permalink  = get_option( 'permalink_structure' );
 
-				if ( 'post-name' === $docs_url && ! empty( $permalink ) && $permalink !== '/archives/%post_id%' ) {
+				if ( 'post-name' === $docs_url && ! empty( $permalink ) && '/archives/%post_id%' !== $permalink ) {
 					require_once __DIR__ . '/includes/Root_Conversion.php';
 				}
 			}
@@ -164,7 +164,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 		 */
 		public function load_csf_files(){
 			// Load CSF framework (needed on both frontend and admin)
-			require __DIR__ . '/vendor/csf/classes/setup.class.php';
+			require __DIR__ . '/includes/csf/classes/setup.class.php';
 			require __DIR__ . '/includes/Admin/options/settings-options.php';
 			if ( ezd_is_premium() ) {
 				require_once __DIR__ . '/includes/Admin/options/taxonomy-options.php';
@@ -335,7 +335,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			// @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$view_exists = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name3 ) );
 
-			if ( $keyword_exists !== $table_name || $logs_exists !== $table_name2 || $view_exists !== $table_name3 ) {
+			if ( $table_name !== $keyword_exists || $table_name2 !== $logs_exists || $table_name3 !== $view_exists ) {
 				?>
                 <div class="notice notice-error is-dismissible eazydocs_table_error">
                     <p><?php esc_html_e( 'EazyDocs database needs an update. Please click the Update button to update your database.', 'eazydocs' ); ?></p>
@@ -348,14 +348,29 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			}
 		}
 
+		/**
+		 * Get the plugin URL.
+		 *
+		 * @return string
+		 */
 		public function plugin_url() {
 			return $this->plugin_url ?: ( $this->plugin_url = untrailingslashit( plugins_url( '/', __FILE__ ) ) );
 		}
 
+		/**
+		 * Get the plugin path.
+		 *
+		 * @return string
+		 */
 		public function plugin_path() {
 			return $this->plugin_path ?: ( $this->plugin_path = untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 		}
 
+		/**
+		 * Get the template path.
+		 *
+		 * @return string
+		 */
 		public function template_path() {
 			return $this->plugin_path() . '/templates/';
 		}

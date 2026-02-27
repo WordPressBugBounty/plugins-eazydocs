@@ -47,9 +47,14 @@ class Create_Post {
 		// Handle section creation
 		if ( isset( $_GET['Create_Section'], $_GET['parentID'], $_GET['_wpnonce'], $_GET['is_section'] ) && 
 			 sanitize_text_field( wp_unslash( $_GET['Create_Section'] ) ) === 'yes' &&
-			 wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), sanitize_text_field( wp_unslash( $_GET['parentID'] ) ) ) ) {
+			 wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'ezd_create_section_' . sanitize_text_field( wp_unslash( $_GET['parentID'] ) ) ) ) {
 			
 			$parent_id = absint( wp_unslash( $_GET['parentID'] ) );
+
+			if ( ! current_user_can( 'edit_post', $parent_id ) ) {
+				wp_die( esc_html__( 'You do not have permission to edit this document.', 'eazydocs' ) );
+			}
+
 			$title = $this->sanitize_title( $_GET['is_section'] );
 			$children = get_children( [ 'post_parent' => $parent_id, 'post_type' => 'docs' ] );
 			$status = ezd_is_premium() ? get_post_status( $parent_id ) : 'publish';
@@ -59,12 +64,22 @@ class Create_Post {
 		// Handle child creation
 		if ( isset( $_GET['Create_Child'], $_GET['childID'], $_GET['_wpnonce'], $_GET['child'] ) && 
 			 sanitize_text_field( wp_unslash( $_GET['Create_Child'] ) ) === 'yes' &&
-			 wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), sanitize_text_field( wp_unslash( $_GET['childID'] ) ) ) ) {
+			 wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'ezd_create_child_' . sanitize_text_field( wp_unslash( $_GET['childID'] ) ) ) ) {
 			
-			$child_id = absint( wp_unslash( $_GET['childID'] ) );
-			$title = $this->sanitize_title( $_GET['child'] );
+			$child_id   = absint( wp_unslash( $_GET['childID'] ) );
+			$child_post = $child_id > 0 ? get_post( $child_id ) : null;
+
+			if ( ! $child_post || 'docs' !== $child_post->post_type ) {
+				wp_die( esc_html__( 'The specified document does not exist.', 'eazydocs' ) );
+			}
+
+			if ( ! current_user_can( 'edit_post', $child_id ) ) {
+				wp_die( esc_html__( 'You do not have permission to edit this document.', 'eazydocs' ) );
+			}
+
+			$title    = $this->sanitize_title( $_GET['child'] );
 			$children = get_children( [ 'post_parent' => $child_id, 'post_type' => 'docs' ] );
-			$status = ezd_is_premium() ? get_post_status( $child_id ) : 'publish';
+			$status   = ezd_is_premium() ? get_post_status( $child_id ) : 'publish';
 			$this->create_post( $title, $child_id, count( $children ) + 2, $status, sanitize_title( $title ) );
 		}
 	}
@@ -100,7 +115,7 @@ class Create_Post {
 			'menu_order'   => $menu_order,
 		];
 
-		if ( $parent_id === 0 ) {
+		if ( 0 === $parent_id ) {
 			$post_data['post_author'] = get_current_user_id();
 		}
 
@@ -113,7 +128,7 @@ class Create_Post {
 		if ( ! is_wp_error( $post_id ) ) {
 			wp_update_post( [ 'ID' => $post_id ] );
 		}
-		wp_safe_redirect( admin_url( 'admin.php?page=eazydocs-builder' . ( $parent_id === 0 ? '&new_doc_id=' . $post_id : '' ) ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=eazydocs-builder' . ( 0 === $parent_id ? '&new_doc_id=' . $post_id : '' ) ) );
 
 		exit;
 	}
