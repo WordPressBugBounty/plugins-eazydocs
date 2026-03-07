@@ -5,7 +5,7 @@
  * Plugin URI: https://eazydocs.spider-themes.net
  * Author: spider-themes
  * Author URI: https://eazydocs.spider-themes.net
- * Version: 2.10.1
+ * Version: 2.10.2
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -71,7 +71,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.10.1';
+		const version = '2.10.2';
 		public $plugin_path;
 		public $theme_dir_path;
 
@@ -191,7 +191,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 				define( 'EAZYDOCS_ASSETS', EAZYDOCS_URL . '/assets' );
 			}
 			if ( ! defined( 'EAZYDOCS_FRONT_CSS' ) ) {
-				define( 'EAZYDOCS_FRONT_CSS', EAZYDOCS_URL . '/assets/css/frontend' );
+				define( 'EAZYDOCS_FRONT_CSS', EAZYDOCS_URL . '/build/styles/frontend' );
 			}
 			if ( ! defined( 'EAZYDOCS_IMG' ) ) {
 				define( 'EAZYDOCS_IMG', EAZYDOCS_URL . '/assets/images' );
@@ -229,6 +229,13 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 				// Load Google Login functionality
 				new EazyDocs\Google_Login();
 			}
+
+			// Register the Docs Builder REST API route.
+			add_action( 'rest_api_init', function () {
+				require_once __DIR__ . '/includes/Admin/Api/DocsBuilderController.php';
+				$controller = new EazyDocs\Admin\Api\Docs_Builder_Controller();
+				$controller->register_routes();
+			} );
 		}
 
 		/**

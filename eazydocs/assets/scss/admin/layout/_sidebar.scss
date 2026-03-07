@@ -3,6 +3,7 @@
 /*----------------------------------------*/
 .tab-container {
 	display: flex;
+	gap: 30px;
 }
 
 .tab-menu {
@@ -156,7 +157,6 @@
 .easydocs-tab-content {
 	flex: 1;
 	width: auto;
-	padding: 0 30px 30px 30px;
 }
 
 button.nestable--button.nestable--expand {
@@ -164,15 +164,11 @@ button.nestable--button.nestable--expand {
 }
 
 .easydocs-filter-container {
-	background: var(--clr-white);
-	padding: var(--gutter-15) var(--gutter-30);
-	border-radius: rem(6px);
+	background: transparent;
+	border-radius: 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	@media (max-width: 1440px) {
-		padding: 10px 20px;
-	}
 }
 
 .single-item-filter {
