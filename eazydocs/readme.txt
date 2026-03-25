@@ -4,7 +4,7 @@ Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.10.2
+Stable tag: 2.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -40,6 +40,7 @@ From small teams to enterprise organizations, EazyDocs is the go-to solution for
 ### Real Success Stories
 - **[Bit Apps](https://eazydocs.spider-themes.net/bit-apps/)** - Complete SaaS documentation
 - **[Glamsy Designs](https://eazydocs.spider-themes.net/glamsydesigns/)** - Product knowledge base
+- **[Quomodosoft](https://eazydocs.spider-themes.net/quomodosoft/)** - Product knowledge base
 
 == Getting Started ==
 
@@ -341,6 +342,14 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 == Changelog ==
 
+= 2.11.0 (25 March 2026) =
+* New: Docs Builder – Added a "Switch to Docs Builder" button in the dashboard for quicker access.
+* Updated: Internal Architecture – Improved behind-the-scenes code to make the plugin run faster.
+* Improved: Docs Builder – Made articles and the builder load noticeably faster for a smoother experience.
+* Improved: OnePage Docs – Updated the design of notification pop-ups to look better and more consistent.
+* Optimized: Cleaned up old and unused files to make the plugin load faster.
+* Fixed: Docs Builder – Fixed a visual issue where the drag-and-drop lines were not showing up correctly.
+
 = 2.10.2 (07 March 2026) =
 * Improved: Completely rebuilt the Docs Builder page to provide a much smoother, faster, and more responsive experience.
 * Improved: Refreshed the Docs Builder design with a cleaner layout and easier-to-read section lists.
@@ -410,13 +419,6 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 * Improved: Enhanced Antimanual AI integration card on the dashboard with a cleaner layout.
 * Improved: Streamlined Setup Wizard steps by removing redundant text and improving layout consistency.
 * Added: Sample data import from demo.xml using WordPress Importer with fallback manual import support.
-
-= 2.8.1 (19 December 2025) =
-* Tweaked: Settings page reorganized for easier navigation.
-* Improved: AJAX breadcrumb updated and Russian translations refreshed for accuracy and consistency.
-* Improved: Minor tweaks and performance enhancements for smoother usage.
-* Updated: Dashboard links improved and top docs limited to 10 posts for better overview.
-* Updated: Freemius SDK updated to 2.13.0.
 
 [See changelog for all versions](https://eazydocs.spider-themes.net/changelog/).
 
