@@ -15,10 +15,17 @@
 			};
 		}
 
+		function buildNoResult() {
+			var title =
+				$('#ezd-search-results').attr('data-noresult') || 'No Results Found';
+			$('#ezd-search-results')
+				.addClass('ajax-search')
+				.html('<h5 class="error title">' + title + '</h5>');
+		}
+
 		$('#ezd_searchInput').keyup(
 			fetchDelay(function (e) {
 				let keyword = $('#ezd_searchInput').val();
-				let noresult = $('#ezd-search-results').attr('data-noresult');
 				if (keyword === '') {
 					$('#ezd-search-results')
 						.removeClass('ajax-search')
@@ -36,16 +43,13 @@
 							$('.spinner').css('display', 'block');
 						},
 						success: function (data) {
-							if (data.length > 0) {
+							if (data.trim().length > 0) {
 								$('#ezd-search-results')
 									.addClass('ajax-search')
 									.html(data);
 								$('.spinner').hide();
 							} else {
-								var data_error = '<h5>' + noresult + '</h5>';
-								$('#ezd-search-results')
-									.removeClass('ajax-search')
-									.html(data_error);
+								buildNoResult();
 							}
 						},
 					});
@@ -96,9 +100,42 @@
 			$('.ezd_click_capture').remove();
 		});
 
+		// Close results when clicking outside — mousedown fires before focusout
+		$(document).on('mousedown', function (e) {
+			var $t = $(e.target);
+			if (
+				!$t.closest('#ezd-search-results').length &&
+				!$t.closest('.header_search_form_info').length &&
+				!$t.closest('.ezd-type-filter-dropdown').length
+			) {
+				$('#ezd-search-results').removeClass('ajax-search').html('');
+				$('body').removeClass('ezd-search-focused');
+				$('.ezd_click_capture').remove();
+				$('.header_search_form_info, #ezd-search-results').css('z-index', '');
+			}
+		});
+
 		$('#ezd_searchInput').on('input', function (e) {
 			if ('' == this.value) {
 				$('#ezd-search-results').removeClass('ajax-search');
+			}
+		});
+
+		// Tab switching via event delegation (tabs are injected dynamically)
+		$(document).on('click', '.ezd-result-tabs .ezd-tab', function (e) {
+			e.preventDefault();
+			var $tab = $(this);
+			var tab = $tab.data('tab');
+			var $results = $tab.closest('#ezd-search-results');
+
+			$results.find('.ezd-tab').removeClass('active');
+			$tab.addClass('active');
+
+			if (tab === 'all') {
+				$results.find('.ezd-result-group').show();
+			} else {
+				$results.find('.ezd-result-group').hide();
+				$results.find('.ezd-result-group[data-type="' + tab + '"]').show();
 			}
 		});
 		

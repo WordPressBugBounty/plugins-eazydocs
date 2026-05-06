@@ -7,4 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div id="ezd-search-results" data-noresult="<?php esc_attr_e('No Results Found', 'eazydocs'); ?>"> </div>
+<div id="ezd-search-results"
+     data-noresult="<?php echo esc_attr( $settings['no_result_title'] ?? '' ?: esc_html__( 'No Results Found', 'eazydocs' ) ); ?>"
+     data-noresult-img="<?php echo esc_url( $settings['no_result_image']['url'] ?? '' ); ?>"
+     data-noresult-title="<?php echo esc_attr( $settings['no_result_title'] ?? '' ?: esc_html__( 'No Results Found', 'eazydocs' ) ); ?>"
+     data-noresult-sub="<?php echo esc_attr( $settings['no_result_subtitle'] ?? '' ?: esc_html__( 'Check the spellings or use a different word or phrase', 'eazydocs' ) ); ?>"
+     data-show-tabs="<?php echo ( ( $settings['show_result_tabs'] ?? 'yes' ) === 'yes' ) ? '1' : '0'; ?>"> </div>

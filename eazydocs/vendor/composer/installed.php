@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'spider-themes/eazydocs',
-        'pretty_version' => 'v2.11.1',
-        'version' => '2.11.1.0',
-        'reference' => '3289cf422eb187668e974cb1c3a39d1679668d03',
+        'pretty_version' => 'v2.11.2',
+        'version' => '2.11.2.0',
+        'reference' => '3e9e836c62a56253a0f837aac66187c316525fe8',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'spider-themes/eazydocs' => array(
-            'pretty_version' => 'v2.11.1',
-            'version' => '2.11.1.0',
-            'reference' => '3289cf422eb187668e974cb1c3a39d1679668d03',
+            'pretty_version' => 'v2.11.2',
+            'version' => '2.11.2.0',
+            'reference' => '3e9e836c62a56253a0f837aac66187c316525fe8',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

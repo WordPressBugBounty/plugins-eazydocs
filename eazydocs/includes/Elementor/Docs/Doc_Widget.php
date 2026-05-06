@@ -97,8 +97,8 @@ class Doc_Widget extends Widget_Base
 		$base_options = [
 			'1' => [
 				'title' => esc_html__('Docs without tab', 'eazydocs'),
-				'icon' => 'free-doc-tab'
-			]
+				'image' => EAZYDOCS_IMG . 'elementor-skins/no-tab-docs.jpg'
+			],
 		];
 
 		$pro_options = [
@@ -106,14 +106,15 @@ class Doc_Widget extends Widget_Base
 			'3' => ['title' => esc_html__('Flat tabbed docs', 'eazydocs')],
 			'4' => ['title' => esc_html__('Boxed Style', 'eazydocs')],
 			'5' => ['title' => esc_html__('Book Chapters / Tutorials', 'eazydocs')],
-			'6' => ['title' => esc_html__('List Style', 'eazydocs')]
+			'6' => ['title' => esc_html__('List Style', 'eazydocs')],
+			'7' => ['title' => esc_html__('Topics Grid', 'eazydocs')]
 		];
 
 		foreach ($pro_options as $key => $option) {
 			$icon_suffix = ezd_unlock_themes('docy', 'docly') ? '' : ' ezd-pro-docs';
 			$base_options[$key] = [
 				'title' => $option['title'],
-				'icon' => "docs-" . ($key - 1) . $icon_suffix
+				'image' => EAZYDOCS_IMG . "elementor-skins/docs-" . ($key - 1) . ".png" . $icon_suffix
 			];
 		}
 
@@ -141,10 +142,11 @@ class Doc_Widget extends Widget_Base
 			'doc-widget-skin',
 			[
 				'label' => esc_html__('Skins', 'eazydocs'),
-				'type' => Controls_Manager::CHOOSE,
+				'type' => Controls_Manager::VISUAL_CHOICE,
 				'options' => $this->docs_layout_option(),
 				'toggle' => false,
 				'default' => '1',
+				'label_block' => true,
 			]
 		);
 
@@ -174,7 +176,7 @@ class Doc_Widget extends Widget_Base
 				],
 				'default' => '3',
 				'condition' => [
-					'doc-widget-skin' => ['1']
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
@@ -325,7 +327,7 @@ class Doc_Widget extends Widget_Base
 				'type' => Controls_Manager::NUMBER,
 				'default' => 5,
 				'condition' => [
-					'doc-widget-skin' => ['1']
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
@@ -479,8 +481,34 @@ class Doc_Widget extends Widget_Base
 				'label_block' => true,
 				'default' => esc_html__('View All', 'eazydocs'),
 				'condition' => [
-					'doc-widget-skin' => ['1', '2', '3']
+					'doc-widget-skin' => ['1', '2', '3', '7']
 				]
+			]
+		);
+
+		$this->add_control(
+			'md_show_article_count',
+			[
+				'label' => esc_html__( 'Show Article Count', 'eazydocs' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+				'condition' => [
+					'doc-widget-skin' => ['7'],
+				],
+			]
+		);
+
+		$this->add_control(
+			'md_show_read_time',
+			[
+				'label' => esc_html__( 'Show Avg Read Time', 'eazydocs' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+				'condition' => [
+					'doc-widget-skin' => ['7'],
+				],
 			]
 		);
 
@@ -845,8 +873,7 @@ class Doc_Widget extends Widget_Base
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
-					'doc-widget-skin' => ['1', '2', '4', '5'],
-					'doc-widget-skin!' => ['6']
+					'doc-widget-skin' => ['1', '2', '4', '5', '7'],
 				]
 			]
 		);
@@ -857,10 +884,10 @@ class Doc_Widget extends Widget_Base
 				'name' => 'item_list_title_typo',
 				'selector' => '{{WRAPPER}} .ezd_item_list_title,
 				               {{WRAPPER}} .topic_list_item ul li a,
-				               {{WRAPPER}} .topic_list_item ul li a .chapter_counter',
+				               {{WRAPPER}} .topic_list_item ul li a .chapter_counter,
+				               {{WRAPPER}} .ezd-docs-card__articles li a',
 				'condition' => [
-					'doc-widget-skin' => ['1', '2', '4', '5'],
-					'doc-widget-skin!' => ['6']
+					'doc-widget-skin' => ['1', '2', '4', '5', '7'],
 				]
 			]
 		);
@@ -874,10 +901,10 @@ class Doc_Widget extends Widget_Base
 					'{{WRAPPER}} .ezd_item_list_title' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .topic_list_item ul li a' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .topic_list_item ul li a .chapter_counter' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .ezd-docs-card__articles li a' => 'color: {{VALUE}};',
 				),
 				'condition' => [
-					'doc-widget-skin' => ['1', '2', '4', '5'],
-					'doc-widget-skin!' => ['6']
+					'doc-widget-skin' => ['1', '2', '4', '5', '7'],
 				]
 			]
 		);
@@ -891,10 +918,10 @@ class Doc_Widget extends Widget_Base
 					'{{WRAPPER}} .article_list li a.ezd_item_list_title:hover' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .topic_list_item ul li a:hover' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .topic_list_item ul li a:hover .chapter_counter' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .ezd-docs-card__articles li a:hover' => 'color: {{VALUE}}',
 				],
 				'condition' => [
-					'doc-widget-skin' => ['1', '2', '4', '5'],
-					'doc-widget-skin!' => ['6']
+					'doc-widget-skin' => ['1', '2', '4', '5', '7'],
 				]
 			]
 		);// End Item Title
@@ -949,7 +976,7 @@ class Doc_Widget extends Widget_Base
 				'label' => esc_html__('Button', 'eazydocs'),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
-					'doc-widget-skin' => ['1', '2', '3', '4']
+					'doc-widget-skin' => ['1', '2', '3', '4', '7']
 				]
 			]
 		);
@@ -995,7 +1022,7 @@ class Doc_Widget extends Widget_Base
 				'exclude' => ['image'],
 				'selector' => '{{WRAPPER}} .ezd_btn',
 				'condition' => [
-					'doc-widget-skin' => '1'
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
@@ -1030,7 +1057,7 @@ class Doc_Widget extends Widget_Base
 					'{{WRAPPER}} .ezd_btn:hover' => 'border-color: {{VALUE}};',
 				),
 				'condition' => [
-					'doc-widget-skin' => '1'
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
@@ -1043,7 +1070,7 @@ class Doc_Widget extends Widget_Base
 				'exclude' => ['image'],
 				'selector' => '{{WRAPPER}} .ezd_btn:hover',
 				'condition' => [
-					'doc-widget-skin' => '1'
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
@@ -1063,7 +1090,7 @@ class Doc_Widget extends Widget_Base
 				],
 				'separator' => 'before',
 				'condition' => [
-					'doc-widget-skin' => '1'
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
@@ -1074,12 +1101,196 @@ class Doc_Widget extends Widget_Base
 				'name' => 'btn_border',
 				'selector' => '{{WRAPPER}} .ezd_btn',
 				'condition' => [
-					'doc-widget-skin' => '1'
+					'doc-widget-skin' => ['1', '7']
 				]
 			]
 		);
 
 		$this->end_controls_section(); // End Button Style
+
+
+		//============================ Style Card Grid: Box Style ============================//
+		$this->start_controls_section(
+			'style_card7_card',
+			[
+				'label' => esc_html__( 'Card Grid: Box Style', 'eazydocs' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+				'condition' => [ 'doc-widget-skin' => ['7'] ],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name'    => 'card7_bg',
+				'types'   => ['classic', 'gradient'],
+				'exclude' => ['image'],
+				'selector' => '{{WRAPPER}} .ezd-docs-card',
+			]
+		);
+
+		$this->add_responsive_control(
+			'card7_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'eazydocs' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em', 'rem'],
+				'selectors'  => [
+					'{{WRAPPER}} .ezd-docs-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name'     => 'card7_border',
+				'selector' => '{{WRAPPER}} .ezd-docs-card',
+			]
+		);
+
+		$this->add_responsive_control(
+			'card7_border_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'eazydocs' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors'  => [
+					'{{WRAPPER}} .ezd-docs-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'card7_shadow',
+				'selector' => '{{WRAPPER}} .ezd-docs-card',
+			]
+		);
+
+		$this->add_responsive_control(
+			'card7_column_gap',
+			[
+				'label'      => esc_html__( 'Column Gap', 'eazydocs' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => ['px', 'em', 'rem'],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 80 ] ],
+				'separator'  => 'before',
+				'selectors'  => [
+					'{{WRAPPER}} .ezd-card-grid-7' => 'column-gap: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'card7_row_gap',
+			[
+				'label'      => esc_html__( 'Row Gap', 'eazydocs' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => ['px', 'em', 'rem'],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 80 ] ],
+				'selectors'  => [
+					'{{WRAPPER}} .ezd-card-grid-7' => 'row-gap: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'card7_sep_color',
+			[
+				'label'     => esc_html__( 'Separator Color', 'eazydocs' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} .ezd-docs-card__sep' => 'border-top-color: {{VALUE}};',
+					'{{WRAPPER}} .ezd-docs-card__articles li' => 'border-bottom-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->end_controls_section(); // End Card Grid: Box Style
+
+
+		//============================ Style Card Grid: Meta Text ============================//
+		$this->start_controls_section(
+			'style_card7_meta',
+			[
+				'label' => esc_html__( 'Card Grid: Meta Text', 'eazydocs' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+				'condition' => [ 'doc-widget-skin' => ['7'] ],
+			]
+		);
+
+		// ── Article count badge ──────────────────────────
+		$this->add_control(
+			'card7_count_heading',
+			[
+				'label' => esc_html__( 'Article Count Badge', 'eazydocs' ),
+				'type'  => Controls_Manager::HEADING,
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'card7_count_typo',
+				'selector' => '{{WRAPPER}} .ezd-docs-card__info .ezd-badge',
+			]
+		);
+
+		$this->add_control(
+			'card7_count_color',
+			[
+				'label'     => esc_html__( 'Badge Text Color', 'eazydocs' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ezd-docs-card__info .ezd-badge' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'card7_count_bg',
+			[
+				'label'     => esc_html__( 'Badge Background', 'eazydocs' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ezd-docs-card__info .ezd-badge' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		// ── Read time ────────────────────────────────────
+		$this->add_control(
+			'card7_readtime_heading',
+			[
+				'label'     => esc_html__( 'Read Time Text', 'eazydocs' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'card7_meta_typo',
+				'selector' => '{{WRAPPER}} .ezd-docs-card__readtime',
+			]
+		);
+
+		$this->add_control(
+			'card7_meta_color',
+			[
+				'label'     => esc_html__( 'Text Color', 'eazydocs' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ezd-docs-card__readtime' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->end_controls_section(); // End Card Grid: Meta Text
 	}
 
 
@@ -1166,14 +1377,18 @@ class Doc_Widget extends Widget_Base
 			}
 		}
 
+		// Whitelist valid skin values to prevent Local File Inclusion
+		$pro_skins  = array('2', '3', '4', '5', '6');
+		$free_skins = array('1', '7');
+
 		if (ezd_unlock_themes('docy', 'docly')) {
-			// Whitelist valid skin values to prevent Local File Inclusion
-			$allowed_skins = array('1', '2', '3', '4', '5', '6');
+			$allowed_skins = array_merge($free_skins, $pro_skins);
 			$skin = isset($settings['doc-widget-skin']) && in_array($settings['doc-widget-skin'], $allowed_skins, true) ? $settings['doc-widget-skin'] : '1';
-			include(__DIR__ . "/docs-{$skin}.php");
 		} else {
-			include(__DIR__ . "/docs-1.php");
+			$skin = isset($settings['doc-widget-skin']) && in_array($settings['doc-widget-skin'], $free_skins, true) ? $settings['doc-widget-skin'] : '1';
 		}
+
+		include(__DIR__ . "/docs-{$skin}.php");
 
 		?>
 

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: EazyDocs 2.11.1\n"
+"Project-Id-Version: EazyDocs 2.11.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/eazydocs\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-19T18:20:14+00:00\n"
+"POT-Creation-Date: 2026-05-06T12:54:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: eazydocs\n"
@@ -367,6 +367,9 @@ msgid "During this migration:"
 msgstr ""
 
 #: includes/Admin/migration.php:41
+#: includes/Elementor/Search/ezd-search.php:24
+#: includes/Elementor/Search/Search_Widget.php:159
+#: includes/Frontend/Ajax.php:255
 #: build/docs-builder/index.js:1
 msgid "All"
 msgstr ""
@@ -591,6 +594,7 @@ msgid "Pages"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:43
+#: includes/Elementor/Search/Search_Widget.php:156
 msgid "Post Type"
 msgstr ""
 
@@ -751,8 +755,8 @@ msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:301
 #: includes/csf/fields/background/background.php:278
-#: includes/Elementor/Single_Doc/Single_Doc.php:472
-#: includes/Elementor/Single_Doc/Single_Doc.php:504
+#: includes/Elementor/Single_Doc/Single_Doc.php:473
+#: includes/Elementor/Single_Doc/Single_Doc.php:505
 msgid "Color"
 msgstr ""
 
@@ -770,7 +774,10 @@ msgid "Header Background"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:330
-#: includes/Elementor/Single_Doc/Single_Doc.php:342
+#: includes/Elementor/Search/style-control.php:200
+#: includes/Elementor/Search/style-control.php:230
+#: includes/Elementor/Search/style-control.php:500
+#: includes/Elementor/Single_Doc/Single_Doc.php:343
 msgid "Background"
 msgstr ""
 
@@ -895,7 +902,7 @@ msgstr ""
 #: includes/Admin/options/opt_docs_collaboration.php:147
 #: includes/Admin/options/opt_doc_single.php:1061
 #: includes/Admin/options/opt_doc_single.php:1139
-#: includes/Elementor/Docs/Doc_Widget.php:949
+#: includes/Elementor/Docs/Doc_Widget.php:976
 #: includes/Elementor/Search/Search_Widget.php:96
 msgid "Button"
 msgstr ""
@@ -922,11 +929,12 @@ msgstr ""
 #: includes/Admin/options/opt_doc_single.php:964
 #: includes/Admin/options/opt_doc_single.php:1021
 #: includes/Admin/options/opt_doc_single.php:1099
-#: includes/Elementor/Docs/Doc_Widget.php:380
-#: includes/Elementor/Search/Search_Widget.php:210
-#: includes/Elementor/Single_Doc/Single_Doc.php:103
-#: includes/Elementor/Single_Doc/Single_Doc.php:377
-#: includes/Elementor/Single_Doc/Single_Doc.php:466
+#: includes/Elementor/Docs/Doc_Widget.php:382
+#: includes/Elementor/Search/Search_Widget.php:267
+#: includes/Elementor/Search/Search_Widget.php:351
+#: includes/Elementor/Single_Doc/Single_Doc.php:104
+#: includes/Elementor/Single_Doc/Single_Doc.php:378
+#: includes/Elementor/Single_Doc/Single_Doc.php:467
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:66
@@ -1508,6 +1516,7 @@ msgid "Show a link badge to the parent documentation category."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:119
+#: includes/Elementor/Docs/Doc_Widget.php:1256
 msgid "Badge Background"
 msgstr ""
 
@@ -1517,6 +1526,7 @@ msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:128
 #: includes/Admin/options/taxonomy-options.php:31
+#: includes/Elementor/Docs/Doc_Widget.php:1245
 msgid "Badge Text Color"
 msgstr ""
 
@@ -1629,8 +1639,8 @@ msgid "Title for the related articles section."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:254
-#: includes/Elementor/Docs/Doc_Widget.php:323
-#: includes/Elementor/Single_Doc/Single_Doc.php:217
+#: includes/Elementor/Docs/Doc_Widget.php:325
+#: includes/Elementor/Single_Doc/Single_Doc.php:218
 #: templates/onepage/default-layout.php:128
 #: templates/single-doc-content.php:133
 msgid "Articles"
@@ -1751,15 +1761,15 @@ msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:413
 #: includes/Admin/options/opt_doc_single.php:513
-#: includes/Elementor/Search/Search_Widget.php:139
-#: includes/Elementor/Search/Search_Widget.php:145
-#: includes/Elementor/Search/Search_Widget.php:219
-#: includes/Elementor/Search/style-control.php:183
+#: includes/Elementor/Search/Search_Widget.php:196
+#: includes/Elementor/Search/Search_Widget.php:202
+#: includes/Elementor/Search/Search_Widget.php:276
+#: includes/Elementor/Search/style-control.php:299
 msgid "Keywords"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:428
-#: includes/Elementor/Search/Search_Widget.php:156
+#: includes/Elementor/Search/Search_Widget.php:213
 msgid "Keywords Label"
 msgstr ""
 
@@ -1768,12 +1778,12 @@ msgid "Popular Searches:"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:441
-#: includes/Elementor/Search/style-control.php:204
+#: includes/Elementor/Search/style-control.php:320
 msgid "Label Color"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:457
-#: includes/Elementor/Search/Search_Widget.php:193
+#: includes/Elementor/Search/Search_Widget.php:250
 msgid "Keywords By"
 msgstr ""
 
@@ -1782,37 +1792,37 @@ msgid "Select your preferred keywords type."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:459
-#: includes/Elementor/Search/Search_Widget.php:194
+#: includes/Elementor/Search/Search_Widget.php:251
 msgid "Static keywords are predefined, while dynamic keywords are generated by queries from website visitors"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:461
-#: includes/Elementor/Search/Search_Widget.php:196
+#: includes/Elementor/Search/Search_Widget.php:253
 msgid "Static"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:462
-#: includes/Elementor/Search/Search_Widget.php:197
+#: includes/Elementor/Search/Search_Widget.php:254
 msgid "Dynamic (Sort by popular)"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:476
-#: includes/Elementor/Search/Search_Widget.php:243
+#: includes/Elementor/Search/Search_Widget.php:300
 msgid "Keywords Limit"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:477
-#: includes/Elementor/Search/Search_Widget.php:244
+#: includes/Elementor/Search/Search_Widget.php:301
 msgid "Set the number of keywords to show."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:495
-#: includes/Elementor/Search/Search_Widget.php:261
+#: includes/Elementor/Search/Search_Widget.php:318
 msgid "Exclude Not Found Keywords"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:496
-#: includes/Elementor/Search/Search_Widget.php:262
+#: includes/Elementor/Search/Search_Widget.php:319
 msgid "Exclude the keywords that are not found in the search results."
 msgstr ""
 
@@ -1821,12 +1831,12 @@ msgid "Keyword"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:529
-#: includes/Elementor/Search/Search_Widget.php:224
+#: includes/Elementor/Search/Search_Widget.php:281
 msgid "Keyword #1"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:532
-#: includes/Elementor/Search/Search_Widget.php:227
+#: includes/Elementor/Search/Search_Widget.php:284
 msgid "Keyword #2"
 msgstr ""
 
@@ -1910,6 +1920,10 @@ msgid "Docs Archive Page Title"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:660
+#: includes/Elementor/Search/ezd-search.php:25
+#: includes/Elementor/Search/Search_Widget.php:160
+#: includes/Frontend/Ajax.php:245
+#: includes/Frontend/Ajax.php:447
 #: includes/functions.php:512
 #: includes/functions.php:574
 #: includes/functions.php:640
@@ -2011,8 +2025,8 @@ msgstr ""
 #: includes/Admin/options/opt_doc_single.php:796
 #: includes/Elementor/Search/style-control.php:34
 #: includes/Elementor/Search/style-control.php:168
-#: includes/Elementor/Search/style-control.php:245
-#: includes/Elementor/Search/style-control.php:275
+#: includes/Elementor/Search/style-control.php:361
+#: includes/Elementor/Search/style-control.php:416
 msgid "Background Color"
 msgstr ""
 
@@ -2784,8 +2798,8 @@ msgstr ""
 
 #: includes/Admin/options/opt_footnotes.php:59
 #: includes/Admin/options/opt_footnotes.php:127
-#: includes/Elementor/Docs/Doc_Widget.php:168
-#: includes/Elementor/Single_Doc/Single_Doc.php:164
+#: includes/Elementor/Docs/Doc_Widget.php:170
+#: includes/Elementor/Single_Doc/Single_Doc.php:165
 msgid "1 Column"
 msgstr ""
 
@@ -2998,6 +3012,7 @@ msgstr ""
 
 #: includes/Admin/options/opt_onepage_doc.php:27
 #: includes/Admin/options/opt_restricted_docs.php:539
+#: includes/Elementor/Search/style-control.php:522
 msgid "Title Color"
 msgstr ""
 
@@ -3385,6 +3400,7 @@ msgid "Please enter the password to view this document."
 msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:564
+#: includes/Elementor/Search/style-control.php:541
 msgid "Subtitle Color"
 msgstr ""
 
@@ -3393,7 +3409,7 @@ msgid "Button Styling"
 msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:587
-#: includes/Elementor/Single_Doc/Single_Doc.php:274
+#: includes/Elementor/Single_Doc/Single_Doc.php:275
 msgid "Button Text"
 msgstr ""
 
@@ -4172,7 +4188,7 @@ msgstr ""
 
 #: includes/Admin/template/dashboard/antimanual-ai.php:32
 #: includes/csf/fields/link_color/link_color.php:38
-#: includes/Elementor/Docs/Doc_Widget.php:657
+#: includes/Elementor/Docs/Doc_Widget.php:685
 msgid "Active"
 msgstr ""
 
@@ -4565,7 +4581,7 @@ msgstr ""
 #: includes/Admin/template/dashboard/top-viewed-docs.php:8
 #: includes/block-templates/tabbed-docs/flat_tabbed.php:292
 #: includes/block-templates/tabbed-docs/tabbed_doc_list.php:292
-#: includes/Elementor/Docs/Doc_Widget.php:480
+#: includes/Elementor/Docs/Doc_Widget.php:482
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:1274
 #: build/tabbed-docs/index.js:1281
@@ -5106,7 +5122,9 @@ msgid "Search here"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:40
-#: includes/Elementor/Search/ajax-sarch-results.php:10
+#: includes/Elementor/Search/ajax-sarch-results.php:11
+#: includes/Elementor/Search/ajax-sarch-results.php:13
+#: includes/Elementor/Search/Search_Widget.php:354
 #: templates/search-banner.php:32
 msgid "No Results Found"
 msgstr ""
@@ -5410,9 +5428,10 @@ msgstr ""
 #: includes/csf/fields/background/background.php:270
 #: includes/csf/fields/link_color/link_color.php:36
 #: includes/csf/fields/typography/typography.php:186
-#: includes/Elementor/Docs/Doc_Widget.php:569
-#: includes/Elementor/Docs/Doc_Widget.php:975
-#: includes/Elementor/Search/style-control.php:228
+#: includes/Elementor/Docs/Doc_Widget.php:597
+#: includes/Elementor/Docs/Doc_Widget.php:1002
+#: includes/Elementor/Search/style-control.php:195
+#: includes/Elementor/Search/style-control.php:344
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:430
 #: build/tabbed-docs/index.js:437
@@ -5593,9 +5612,10 @@ msgid "Remove Link"
 msgstr ""
 
 #: includes/csf/fields/link_color/link_color.php:37
-#: includes/Elementor/Docs/Doc_Widget.php:620
-#: includes/Elementor/Docs/Doc_Widget.php:1009
-#: includes/Elementor/Search/style-control.php:259
+#: includes/Elementor/Docs/Doc_Widget.php:648
+#: includes/Elementor/Docs/Doc_Widget.php:1036
+#: includes/Elementor/Search/style-control.php:225
+#: includes/Elementor/Search/style-control.php:399
 msgid "Hover"
 msgstr ""
 
@@ -5667,21 +5687,21 @@ msgid "Inherit"
 msgstr ""
 
 #: includes/csf/fields/typography/typography.php:171
-#: includes/Elementor/Docs/Doc_Widget.php:189
+#: includes/Elementor/Docs/Doc_Widget.php:191
 #: includes/Elementor/Search/Search_Widget.php:122
-#: includes/Elementor/Search/Search_Widget.php:173
+#: includes/Elementor/Search/Search_Widget.php:230
 msgid "Left"
 msgstr ""
 
 #: includes/csf/fields/typography/typography.php:172
-#: includes/Elementor/Search/Search_Widget.php:177
+#: includes/Elementor/Search/Search_Widget.php:234
 msgid "Center"
 msgstr ""
 
 #: includes/csf/fields/typography/typography.php:173
-#: includes/Elementor/Docs/Doc_Widget.php:197
+#: includes/Elementor/Docs/Doc_Widget.php:199
 #: includes/Elementor/Search/Search_Widget.php:126
-#: includes/Elementor/Search/Search_Widget.php:181
+#: includes/Elementor/Search/Search_Widget.php:238
 msgid "Right"
 msgstr ""
 
@@ -5828,6 +5848,23 @@ msgstr ""
 msgid "Written by "
 msgstr ""
 
+#: includes/Elementor/Docs/docs-7.php:101
+#: build/tabbed-docs/index.js:1
+#: src/tabbed-docs/edit.js:1186
+#: build/tabbed-docs/index.js:1193
+msgid "article"
+msgid_plural "articles"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: average minutes to read
+#: includes/Elementor/Docs/docs-7.php:114
+#, php-format
+msgid "%d minute average read"
+msgid_plural "%d minutes average read"
+msgstr[0] ""
+msgstr[1] ""
+
 #: includes/Elementor/Docs/Doc_Widget.php:29
 msgid "(EazyDocs) MultiDocs"
 msgstr ""
@@ -5856,68 +5893,72 @@ msgstr ""
 msgid "List Style"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:136
+#: includes/Elementor/Docs/Doc_Widget.php:110
+msgid "Topics Grid"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:137
 #: includes/Elementor/Single_Doc/Single_Doc.php:61
 msgid "Preset Skin"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:143
+#: includes/Elementor/Docs/Doc_Widget.php:144
 #: includes/Elementor/Single_Doc/Single_Doc.php:67
 msgid "Skins"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:157
+#: includes/Elementor/Docs/Doc_Widget.php:159
 msgid "Layout Settings"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:164
-#: includes/Elementor/Single_Doc/Single_Doc.php:160
+#: includes/Elementor/Docs/Doc_Widget.php:166
+#: includes/Elementor/Single_Doc/Single_Doc.php:161
 msgid "Column"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:165
-#: includes/Elementor/Single_Doc/Single_Doc.php:161
+#: includes/Elementor/Docs/Doc_Widget.php:167
+#: includes/Elementor/Single_Doc/Single_Doc.php:162
 msgid "Number of column to show"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:169
-#: includes/Elementor/Single_Doc/Single_Doc.php:165
+#: includes/Elementor/Docs/Doc_Widget.php:171
+#: includes/Elementor/Single_Doc/Single_Doc.php:166
 msgid "2 Column"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:170
-#: includes/Elementor/Single_Doc/Single_Doc.php:166
+#: includes/Elementor/Docs/Doc_Widget.php:172
+#: includes/Elementor/Single_Doc/Single_Doc.php:167
 msgid "3 Column"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:171
-#: includes/Elementor/Single_Doc/Single_Doc.php:167
+#: includes/Elementor/Docs/Doc_Widget.php:173
+#: includes/Elementor/Single_Doc/Single_Doc.php:168
 msgid "4 Column"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:172
-#: includes/Elementor/Single_Doc/Single_Doc.php:168
+#: includes/Elementor/Docs/Doc_Widget.php:174
+#: includes/Elementor/Single_Doc/Single_Doc.php:169
 msgid "5 Column"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:173
-#: includes/Elementor/Single_Doc/Single_Doc.php:169
+#: includes/Elementor/Docs/Doc_Widget.php:175
+#: includes/Elementor/Single_Doc/Single_Doc.php:170
 msgid "6 Column"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:185
+#: includes/Elementor/Docs/Doc_Widget.php:187
 msgid "Tab Alignment"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:193
+#: includes/Elementor/Docs/Doc_Widget.php:195
 msgid "center"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:203
+#: includes/Elementor/Docs/Doc_Widget.php:205
 msgid "Choose whether you want to position the tab buttons left, right or center from here."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:219
+#: includes/Elementor/Docs/Doc_Widget.php:221
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:53
@@ -5927,104 +5968,104 @@ msgstr ""
 msgid "Masonry"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:220
+#: includes/Elementor/Docs/Doc_Widget.php:222
 msgid "Enable masonry layout for docs (responsive grid with dynamic column heights)."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:231
+#: includes/Elementor/Docs/Doc_Widget.php:233
 msgid "Show Contributors"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:232
+#: includes/Elementor/Docs/Doc_Widget.php:234
 msgid "The number of contributors to show."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:249
+#: includes/Elementor/Docs/Doc_Widget.php:251
 msgid "Filter Options"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:256
+#: includes/Elementor/Docs/Doc_Widget.php:258
 msgid "Tab ID Format"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:257
+#: includes/Elementor/Docs/Doc_Widget.php:259
 msgid "If the slug ID does not work then you should pick the number ID."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:260
+#: includes/Elementor/Docs/Doc_Widget.php:262
 msgid "Slug ID"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:261
+#: includes/Elementor/Docs/Doc_Widget.php:263
 msgid "Number ID"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:273
+#: includes/Elementor/Docs/Doc_Widget.php:275
 msgid "Exclude Docs"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:283
+#: includes/Elementor/Docs/Doc_Widget.php:285
 msgid "Show Section Count"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:284
+#: includes/Elementor/Docs/Doc_Widget.php:286
 msgid "The number of sections to show under every documentation tab. Leave empty or give value -1 to show all sections."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:296
+#: includes/Elementor/Docs/Doc_Widget.php:298
 msgid "Active Doc"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:297
+#: includes/Elementor/Docs/Doc_Widget.php:299
 msgid "Select the active Doc tab by default."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:309
+#: includes/Elementor/Docs/Doc_Widget.php:311
 msgid "Show Doc Item"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:310
+#: includes/Elementor/Docs/Doc_Widget.php:312
 msgid "The number of doc items to under every doc sections. Leave empty or give value -1 to show all sections."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:324
-#: includes/Elementor/Single_Doc/Single_Doc.php:218
+#: includes/Elementor/Docs/Doc_Widget.php:326
+#: includes/Elementor/Single_Doc/Single_Doc.php:219
 msgid "Number of articles to show under every sections"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:336
+#: includes/Elementor/Docs/Doc_Widget.php:338
 msgid "Main Doc Excerpt"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:337
+#: includes/Elementor/Docs/Doc_Widget.php:339
 msgid "Excerpt word limit of main documentation. If the excerpt got empty, this will get from the post content."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:349
+#: includes/Elementor/Docs/Doc_Widget.php:351
 msgid "Doc Section Excerpt"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:350
-#: includes/Elementor/Single_Doc/Single_Doc.php:204
+#: includes/Elementor/Docs/Doc_Widget.php:352
+#: includes/Elementor/Single_Doc/Single_Doc.php:205
 msgid "Excerpt word limit of the documentation sections. If the excerpt got empty, this will get from the post content."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:362
+#: includes/Elementor/Docs/Doc_Widget.php:364
 msgid "Custom Order"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:363
+#: includes/Elementor/Docs/Doc_Widget.php:365
 msgid "Order the Doc tabs as you want."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:377
+#: includes/Elementor/Docs/Doc_Widget.php:379
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:655
 #: build/tabbed-docs/index.js:662
 msgid "Order By"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:381
+#: includes/Elementor/Docs/Doc_Widget.php:383
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:65
@@ -6034,7 +6075,7 @@ msgstr ""
 msgid "Post Author"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:382
+#: includes/Elementor/Docs/Doc_Widget.php:384
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:67
@@ -6044,7 +6085,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:383
+#: includes/Elementor/Docs/Doc_Widget.php:385
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:64
@@ -6054,7 +6095,7 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:384
+#: includes/Elementor/Docs/Doc_Widget.php:386
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:68
@@ -6064,7 +6105,7 @@ msgstr ""
 msgid "Last Modified Date"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:385
+#: includes/Elementor/Docs/Doc_Widget.php:387
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:69
@@ -6074,7 +6115,7 @@ msgstr ""
 msgid "Random"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:386
+#: includes/Elementor/Docs/Doc_Widget.php:388
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:71
@@ -6084,7 +6125,7 @@ msgstr ""
 msgid "Menu Order"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:398
+#: includes/Elementor/Docs/Doc_Widget.php:400
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:141
@@ -6094,8 +6135,8 @@ msgstr ""
 msgid "Parent Docs Order"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:401
-#: includes/Elementor/Docs/Doc_Widget.php:417
+#: includes/Elementor/Docs/Doc_Widget.php:403
+#: includes/Elementor/Docs/Doc_Widget.php:419
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:48
@@ -6105,8 +6146,8 @@ msgstr ""
 msgid "Ascending"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:402
-#: includes/Elementor/Docs/Doc_Widget.php:418
+#: includes/Elementor/Docs/Doc_Widget.php:404
+#: includes/Elementor/Docs/Doc_Widget.php:420
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:49
@@ -6116,7 +6157,7 @@ msgstr ""
 msgid "Descending"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:414
+#: includes/Elementor/Docs/Doc_Widget.php:416
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
 #: src/shortcode/edit.js:149
@@ -6126,110 +6167,179 @@ msgstr ""
 msgid "Child Docs Order"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:432
-#: includes/Elementor/Single_Doc/Single_Doc.php:145
-#: includes/Elementor/Single_Doc/Single_Doc.php:151
+#: includes/Elementor/Docs/Doc_Widget.php:434
+#: includes/Elementor/Single_Doc/Single_Doc.php:146
+#: includes/Elementor/Single_Doc/Single_Doc.php:152
 msgid "Doc"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:441
+#: includes/Elementor/Docs/Doc_Widget.php:443
 msgid "Tabs Items"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:457
+#: includes/Elementor/Docs/Doc_Widget.php:459
 msgid "Labels"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:464
+#: includes/Elementor/Docs/Doc_Widget.php:466
 msgid "Tab Title First Word"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:465
+#: includes/Elementor/Docs/Doc_Widget.php:467
 msgid "Show the first word of the doc in Tab Title."
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:477
+#: includes/Elementor/Docs/Doc_Widget.php:479
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:593
 #: build/tabbed-docs/index.js:600
 msgid "Read More Text"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:490
+#: includes/Elementor/Docs/Doc_Widget.php:492
+msgid "Show Article Count"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:505
+msgid "Show Avg Read Time"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:518
 msgid "Topics Label"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:493
-#: includes/Elementor/Docs/Doc_Widget.php:1102
+#: includes/Elementor/Docs/Doc_Widget.php:521
+#: includes/Elementor/Docs/Doc_Widget.php:1313
 #: includes/Frontend/Shortcode.php:149
 msgid "Topics"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:503
+#: includes/Elementor/Docs/Doc_Widget.php:531
 msgid "Book Chapters / Tutorials Prefix"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:530
+#: includes/Elementor/Docs/Doc_Widget.php:558
 msgid "Tab Title"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:550
-#: includes/Elementor/Docs/Doc_Widget.php:1058
+#: includes/Elementor/Docs/Doc_Widget.php:578
+#: includes/Elementor/Docs/Doc_Widget.php:1085
+#: includes/Elementor/Docs/Doc_Widget.php:1135
 #: includes/Elementor/Search/style-control.php:22
-#: includes/Elementor/Search/style-control.php:297
-#: includes/Elementor/Single_Doc/Single_Doc.php:360
+#: includes/Elementor/Search/style-control.php:275
+#: includes/Elementor/Search/style-control.php:465
+#: includes/Elementor/Single_Doc/Single_Doc.php:361
 msgid "Padding"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:576
-#: includes/Elementor/Docs/Doc_Widget.php:627
-#: includes/Elementor/Docs/Doc_Widget.php:664
-#: includes/Elementor/Docs/Doc_Widget.php:746
-#: includes/Elementor/Docs/Doc_Widget.php:785
-#: includes/Elementor/Docs/Doc_Widget.php:818
-#: includes/Elementor/Docs/Doc_Widget.php:871
-#: includes/Elementor/Docs/Doc_Widget.php:930
-#: includes/Elementor/Docs/Doc_Widget.php:982
-#: includes/Elementor/Docs/Doc_Widget.php:1016
+#: includes/Elementor/Docs/Doc_Widget.php:604
+#: includes/Elementor/Docs/Doc_Widget.php:655
+#: includes/Elementor/Docs/Doc_Widget.php:692
+#: includes/Elementor/Docs/Doc_Widget.php:774
+#: includes/Elementor/Docs/Doc_Widget.php:813
+#: includes/Elementor/Docs/Doc_Widget.php:846
+#: includes/Elementor/Docs/Doc_Widget.php:898
+#: includes/Elementor/Docs/Doc_Widget.php:957
+#: includes/Elementor/Docs/Doc_Widget.php:1009
+#: includes/Elementor/Docs/Doc_Widget.php:1043
+#: includes/Elementor/Docs/Doc_Widget.php:1285
 #: includes/Elementor/Search/style-control.php:73
-#: includes/Elementor/Single_Doc/Single_Doc.php:387
-#: includes/Elementor/Single_Doc/Single_Doc.php:425
+#: includes/Elementor/Search/style-control.php:211
+#: includes/Elementor/Search/style-control.php:240
+#: includes/Elementor/Single_Doc/Single_Doc.php:388
+#: includes/Elementor/Single_Doc/Single_Doc.php:426
 msgid "Text Color"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:588
-#: includes/Elementor/Docs/Doc_Widget.php:676
-#: includes/Elementor/Docs/Doc_Widget.php:1027
+#: includes/Elementor/Docs/Doc_Widget.php:616
+#: includes/Elementor/Docs/Doc_Widget.php:704
+#: includes/Elementor/Docs/Doc_Widget.php:1054
 msgid "Border Color"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:713
+#: includes/Elementor/Docs/Doc_Widget.php:741
 msgid "Contents"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:722
+#: includes/Elementor/Docs/Doc_Widget.php:750
 msgid "Item Parent Title"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:762
+#: includes/Elementor/Docs/Doc_Widget.php:790
 msgid "Item Parent Description"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:800
+#: includes/Elementor/Docs/Doc_Widget.php:828
 msgid "Item Title"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:830
-#: includes/Elementor/Docs/Doc_Widget.php:888
+#: includes/Elementor/Docs/Doc_Widget.php:858
+#: includes/Elementor/Docs/Doc_Widget.php:915
 msgid "Text Hover Color"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:844
+#: includes/Elementor/Docs/Doc_Widget.php:872
 msgid "Item Title List"
 msgstr ""
 
-#: includes/Elementor/Docs/Doc_Widget.php:907
+#: includes/Elementor/Docs/Doc_Widget.php:934
 msgid "Item Contents"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1116
+msgid "Card Grid: Box Style"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1155
+#: includes/Elementor/Search/style-control.php:101
+#: includes/Elementor/Search/style-control.php:123
+#: includes/Elementor/Search/style-control.php:264
+#: includes/Elementor/Search/style-control.php:477
+#: build/tabbed-docs/index.js:1
+#: src/tabbed-docs/edit.js:925
+#: build/tabbed-docs/index.js:932
+msgid "Border Radius"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1175
+msgid "Column Gap"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1189
+msgid "Row Gap"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1202
+msgid "Separator Color"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1219
+msgid "Card Grid: Meta Text"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1229
+msgid "Article Count Badge"
+msgstr ""
+
+#: includes/Elementor/Docs/Doc_Widget.php:1268
+msgid "Read Time Text"
+msgstr ""
+
+#: includes/Elementor/Search/ajax-sarch-results.php:14
+#: includes/Elementor/Search/Search_Widget.php:363
+msgid "Check the spellings or use a different word or phrase"
+msgstr ""
+
+#: includes/Elementor/Search/ezd-search.php:26
+#: includes/Elementor/Search/Search_Widget.php:161
+#: includes/Frontend/Ajax.php:246
+msgid "Page"
+msgstr ""
+
+#: includes/Elementor/Search/ezd-search.php:27
+#: includes/Elementor/Search/Search_Widget.php:162
+#: includes/Frontend/Ajax.php:247
+msgid "Post"
 msgstr ""
 
 #: includes/Elementor/Search/Search_Widget.php:27
@@ -6257,8 +6367,42 @@ msgstr ""
 msgid "Button Position"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:169
+#: includes/Elementor/Search/Search_Widget.php:137
+msgid "Post Type Filter"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:146
+msgid "Enable Post Type Filter"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:174
+msgid "Result Tabs"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:183
+msgid "Show Result Tabs"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:184
+msgid "Show All / Docs / Page / Post tabs on top of search results."
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:226
 msgid "Alignment"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:335
+#: includes/Elementor/Search/style-control.php:493
+msgid "No Result"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:342
+msgid "Image"
+msgstr ""
+
+#: includes/Elementor/Search/Search_Widget.php:361
+#: includes/Elementor/Single_Doc/Single_Doc.php:416
+msgid "Subtitle"
 msgstr ""
 
 #: includes/Elementor/Search/style-control.php:44
@@ -6270,22 +6414,14 @@ msgid "Placeholder Color"
 msgstr ""
 
 #: includes/Elementor/Search/style-control.php:66
-#: includes/Elementor/Search/style-control.php:290
+#: includes/Elementor/Search/style-control.php:288
+#: includes/Elementor/Search/style-control.php:458
 msgid "Typography"
 msgstr ""
 
 #: includes/Elementor/Search/style-control.php:85
-#: includes/Elementor/Single_Doc/Single_Doc.php:352
+#: includes/Elementor/Single_Doc/Single_Doc.php:353
 msgid "Border"
-msgstr ""
-
-#: includes/Elementor/Search/style-control.php:101
-#: includes/Elementor/Search/style-control.php:123
-#: includes/Elementor/Search/style-control.php:309
-#: build/tabbed-docs/index.js:1
-#: src/tabbed-docs/edit.js:925
-#: build/tabbed-docs/index.js:932
-msgid "Border Radius"
 msgstr ""
 
 #: includes/Elementor/Search/style-control.php:134
@@ -6296,21 +6432,47 @@ msgstr ""
 msgid "Icon/Label Color"
 msgstr ""
 
-#: includes/Elementor/Search/style-control.php:190
+#: includes/Elementor/Search/style-control.php:183
+msgid "Filter Button"
+msgstr ""
+
+#: includes/Elementor/Search/style-control.php:306
 msgid "Margin"
 msgstr ""
 
-#: includes/Elementor/Search/style-control.php:191
+#: includes/Elementor/Search/style-control.php:307
 msgid "Margin around the keywords block"
 msgstr ""
 
-#: includes/Elementor/Search/style-control.php:216
+#: includes/Elementor/Search/style-control.php:332
 msgid "Label Typography"
 msgstr ""
 
-#: includes/Elementor/Search/style-control.php:234
-#: includes/Elementor/Search/style-control.php:265
+#: includes/Elementor/Search/style-control.php:350
+#: includes/Elementor/Search/style-control.php:405
 msgid "Keyword Color"
+msgstr ""
+
+#: includes/Elementor/Search/style-control.php:371
+#: includes/Elementor/Search/style-control.php:427
+msgid "Underline Color"
+msgstr ""
+
+#: includes/Elementor/Search/style-control.php:381
+#: includes/Elementor/Search/style-control.php:438
+msgid "Underline Width"
+msgstr ""
+
+#: includes/Elementor/Search/style-control.php:510
+msgid "Image Width"
+msgstr ""
+
+#: includes/Elementor/Search/style-control.php:534
+msgid "Title Typography"
+msgstr ""
+
+#: includes/Elementor/Search/style-control.php:553
+msgid "Subtitle Typography"
 msgstr ""
 
 #: includes/Elementor/Single_Doc/Single_Doc.php:29
@@ -6329,7 +6491,7 @@ msgid "Creative"
 msgstr ""
 
 #: includes/Elementor/Single_Doc/Single_Doc.php:79
-#: includes/Elementor/Single_Doc/Single_Doc.php:330
+#: includes/Elementor/Single_Doc/Single_Doc.php:331
 msgid "Box"
 msgstr ""
 
@@ -6341,115 +6503,107 @@ msgstr ""
 msgid "Docs Boxes"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:113
+#: includes/Elementor/Single_Doc/Single_Doc.php:114
 msgid "Title Text"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:122
+#: includes/Elementor/Single_Doc/Single_Doc.php:123
 msgid "Title Tag"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:133
+#: includes/Elementor/Single_Doc/Single_Doc.php:134
 msgid "Subtitle Text"
-msgstr ""
-
-#: includes/Elementor/Single_Doc/Single_Doc.php:180
-#: includes/Elementor/Single_Doc/Single_Doc.php:190
-msgid "Sections"
 msgstr ""
 
 #: includes/Elementor/Single_Doc/Single_Doc.php:181
 #: includes/Elementor/Single_Doc/Single_Doc.php:191
+msgid "Sections"
+msgstr ""
+
+#: includes/Elementor/Single_Doc/Single_Doc.php:182
+#: includes/Elementor/Single_Doc/Single_Doc.php:192
 msgid "Number of section to show"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:203
+#: includes/Elementor/Single_Doc/Single_Doc.php:204
 msgid "Excerpt"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:228
+#: includes/Elementor/Single_Doc/Single_Doc.php:229
 msgid "Order"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:244
+#: includes/Elementor/Single_Doc/Single_Doc.php:245
 msgid "Buttons"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:253
+#: includes/Elementor/Single_Doc/Single_Doc.php:254
 msgid "Read More Button"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:262
+#: includes/Elementor/Single_Doc/Single_Doc.php:263
 msgid "Section Button"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:287
+#: includes/Elementor/Single_Doc/Single_Doc.php:288
 msgid "Button URL"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:299
+#: includes/Elementor/Single_Doc/Single_Doc.php:300
 msgid "Show More Button"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:311
+#: includes/Elementor/Single_Doc/Single_Doc.php:312
 msgid "Show Less Text"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:415
-msgid "Subtitle"
-msgstr ""
-
-#: includes/Elementor/Single_Doc/Single_Doc.php:456
-#: includes/Elementor/Single_Doc/Single_Doc.php:497
+#: includes/Elementor/Single_Doc/Single_Doc.php:457
+#: includes/Elementor/Single_Doc/Single_Doc.php:498
 msgid "Content"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:535
-#: includes/Elementor/Single_Doc/Single_Doc.php:545
+#: includes/Elementor/Single_Doc/Single_Doc.php:536
+#: includes/Elementor/Single_Doc/Single_Doc.php:546
 msgid "Background Objects"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:554
+#: includes/Elementor/Single_Doc/Single_Doc.php:555
 msgid "Shape"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:555
+#: includes/Elementor/Single_Doc/Single_Doc.php:556
 msgid "The background shape should be transparent png or svg image."
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:568
+#: includes/Elementor/Single_Doc/Single_Doc.php:569
 msgid "Round Objects 01"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:578
+#: includes/Elementor/Single_Doc/Single_Doc.php:579
 msgid "Round 01 Color"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:592
+#: includes/Elementor/Single_Doc/Single_Doc.php:593
 msgid "Round Objects 02"
 msgstr ""
 
-#: includes/Elementor/Single_Doc/Single_Doc.php:602
+#: includes/Elementor/Single_Doc/Single_Doc.php:603
 msgid "Round 02 Color"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:58
+#: includes/Frontend/Ajax.php:61
 msgid "Sorry, you've already recorded your feedback!"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:120
+#: includes/Frontend/Ajax.php:123
 msgid "Thanks for your feedback!"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:305
-msgid "No result found!"
-msgstr ""
-
-#: includes/Frontend/Ajax.php:328
+#: includes/Frontend/Ajax.php:318
 msgid "Invalid document ID"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:376
+#: includes/Frontend/Ajax.php:366
 #: includes/functions.php:1688
 msgid "You don't have permission to access this document!"
 msgstr ""
@@ -8351,12 +8505,6 @@ msgstr ""
 #: src/tabbed-docs/edit.js:1009
 #: build/tabbed-docs/index.js:1016
 msgid "Upgrade to apply this style on the frontend."
-msgstr ""
-
-#: build/tabbed-docs/index.js:1
-#: src/tabbed-docs/edit.js:1186
-#: build/tabbed-docs/index.js:1193
-msgid "article"
 msgstr ""
 
 #: build/tabbed-docs/index.js:1
