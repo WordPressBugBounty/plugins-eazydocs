@@ -2,14 +2,14 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: EazyDocs 2.11.2\n"
+"Project-Id-Version: EazyDocs 2.11.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/eazydocs\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-06T12:54:11+00:00\n"
+"POT-Creation-Date: 2026-05-25T11:04:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: eazydocs\n"
@@ -804,6 +804,51 @@ msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:443
 msgid "Chat Icon"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:468
+msgid "How to embed the assistant on another site"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:470
+msgid "(Optional) Enter a Site / Product Label below — the name of the site or product where you are pasting this embed. This tells the assistant which product the visitor is asking about so it does not confuse multiple products in one knowledge base."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:471
+msgid "Copy the generated Embed Code from the box below."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:472
+msgid "Paste it into the HTML of the target site — anywhere inside the <body>. The assistant loads as a floating widget."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:474
+msgid "When to fill the label:"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:474
+msgid "only when one knowledge base serves multiple products or brands. If you have one product on one site, leave it empty."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:475
+#: includes/Admin/options/opt_restricted_docs.php:255
+msgid "Example:"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:475
+msgid "on eazydocs.com use label \"Eazydocs\"; on antimanual.com use \"Antimanual\". Both iframes load the same KB but answer in their own product context."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:479
+msgid "Site / Product Label (optional)"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:480
+msgid "e.g., Eazydocs, Acme CRM, Plan Pro"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:481
+msgid "Max 200 characters. The label is passed as scope only — it never appears in the user message."
 msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:15
@@ -3203,10 +3248,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:253
 msgid "Set unique role requirements for individual docs. Perfect when different docs need different access levels — like restricting HR docs to HR roles, or limiting API docs to developers."
-msgstr ""
-
-#: includes/Admin/options/opt_restricted_docs.php:255
-msgid "Example:"
 msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:255
