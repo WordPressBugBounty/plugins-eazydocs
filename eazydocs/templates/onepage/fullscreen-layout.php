@@ -24,7 +24,12 @@ if ( function_exists( 'wp_body_open' ) ) {
 
 wp_enqueue_script( 'eazydocs-onepage' );
 
+// Rendering the whole tree (and every Elementor node) in one request is heavy;
+// give it room so large docs don't 500 mid-render / during "print to PDF".
+ezd_raise_onepage_render_limits();
+
 $widget_sidebar = ezd_get_opt( 'is_widget_sidebar' );
+$onepage_width  = ezd_get_opt( 'onepage_content_width', 'full-width' );
 
 global $post;
 $post_slug = $post->post_name;
@@ -40,9 +45,9 @@ $children = ezd_list_pages_onepage_others( array(
 	'depth'     => 4
 ) );
 ?>
-<section class="documentation_area_sticky doc_documentation_area onepage_doc_area fullscreen-layout" id="sticky_doc">
+<section class="documentation_area_sticky doc_documentation_area onepage_doc_area fullscreen-layout ezd-onepage-<?php echo esc_attr( $onepage_width ); ?>" id="sticky_doc">
     <div class="overlay_bg"></div>
-    <div class="ezd-container-fluid p-lg-5">
+    <div class="ezd-container-fluid">
         <div class="ezd-grid ezd-grid-cols-12 doc-container">
             <div class="ezd-xl-col-3 ezd-lg-col-3 ezd-grid-column-full doc_mobile_menu doc-sidebar sticky-top ezd-sticky-lg-top left-column">
                 <aside class=" one-page-docs-sidebar-wrap">
@@ -128,17 +133,12 @@ $children = ezd_list_pages_onepage_others( array(
                         <article class="documentation_body doc-section onepage-doc-sec" id="<?php echo esc_attr( $get_title ) ?>" itemscope itemtype="http://schema.org/Article">
 							<?php if ( ! empty( $doc_item->post_title ) ) : ?>
                                 <div class="shortcode_title doc-sec-title">
-                                    <h2> <?php echo wp_kses_post($sec_serial . '. ' . $doc_item->post_title); ?> </h2>
+                                    <h2><span class="ezd-onepage-sec-no"><?php echo esc_html( $sec_serial . '. ' ); ?></span><?php echo wp_kses_post( $doc_item->post_title ); ?></h2>
                                 </div>
 							<?php endif; ?>
                             <div class="doc-content">
 								<?php
-								if ( did_action( 'elementor/loaded' ) ) {
-									$parent_content = \Elementor\Plugin::instance()->frontend->get_builder_content( $doc_item->ID );
-									echo ! empty( $parent_content ) ? wp_kses_post($parent_content) : wp_kses_post(apply_filters( 'the_content', $doc_item->post_content ));
-								} else {
-									echo wp_kses_post(apply_filters( 'the_content', $doc_item->post_content ));
-								}
+								echo wp_kses_post( ezd_get_onepage_doc_content( $doc_item ) );
 								?>
                             </div>
 							<?php
@@ -154,19 +154,14 @@ $children = ezd_list_pages_onepage_others( array(
                                     <div class="shortcode_title depth-two">
                                         <h3>
 											<?php
-											echo esc_html($sec_serial . '.' . $child_serial . ' ');
+											echo '<span class="ezd-onepage-sec-no">' . esc_html( $sec_serial . '.' . $child_serial . ' ' ) . '</span>';
 											echo wp_kses_post($child_section->post_title);
 											?>
                                         </h3>
                                     </div>
                                     <div class="doc-content">
 										<?php
-										if ( did_action( 'elementor/loaded' ) ) {
-											$child_content = \Elementor\Plugin::instance()->frontend->get_builder_content( $child_section->ID );
-											echo ! empty( $child_content ) ? wp_kses_post($child_content) : wp_kses_post(apply_filters( 'the_content', $child_section->post_content ));
-										} else {
-											echo wp_kses_post(apply_filters( 'the_content', $child_section->post_content ));
-										}
+										echo wp_kses_post( ezd_get_onepage_doc_content( $child_section ) );
 										?>
                                     </div>
                                 </div>
@@ -191,19 +186,14 @@ $children = ezd_list_pages_onepage_others( array(
                                         <div class="shortcode_title depth-three">
                                             <h4>
 												<?php
-												echo esc_html($sec_serial . '.' . $child_serial . '.' . $last_depth_serial . ' ');
+												echo '<span class="ezd-onepage-sec-no">' . esc_html( $sec_serial . '.' . $child_serial . '.' . $last_depth_serial . ' ' ) . '</span>';
 												echo wp_kses_post($last_depth_doc->post_title);
 												?>
                                             </h4>
                                         </div>
                                         <div class="doc-content">
 											<?php
-											if ( did_action( 'elementor/loaded' ) ) {
-												$child_content = \Elementor\Plugin::instance()->frontend->get_builder_content( $last_depth_doc->ID );
-												echo ! empty( $child_content ) ? wp_kses_post($child_content) : wp_kses_post(apply_filters( 'the_content', $last_depth_doc->post_content ));
-											} else {
-												echo wp_kses_post(apply_filters( 'the_content', $last_depth_doc->post_content ));
-											}
+											echo wp_kses_post( ezd_get_onepage_doc_content( $last_depth_doc ) );
 											?>
                                         </div>
                                     </div>
@@ -229,19 +219,14 @@ $children = ezd_list_pages_onepage_others( array(
                                         <div class="shortcode_title depth-three">
                                             <h4>
 												<?php
-												echo esc_html($sec_serial . '.' . $child_serial . '.' . $last_depth_serial . ' ');
+												echo '<span class="ezd-onepage-sec-no">' . esc_html( $sec_serial . '.' . $child_serial . '.' . $last_depth_serial . ' ' ) . '</span>';
 												echo wp_kses_post($last_depth_doc->post_title);
 												?>
                                             </h4>
                                         </div>
                                         <div class="doc-content">
 											<?php
-											if ( did_action( 'elementor/loaded' ) ) {
-												$child_content = \Elementor\Plugin::instance()->frontend->get_builder_content( $last_depth_doc->ID );
-												echo ! empty( $child_content ) ? wp_kses_post($child_content) : wp_kses_post(apply_filters( 'the_content', $last_depth_doc->post_content ));
-											} else {
-												echo wp_kses_post(apply_filters( 'the_content', $last_depth_doc->post_content ));
-											}
+											echo wp_kses_post( ezd_get_onepage_doc_content( $last_depth_doc ) );
 											?>
                                         </div>
                                     </div>

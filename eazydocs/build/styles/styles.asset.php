@@ -1,6 +1,6 @@
 <?php
 return array(
-	'version' => '76c00d27062ea5d06b2d',
+	'version' => '93e6df3c4087287555b5',
 	'entries' => array(
 		'frontend' => array(
 			'css' => 'frontend.css',
@@ -61,6 +61,10 @@ return array(
 		'admin/ezd-block-editor' => array(
 			'css' => 'admin/ezd-block-editor.css',
 			'map' => 'admin/ezd-block-editor.css.map'
+		),
+		'admin/import-export' => array(
+			'css' => 'admin/import-export.css',
+			'map' => 'admin/import-export.css.map'
 		),
 		'admin/onepage' => array(
 			'css' => 'admin/onepage.css',

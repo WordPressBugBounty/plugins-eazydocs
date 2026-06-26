@@ -33,13 +33,25 @@ class Assets
 		wp_register_script('scrollspy', EZD_ASSETS . 'js/frontend/scrollspy-gumshoe.js', ['jquery'], '5.1.2', true);
 		wp_register_script('eazydocs-el-widgets', EZD_ASSETS . 'js/frontend/elementor-widgets.js', [], EZD_VERSION, true);
 
+		// Shared AJAX live-search for every banner context (built-in banner,
+		// Gutenberg block, Elementor widget). Registered unconditionally so the
+		// Elementor widget can enqueue it on any page; auto-enqueued in global scope below.
+		wp_register_script('eazydocs-search-banner', EZD_ASSETS . 'js/frontend/search-banner.js', ['jquery'], EZD_VERSION, true);
+
 		wp_register_style('elegant-icon', EZD_ASSETS . 'vendors/elegant-icon/style.css', [], EZD_VERSION);
 		wp_register_style('ezd-docs-widgets', EZD_STYLES . 'ezd-docs-widgets.css', [], EZD_VERSION);
 
-		$dynamic_cssd = ":root { --ezd_brand_color: " . ezd_get_opt('brand_color') . "; }";
+		// Expose the brand color both as-is and as an RGB triplet so styles can
+		// build translucent tints with rgba(var(--ezd_brand_color_rgb), .x).
+		$brand_color  = ezd_get_opt('brand_color');
+		$dynamic_cssd = ":root { --ezd_brand_color: " . $brand_color . ";";
+		if (!empty($brand_color)) {
+			$dynamic_cssd .= " --ezd_brand_color_rgb: " . ezd_hex2rgba($brand_color) . ";";
+		}
+		$dynamic_cssd .= " }";
 		wp_add_inline_style('eazydocs-blocks', $dynamic_cssd);
 
-		if (ezd_has_shortcode(['ezd_login_form', 'reference']) || has_ezd_mark_text_class()) {
+		if (ezd_has_shortcode(['reference']) || has_ezd_mark_text_class()) {
 			wp_enqueue_style('eazydocs-shortcodes', EZD_STYLES . 'shortcodes.css', [], EZD_VERSION);
 		}
 
@@ -55,7 +67,8 @@ class Assets
 			wp_enqueue_script('scrollspy');
 			wp_enqueue_script('bootstrap-toc-js', EZD_ASSETS . 'js/frontend/bootstrap-toc.min.js', ['jquery'], '1.0.1', true);
 			wp_enqueue_script('eazydocs-single', EZD_ASSETS . 'js/frontend/docs-single.js', ['jquery'], EZD_VERSION, true);
-			wp_register_script('eazydocs-onepage', EZD_ASSETS . 'js/frontend/onepage.js', ['jquery'], EZD_VERSION, true);
+			// Depends on 'scrollspy' (Gumshoe) — onepage.js instantiates `new Gumshoe(...)`.
+			wp_register_script('eazydocs-onepage', EZD_ASSETS . 'js/frontend/onepage.js', ['jquery', 'scrollspy'], EZD_VERSION, true);
 
 			$is_dark_switcher = ezd_unlock_themes('docy', 'docly') ? ezd_get_opt('is_dark_switcher') : false;
 
@@ -87,19 +100,9 @@ class Assets
 			$ajax_url = add_query_arg('wpml_lang', $wpml_current_language, $ajax_url);
 		}
 
-		$elementor_docs = [];
-		if (class_exists('\Elementor\Plugin')) {
-			$elementor_docs = get_posts(
-				[
-					'post_type' => 'docs',
-					'post_status' => 'publish',
-					'numberposts' => -1,
-					'fields' => 'ids',
-					'meta_key' => '_elementor_edit_mode',
-					'meta_value' => 'builder',
-				]
-			);
-		}
+		// Only the AJAX doc loader (single doc pages) consumes this list, so skip the
+		// unbounded meta query on every other front-end request. The result is cached.
+		$elementor_docs = is_singular('docs') ? ezd_get_elementor_doc_ids() : [];
 
 		wp_localize_script(
 			'jquery',
@@ -107,12 +110,19 @@ class Assets
 			[
 				'ajaxurl' => $ajax_url,
 				'EZD_STYLES' => EZD_STYLES,
+				'EZD_VERSION' => EZD_VERSION,
 				'nonce' => wp_create_nonce('eazydocs-ajax'),
 				'is_doc_ajax' => ezd_is_premium() ? ezd_get_opt('is_doc_ajax') : false,
 				'ezd_layout_container' => ezd_container(),
 				'ezd_search_submit' => ezd_get_opt('is_search_submit', true),
 				'ezd_dark_switcher' => ezd_get_opt('is_dark_switcher', true),
 				'elementor_docs' => $elementor_docs,
+				'i18n_loading' => __('Loading…', 'eazydocs'),
+				'i18n_error' => __('Something went wrong. Please try again.', 'eazydocs'),
+				'i18n' => [
+					/* translators: %d: number of search results found. */
+					'results_found' => __('%d results found', 'eazydocs'),
+				],
 			]
 		);
 
@@ -130,6 +140,7 @@ class Assets
 			// No inline PHP-generated CSS needed anymore
 
 			wp_enqueue_script('eazydocs-global', EZD_ASSETS . 'js/frontend/global.js', ['jquery'], EZD_VERSION, true);
+			wp_enqueue_script('eazydocs-search-banner');
 		}
 	}
 

@@ -3,6 +3,67 @@
 @import "frontend/doclist";
 @import "frontend/single_file-attached";
 
+/** === AJAX doc loading state === **/
+.doc-middle-content {
+  &.ezd-is-loading {
+    position: relative;
+    min-height: 240px;
+
+    // Dim + freeze the outgoing content while the next doc is fetched.
+    > *:not(.ezd-ajax-loader) {
+      opacity: 0.45;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+  }
+
+  .ezd-ajax-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+
+    .ezd-ajax-spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid var(--ezd_brand_color_10, rgba(8, 112, 255, 0.1));
+      border-top-color: var(--ezd_brand_color, #0870ff);
+      border-radius: 50%;
+      animation: ezd-ajax-spin 0.7s linear infinite;
+    }
+
+    .screen-reader-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  }
+
+  .ezd-ajax-error {
+    padding: 16px 20px;
+    margin: 12px 0;
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-radius: 6px;
+  }
+}
+
+@keyframes ezd-ajax-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .modal-content .shortcode_info .row {
   margin-top: 20px;
 }
@@ -48,11 +109,6 @@ p .footnotes-link::after {
   color: var(--black_800);
   margin-bottom: 15px;
   line-height: 1.4;
-}
-
-.page-template-page-onepage #post {
-  max-width: 1140px;
-  margin: 0 auto;
 }
 
 .nav-sidebar .nav-item .dropdown_nav ul {
@@ -676,6 +732,76 @@ body.single-docs {
   .eazydocs-assistant-wrapper{
     .chatbox-wrapper{
       bottom: 120px !important;
+    }
+  }
+}
+
+/**
+ * Native browser print (mobile Print menu / Ctrl+P).
+ *
+ * The left/right doc sidebars are sticky/off-canvas navigation chrome.
+ * When the page is sent to the printer their positioning collapses and
+ * they overlap the article content. Hide them — along with the toggle
+ * buttons and assistant widget — and let the middle content span the
+ * full grid so only the documentation body is printed.
+ */
+@media print {
+  // Navigation, sidebars and page chrome.
+  .navbar,
+  .doc_right_mobile_menu,
+  .doc_left_sidebarlist,
+  .doc_mobile_menu.left-column,
+  #mobile-right-toggle,
+  #mobile-left-toggle,
+  .left-sidebar-toggle,
+  .eazydocs-assistant-wrapper,
+  .eazydocs-footer,
+  // Post-content sections that aren't part of the article body.
+  .related-recent-docs,
+  .eazydocs-comments-wrap,
+  .eazydocs-feedback-wrap,
+  // Article meta row (reading time, views, contributors) and in-content
+  // navigation lists (child docs / pagination).
+  .ezd-meta,
+  .d-items.doc-items,
+  .recently_added,
+  .page-links {
+    display: none !important;
+  }
+
+  .doc-middle-content {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  // Expand external link destinations for paper readers.
+  .doc-post-content a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 85%;
+    color: #6b7280;
+    word-break: break-all;
+  }
+
+  // Keep atomic blocks intact and headings attached to their content.
+  .doc-post-content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    pre,
+    blockquote,
+    table,
+    figure,
+    img {
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
   }
 }

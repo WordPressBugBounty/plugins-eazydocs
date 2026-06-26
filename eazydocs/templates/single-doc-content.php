@@ -104,7 +104,7 @@ endif;
 				if ( ezd_get_opt( 'is_excerpt' ) == '1' && has_excerpt() ) {
 					?>
 					<p class="doc-excerpt ezd-alert ezd-alert-info">
-						<strong><?php echo esc_html(ezd_get_opt( 'excerpt_label', 'Summary' ));; ?></strong>
+						<strong><?php echo esc_html( ezd_get_opt( 'excerpt_label', esc_html__( 'Summary: ', 'eazydocs' ) ) ); ?></strong>
 						<?php echo wp_kses_post( get_the_excerpt() ); ?>
 					</p>
 					<?php

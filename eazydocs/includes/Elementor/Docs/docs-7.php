@@ -10,6 +10,14 @@ $ppp_column     = ! empty( $settings['ppp_column'] ) ? $settings['ppp_column'] :
 $articles_limit = ! empty( $settings['doc_items_articles'] ) ? absint( $settings['doc_items_articles'] ) : 4;
 $show_count     = ( $settings['md_show_article_count'] ?? 'yes' ) === 'yes';
 $show_rd_time   = ( $settings['md_show_read_time'] ?? 'yes' ) === 'yes';
+$hide_empty     = ( $settings['md_hide_empty_docs'] ?? '' ) === 'yes';
+
+// Restricted docs visibility / display toggles.
+$show_private   = ezd_setting_enabled( $settings, 'md_show_private_docs' );
+$show_protected = ezd_setting_enabled( $settings, 'md_show_protected_docs' );
+$show_badge     = ezd_setting_enabled( $settings, 'md_show_status_badge' );
+$show_lock      = ezd_setting_enabled( $settings, 'md_show_lock_icon' );
+$doc_statuses   = ezd_doc_listing_statuses( $show_private );
 ?>
 
 <div class="eazydocs_shortcode">
@@ -21,10 +29,11 @@ $show_rd_time   = ( $settings['md_show_read_time'] ?? 'yes' ) === 'yes';
 			array(
 				'post_type'      => 'docs',
 				'posts_per_page' => $doc_number,
-				'post_status'    => array( 'publish', 'private' ),
+				'post_status'    => $doc_statuses,
 				'orderby'        => $order_by ?? 'menu_order',
 				'order'          => $doc_order ?? 'ASC',
 				'post_parent'    => 0,
+				'post__not_in'   => ! empty( $empty_doc_ids ) ? $empty_doc_ids : [],
 			)
 		);
 
@@ -40,6 +49,10 @@ $show_rd_time   = ( $settings['md_show_read_time'] ?? 'yes' ) === 'yes';
 			$parent_args->post_count = count( $parent_args->posts );
 		}
 
+		// Drop password-protected (and, when disabled, private) parents per the toggles.
+		$parent_args->posts      = ezd_filter_doc_visibility( $parent_args->posts, $show_private, $show_protected );
+		$parent_args->post_count = count( $parent_args->posts );
+
 		if ( $parent_args->have_posts() ) :
 			while ( $parent_args->have_posts() ) :
 				$parent_args->the_post();
@@ -50,22 +63,29 @@ $show_rd_time   = ( $settings['md_show_read_time'] ?? 'yes' ) === 'yes';
 					array(
 						'child_of'    => $doc_id,
 						'post_type'   => 'docs',
-						'post_status' => array( 'publish', 'private' ),
+						'post_status' => $doc_statuses,
 					)
 				);
+				$all_children  = ezd_filter_doc_visibility( $all_children, $show_private, $show_protected );
 				$article_count = count( $all_children );
+
+				// Skip docs without any child docs when "Hide Empty Docs" is enabled.
+				if ( $hide_empty && 0 === $article_count ) {
+					continue;
+				}
 
 				// Direct children for the visible article list (limited by control).
 				$direct_articles = get_children(
 					array(
 						'post_parent'    => $doc_id,
 						'post_type'      => 'docs',
-						'post_status'    => array( 'publish', 'private' ),
+						'post_status'    => $doc_statuses,
 						'orderby'        => $order_by ?? 'menu_order',
 						'order'          => $child_order ?? 'ASC',
 						'posts_per_page' => $articles_limit,
 					)
 				);
+				$direct_articles = ezd_filter_doc_visibility( $direct_articles, $show_private, $show_protected );
 
 				// Avg read time: total word count across all articles ÷ 200 wpm.
 				$avg_read_time = 0;
@@ -77,9 +97,9 @@ $show_rd_time   = ( $settings['md_show_read_time'] ?? 'yes' ) === 'yes';
 					$avg_read_time = max( 1, (int) ceil( ( $total_words / count( $all_children ) ) / 200 ) );
 				}
 				?>
-				<div class="ezd-docs-card">
+				<div class="ezd-docs-card <?php echo esc_attr( ezd_doc_status_classes( $doc_id ) ); ?>">
 
-					<?php ezd_render_doc_indicators( $doc_id ); ?>
+					<?php ezd_render_doc_indicators( $doc_id, $show_lock ); ?>
 
 					<div class="ezd-docs-card__head">
 
@@ -93,6 +113,7 @@ $show_rd_time   = ( $settings['md_show_read_time'] ?? 'yes' ) === 'yes';
 							<h3 class="ezd-docs-card__title ezd_item_title">
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 							</h3>
+							<?php echo ezd_doc_status_badge( $doc_id, $show_badge ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 							<?php if ( $show_count ) : ?>
 								<span class="ezd-badge">

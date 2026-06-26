@@ -24,6 +24,150 @@ CSF::createSection( $prefix, array(
 ) );
 
 //
+// Card Design — global styling for restricted docs across shortcodes,
+// blocks and Elementor widgets. Colour fields output CSS custom properties
+// to :root, which every doc skin reads (see ezd-docs-widgets.scss).
+//
+CSF::createSection( $prefix, array(
+	'id'     => 'restricted_docs_design',
+	'parent' => 'restricted_docs',
+	'title'  => esc_html__( 'Card Design', 'eazydocs' ),
+	'icon'   => '',
+	'fields' => array(
+
+		array(
+			'id'      => 'restricted_design_intro',
+			'type'    => 'content',
+			'content' => '
+				<div class="ezd-settings-intro ezd-settings-intro--green">
+					<div class="ezd-settings-intro__inner">
+						<div class="ezd-settings-intro__icon">
+							<span class="dashicons dashicons-art"></span>
+						</div>
+						<div class="ezd-settings-intro__content">
+							<h2>' . esc_html__( 'Restricted Docs Design', 'eazydocs' ) . '</h2>
+							<p>' . esc_html__( 'Customize how private and password-protected docs look everywhere they appear — the [eazydocs] shortcode, the Gutenberg blocks and the Elementor Docs widgets all share these styles.', 'eazydocs' ) . '</p>
+						</div>
+					</div>
+				</div>
+			',
+		),
+
+		// ── Layout & visibility ──────────────────────────────────────────
+		array(
+			'id'    => 'restricted_design_layout_heading',
+			'type'  => 'heading',
+			'title' => esc_html__( 'Layout & Visibility', 'eazydocs' ),
+		),
+
+		array(
+			'id'       => 'restricted_card_style',
+			'type'     => 'button_set',
+			'title'    => esc_html__( 'Restricted Card Style', 'eazydocs' ),
+			'subtitle' => esc_html__( 'Choose how restricted doc cards are highlighted.', 'eazydocs' ),
+			'desc'     => esc_html__( '"Filled" tints the whole card; "Outline" keeps the card plain and adds a coloured border instead.', 'eazydocs' ),
+			'options'  => array(
+				'filled'  => esc_html__( 'Filled Card', 'eazydocs' ),
+				'outline' => esc_html__( 'Outline', 'eazydocs' ),
+			),
+			'default'  => 'filled',
+		),
+
+		array(
+			'id'         => 'restricted_show_badge',
+			'type'       => 'switcher',
+			'title'      => esc_html__( 'Show Status Badge', 'eazydocs' ),
+			'subtitle'   => esc_html__( 'Display the PRIVATE / PROTECTED badge next to restricted doc titles.', 'eazydocs' ),
+			'desc'       => esc_html__( 'Turning this off hides the badge across all shortcodes, blocks and widgets.', 'eazydocs' ),
+			'default'    => true,
+			'text_on'    => esc_html__( 'Show', 'eazydocs' ),
+			'text_off'   => esc_html__( 'Hide', 'eazydocs' ),
+			'text_width' => 75,
+		),
+
+		array(
+			'id'         => 'restricted_show_lock',
+			'type'       => 'switcher',
+			'title'      => esc_html__( 'Show Lock Icon', 'eazydocs' ),
+			'subtitle'   => esc_html__( 'Display the corner lock icon on restricted doc cards.', 'eazydocs' ),
+			'desc'       => esc_html__( 'Turning this off hides the lock across all shortcodes, blocks and widgets.', 'eazydocs' ),
+			'default'    => true,
+			'text_on'    => esc_html__( 'Show', 'eazydocs' ),
+			'text_off'   => esc_html__( 'Hide', 'eazydocs' ),
+			'text_width' => 75,
+		),
+
+		// ── Private doc colours ─────────────────────────────────────────
+		array(
+			'id'    => 'restricted_private_heading',
+			'type'  => 'subheading',
+			'title' => esc_html__( 'Private Doc Colours', 'eazydocs' ),
+		),
+
+		array(
+			'id'          => 'restricted_private_fill',
+			'type'        => 'color',
+			'title'       => esc_html__( 'Card Background', 'eazydocs' ),
+			'subtitle'    => esc_html__( 'Fill colour for private doc cards.', 'eazydocs' ),
+			'default'     => '#ffe69c',
+			'output'      => ':root',
+			'output_mode' => '--ezd-doc-private-fill',
+			'dependency'  => array( array( 'restricted_card_style', '==', 'filled' ) ),
+		),
+
+		array(
+			'id'          => 'restricted_private_accent',
+			'type'        => 'color',
+			'title'       => esc_html__( 'Badge & Outline Colour', 'eazydocs' ),
+			'subtitle'    => esc_html__( 'Accent colour for the PRIVATE badge and the outline style.', 'eazydocs' ),
+			'default'     => '#b45309',
+			'output'      => ':root',
+			'output_mode' => '--ezd-doc-private',
+		),
+
+		// ── Password protected colours ──────────────────────────────────
+		array(
+			'id'    => 'restricted_protected_heading',
+			'type'  => 'subheading',
+			'title' => esc_html__( 'Password Protected Colours', 'eazydocs' ),
+		),
+
+		array(
+			'id'          => 'restricted_protected_fill',
+			'type'        => 'color',
+			'title'       => esc_html__( 'Card Background', 'eazydocs' ),
+			'subtitle'    => esc_html__( 'Fill colour for password-protected doc cards.', 'eazydocs' ),
+			'default'     => '#212529',
+			'output'      => ':root',
+			'output_mode' => '--ezd-doc-protected-fill',
+			'dependency'  => array( array( 'restricted_card_style', '==', 'filled' ) ),
+		),
+
+		array(
+			'id'          => 'restricted_protected_text',
+			'type'        => 'color',
+			'title'       => esc_html__( 'Text Colour', 'eazydocs' ),
+			'subtitle'    => esc_html__( 'Title and body text colour on the filled protected card.', 'eazydocs' ),
+			'default'     => '#ffffff',
+			'output'      => ':root',
+			'output_mode' => '--ezd-doc-protected-text',
+			'dependency'  => array( array( 'restricted_card_style', '==', 'filled' ) ),
+		),
+
+		array(
+			'id'          => 'restricted_protected_accent',
+			'type'        => 'color',
+			'title'       => esc_html__( 'Badge & Outline Colour', 'eazydocs' ),
+			'subtitle'    => esc_html__( 'Accent colour for the PROTECTED badge and the outline style.', 'eazydocs' ),
+			'default'     => '#4f46e5',
+			'output'      => ':root',
+			'output_mode' => '--ezd-doc-protected',
+		),
+
+	),
+) );
+
+//
 // Private Doc Settings
 //
 CSF::createSection( $prefix, array(
@@ -106,37 +250,13 @@ CSF::createSection( $prefix, array(
 			'type'     => 'button_set',
 			'title'    => esc_html__( 'Unauthorized Access Behavior', 'eazydocs' ),
 			'subtitle' => esc_html__( 'What happens when a non-logged-in user tries to access a private doc?', 'eazydocs' ),
-			'desc'     => esc_html__( 'Choose how to handle unauthorized visitors. Redirecting to a login page provides a better user experience than showing an error.', 'eazydocs' ),
+			'desc'     => esc_html__( 'Choose how to handle unauthorized visitors. Showing a login popup in place provides a better user experience than showing an error.', 'eazydocs' ),
 			'options'  => array(
-				'login' => esc_html__( 'Redirect to Login Page', 'eazydocs' ),
+				'login' => esc_html__( 'Show Login Popup', 'eazydocs' ),
 				'none'  => esc_html__( 'Show 404 Error', 'eazydocs' ),
 			),
 			'default'  => 'login',
 			'class'    => 'eazydocs-pro-notice',
-		),
-
-		// Login Page Selection
-		array(
-			'id'          => 'private_doc_login_page',
-			'type'        => 'select',
-			'title'       => esc_html__( 'Login Page', 'eazydocs' ),
-			'subtitle'    => esc_html__( 'Select the page where users will be redirected to log in.', 'eazydocs' ),
-			'desc'        => sprintf(
-				/* translators: %s: shortcode */
-				esc_html__( 'Use the %s shortcode to display the login form on any page.', 'eazydocs' ),
-				'<code>[ezd_login_form]</code>'
-			),
-			'placeholder' => esc_html__( 'Select a page...', 'eazydocs' ),
-			'options'     => 'pages',
-			'class'       => 'eazydocs-pro-notice',
-			'dependency'  => array(
-				array( 'private_doc_mode', '==', 'login' ),
-			),
-			'query_args'  => array(
-				'posts_per_page' => -1,
-			),
-			'chosen'      => true,
-			'ajax'        => true,
 		),
 
 		// Redirect After Login
@@ -286,7 +406,7 @@ CSF::createSection( $prefix, array(
 			'subtitle'   => esc_html__( 'What happens when a logged-in user lacks the required role for a specific doc?', 'eazydocs' ),
 			'desc'       => esc_html__( 'This only applies when a doc has specific role requirements that the user doesn\'t meet.', 'eazydocs' ),
 			'options'    => array(
-				'login'  => esc_html__( 'Redirect to Login Page — User can login with a different account', 'eazydocs' ),
+				'login'  => esc_html__( 'Show Login Popup — User can login with a different account', 'eazydocs' ),
 				'custom' => esc_html__( 'Redirect to Custom Page — Show an "Access Denied" page', 'eazydocs' ),
 				'404'    => esc_html__( 'Show 404 Error — Pretend the doc doesn\'t exist', 'eazydocs' ),
 			),

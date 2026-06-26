@@ -26,6 +26,160 @@ function ezd_get_opt( $option, $default = '' ) {
 }
 
 /**
+ * Marker prefix used to identify EazyDocs-encrypted secrets at rest.
+ */
+const EZD_ENC_PREFIX = 'ezd_enc::';
+
+/**
+ * Derive the symmetric encryption key from the site's secret auth salts.
+ *
+ * Using wp_salt() keeps the key out of the database and the codebase. The key
+ * is hashed to a fixed 32-byte length for AES-256.
+ *
+ * @return string 32-byte binary key.
+ */
+function ezd_encryption_key() {
+	return hash( 'sha256', wp_salt( 'secure_auth' ), true );
+}
+
+/**
+ * Encrypt a sensitive value (e.g. an API secret) for storage at rest.
+ *
+ * Returns a prefixed, base64-encoded "IV + ciphertext" string so the value can
+ * be recognised and decrypted later. Empty values and already-encrypted values
+ * are returned unchanged to keep saves idempotent.
+ *
+ * @param string $value Plaintext value to encrypt.
+ * @return string Encrypted, prefixed value (or the original input when empty/already encrypted).
+ */
+function ezd_encrypt( $value ) {
+	if ( ! is_string( $value ) || '' === $value ) {
+		return $value;
+	}
+
+	// Already encrypted — do not double-encrypt on re-save.
+	if ( 0 === strpos( $value, EZD_ENC_PREFIX ) ) {
+		return $value;
+	}
+
+	if ( ! function_exists( 'openssl_encrypt' ) ) {
+		return $value; // Graceful fallback when OpenSSL is unavailable.
+	}
+
+	$iv         = random_bytes( 16 );
+	$ciphertext = openssl_encrypt( $value, 'aes-256-cbc', ezd_encryption_key(), OPENSSL_RAW_DATA, $iv );
+
+	if ( false === $ciphertext ) {
+		return $value;
+	}
+
+	return EZD_ENC_PREFIX . base64_encode( $iv . $ciphertext );
+}
+
+/**
+ * Decrypt a value previously encrypted with ezd_encrypt().
+ *
+ * Values without the EazyDocs marker prefix (e.g. legacy plaintext secrets) are
+ * returned as-is so existing configurations keep working until re-saved.
+ *
+ * @param string $value Stored value to decrypt.
+ * @return string Decrypted plaintext (or the original input when not encrypted).
+ */
+function ezd_decrypt( $value ) {
+	if ( ! is_string( $value ) || 0 !== strpos( $value, EZD_ENC_PREFIX ) ) {
+		return $value;
+	}
+
+	if ( ! function_exists( 'openssl_decrypt' ) ) {
+		return '';
+	}
+
+	$payload = base64_decode( substr( $value, strlen( EZD_ENC_PREFIX ) ), true );
+
+	if ( false === $payload || strlen( $payload ) <= 16 ) {
+		return '';
+	}
+
+	$iv         = substr( $payload, 0, 16 );
+	$ciphertext = substr( $payload, 16 );
+	$plaintext  = openssl_decrypt( $ciphertext, 'aes-256-cbc', ezd_encryption_key(), OPENSSL_RAW_DATA, $iv );
+
+	return ( false === $plaintext ) ? '' : $plaintext;
+}
+
+/**
+ * CSF sanitize callback: encrypt a secret field value before it is saved.
+ *
+ * @param string $value Submitted field value.
+ * @return string Encrypted value safe for storage.
+ */
+function ezd_sanitize_encrypted_secret( $value ) {
+	return ezd_encrypt( sanitize_text_field( $value ) );
+}
+
+/**
+ * Test the saved Google OAuth credentials against Google.
+ *
+ * Sends a token request with a dummy authorization code. Google validates the
+ * client (and the redirect URI) before the code, so the error it returns tells
+ * us exactly what is wrong without needing a full sign-in flow:
+ *   - invalid_grant        => credentials + redirect URI are valid (success).
+ *   - invalid_client       => wrong Client ID / Secret.
+ *   - redirect_uri_mismatch => credentials OK, redirect URI not authorized.
+ *
+ * @return void Sends a JSON response.
+ */
+function ezd_google_test_connection_ajax() {
+	if ( ! check_ajax_referer( 'eazydocs-admin-nonce', 'nonce', false ) ) {
+		wp_send_json_error( [ 'message' => esc_html__( 'Invalid security token. Please refresh and try again.', 'eazydocs' ) ] );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to do this.', 'eazydocs' ) ] );
+	}
+
+	$client_id = ezd_get_opt( 'google_client_id', '' );
+	$secret    = ezd_decrypt( ezd_get_opt( 'google_client_secret', '' ) );
+
+	if ( empty( $client_id ) || empty( $secret ) ) {
+		wp_send_json_error( [ 'message' => esc_html__( 'Enter and save your Client ID and Client Secret first.', 'eazydocs' ) ] );
+	}
+
+	$response = wp_remote_post( 'https://oauth2.googleapis.com/token', [
+		'timeout' => 15,
+		'body'    => [
+			'client_id'     => $client_id,
+			'client_secret' => $secret,
+			'code'          => 'ezd-connection-test',
+			'grant_type'    => 'authorization_code',
+			'redirect_uri'  => home_url( '/google-auth-callback/' ),
+		],
+	] );
+
+	if ( is_wp_error( $response ) ) {
+		wp_send_json_error( [ 'message' => esc_html__( 'Could not reach Google. Check your server connectivity and try again.', 'eazydocs' ) ] );
+	}
+
+	$body  = json_decode( wp_remote_retrieve_body( $response ), true );
+	$error = is_array( $body ) && ! empty( $body['error'] ) ? $body['error'] : '';
+
+	if ( 'invalid_grant' === $error ) {
+		wp_send_json_success( [ 'message' => esc_html__( 'Success — your Client ID, Secret and Redirect URI are all valid.', 'eazydocs' ) ] );
+	}
+
+	if ( in_array( $error, [ 'invalid_client', 'unauthorized_client' ], true ) ) {
+		wp_send_json_error( [ 'message' => esc_html__( 'Invalid Client ID or Client Secret. Re-copy both values from Google Cloud Console.', 'eazydocs' ) ] );
+	}
+
+	if ( 'redirect_uri_mismatch' === $error ) {
+		wp_send_json_error( [ 'message' => esc_html__( 'Credentials are valid, but the Redirect URI is not authorized. Add the exact URI shown above to your Google OAuth client.', 'eazydocs' ) ] );
+	}
+
+	wp_send_json_error( [ 'message' => esc_html__( 'Unexpected response from Google. Please re-check your credentials.', 'eazydocs' ) ] );
+}
+add_action( 'wp_ajax_ezd_google_test_connection', 'ezd_google_test_connection_ajax' );
+
+/**
  * Prime the post meta cache with backward compatibility.
  *
  * @param array|int|WP_Post $post_ids Post IDs or post objects.
@@ -63,6 +217,228 @@ function ezd_update_post_meta_cache( $post_ids ) {
 		update_meta_cache( 'post', $post_ids );
 	}
 }
+
+/**
+ * Format a number into a compact, human-readable string (e.g. 1.2k, 3.4M).
+ *
+ * Used across the dashboard so view counts, vote totals and search figures
+ * are displayed consistently.
+ *
+ * @param int|float $number   The raw number.
+ * @param int       $decimals Maximum decimals for the shortened value.
+ * @return string
+ */
+function ezd_format_number( $number, $decimals = 1 ) {
+	$number = (float) $number;
+
+	if ( $number >= 1000000 ) {
+		return rtrim( rtrim( number_format( $number / 1000000, $decimals ), '0' ), '.' ) . 'M';
+	}
+
+	if ( $number >= 1000 ) {
+		return rtrim( rtrim( number_format( $number / 1000, $decimals ), '0' ), '.' ) . 'k';
+	}
+
+	return (string) (int) $number;
+}
+
+/**
+ * Calculate the percentage change between two values.
+ *
+ * @param int|float $old Previous period value.
+ * @param int|float $new Current period value.
+ * @return int|null Whole-number percentage change, or null when no baseline exists.
+ */
+function ezd_percent_change( $old, $new ) {
+	$old = (float) $old;
+	$new = (float) $new;
+
+	if ( $old <= 0 ) {
+		// No baseline: report growth only when something new appeared.
+		return $new > 0 ? 100 : null;
+	}
+
+	return (int) round( ( ( $new - $old ) / $old ) * 100 );
+}
+
+/**
+ * Build correctly bucketed daily time-series for the dashboard chart.
+ *
+ * Returns three honest, per-day series sourced from the logging tables:
+ * - views    : SUM(count) from the view log (view increments per day).
+ * - searches : COUNT(*) of search events per day.
+ * - failed   : SUM(not_found_count) of searches that returned nothing.
+ *
+ * Feedback is intentionally omitted: the schema only stores cumulative vote
+ * totals and the last vote time, so a truthful per-day feedback line is not
+ * possible. Arrays are ordered oldest -> newest and aligned with `labels`.
+ *
+ * @param int $days Number of days to include (e.g. 7 or 30).
+ * @return array{labels:string[],views:int[],searches:int[],failed:int[]}
+ */
+function ezd_dashboard_daily_series( $days = 7 ) {
+	global $wpdb;
+
+	$days = max( 1, (int) $days );
+
+	$view_table   = $wpdb->prefix . 'eazydocs_view_log';
+	$search_table = $wpdb->prefix . 'eazydocs_search_log';
+
+	$labels    = [];
+	$views     = [];
+	$searches  = [];
+	$failed    = [];
+	$positions = []; // 'Y-m-d' => index in the series arrays.
+
+	$now = current_time( 'timestamp' );
+
+	for ( $i = $days - 1; $i >= 0; $i-- ) {
+		$ts                 = $now - ( $i * DAY_IN_SECONDS );
+		$key                = wp_date( 'Y-m-d', $ts );
+		$labels[]           = wp_date( 'd M', $ts );
+		$views[]            = 0;
+		$searches[]         = 0;
+		$failed[]           = 0;
+		$positions[ $key ]  = count( $labels ) - 1;
+	}
+
+	// Widen the lower bound by a day so timezone skew between the GMT view log
+	// and the local search log never drops boundary rows.
+	$since = gmdate( 'Y-m-d 00:00:00', $now - ( $days * DAY_IN_SECONDS ) );
+
+	// Views per day. phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name only.
+	$view_rows = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT DATE(created_at) AS d, SUM(count) AS total FROM {$view_table} WHERE created_at >= %s GROUP BY DATE(created_at)",
+			$since
+		)
+	);
+	foreach ( (array) $view_rows as $row ) {
+		if ( isset( $positions[ $row->d ] ) ) {
+			$views[ $positions[ $row->d ] ] = (int) $row->total;
+		}
+	}
+
+	// Searches and failed searches per day. phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name only.
+	$search_rows = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT DATE(created_at) AS d, COUNT(*) AS total, SUM(not_found_count) AS failed FROM {$search_table} WHERE created_at >= %s GROUP BY DATE(created_at)",
+			$since
+		)
+	);
+	foreach ( (array) $search_rows as $row ) {
+		if ( isset( $positions[ $row->d ] ) ) {
+			$searches[ $positions[ $row->d ] ] = (int) $row->total;
+			$failed[ $positions[ $row->d ] ]   = (int) $row->failed;
+		}
+	}
+
+	return [
+		'labels'   => $labels,
+		'views'    => $views,
+		'searches' => $searches,
+		'failed'   => $failed,
+	];
+}
+
+/**
+ * Compute the dashboard KPI cards with 7-day trend deltas.
+ *
+ * @return array
+ */
+function ezd_compute_dashboard_kpis() {
+	global $wpdb;
+
+	$now       = current_time( 'timestamp' );
+	$boundary7 = gmdate( 'Y-m-d H:i:s', time() - 7 * DAY_IN_SECONDS );
+	$boundary14 = gmdate( 'Y-m-d H:i:s', time() - 14 * DAY_IN_SECONDS );
+
+	$view_table   = $wpdb->prefix . 'eazydocs_view_log';
+	$search_table = $wpdb->prefix . 'eazydocs_search_log';
+
+	// Total published docs + how many are new this week.
+	$total_docs = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'docs' AND post_status = 'publish'" );
+	$new_docs   = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'docs' AND post_status = 'publish' AND post_date >= %s",
+			wp_date( 'Y-m-d H:i:s', $now - 7 * DAY_IN_SECONDS )
+		)
+	);
+
+	// Total views (all-time) and the week-over-week trend from the view log.
+	$total_views = (int) $wpdb->get_var( "SELECT SUM(meta_value + 0) FROM {$wpdb->postmeta} WHERE meta_key = 'post_views_count'" );
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name only.
+	$views_7    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM {$view_table} WHERE created_at >= %s", $boundary7 ) );
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name only.
+	$views_prev = (int) $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM {$view_table} WHERE created_at >= %s AND created_at < %s", $boundary14, $boundary7 ) );
+
+	// Helpful rate from true cumulative vote totals.
+	$positive = (int) $wpdb->get_var( "SELECT SUM(meta_value + 0) FROM {$wpdb->postmeta} WHERE meta_key = 'positive'" );
+	$negative = (int) $wpdb->get_var( "SELECT SUM(meta_value + 0) FROM {$wpdb->postmeta} WHERE meta_key = 'negative'" );
+	$total_votes  = $positive + $negative;
+	$helpful_rate = $total_votes > 0 ? (int) round( ( $positive / $total_votes ) * 100 ) : 0;
+
+	// Failed searches (all-time) and the week-over-week trend.
+	$failed_total = (int) $wpdb->get_var( "SELECT SUM(not_found_count) FROM {$search_table}" );
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name only.
+	$failed_7    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT SUM(not_found_count) FROM {$search_table} WHERE created_at >= %s", $boundary7 ) );
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name only.
+	$failed_prev = (int) $wpdb->get_var( $wpdb->prepare( "SELECT SUM(not_found_count) FROM {$search_table} WHERE created_at >= %s AND created_at < %s", $boundary14, $boundary7 ) );
+
+	return [
+		'total_docs'    => $total_docs,
+		'new_docs'      => $new_docs,
+		'total_views'   => $total_views,
+		'views_delta'   => ezd_percent_change( $views_prev, $views_7 ),
+		'helpful_rate'  => $helpful_rate,
+		'total_votes'   => $total_votes,
+		'failed_total'  => $failed_total,
+		'failed_delta'  => ezd_percent_change( $failed_prev, $failed_7 ),
+	];
+}
+
+/**
+ * Get the full dashboard data payload (KPIs + chart series) with caching.
+ *
+ * One transient holds everything so a dashboard load fires the aggregate
+ * queries once and reuses them for five minutes. The cache is flushed when
+ * docs change or feedback is recorded via ezd_flush_dashboard_cache().
+ *
+ * @param bool $force Bypass the cache and recompute.
+ * @return array
+ */
+function ezd_get_dashboard_data( $force = false ) {
+	$cache_key = 'ezd_dashboard_data_v1';
+
+	if ( ! $force ) {
+		$cached = get_transient( $cache_key );
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
+	}
+
+	$data = [
+		'kpis'  => ezd_compute_dashboard_kpis(),
+		'week'  => ezd_dashboard_daily_series( 7 ),
+		'month' => ezd_dashboard_daily_series( 30 ),
+	];
+
+	set_transient( $cache_key, $data, 5 * MINUTE_IN_SECONDS );
+
+	return $data;
+}
+
+/**
+ * Invalidate the cached dashboard data payload.
+ *
+ * @return void
+ */
+function ezd_flush_dashboard_cache() {
+	delete_transient( 'ezd_dashboard_data_v1' );
+}
+add_action( 'save_post_docs', 'ezd_flush_dashboard_cache' );
+add_action( 'deleted_post', 'ezd_flush_dashboard_cache' );
+add_action( 'trashed_post', 'ezd_flush_dashboard_cache' );
 
 /**
  * Get post-meta value or theme option value.
@@ -346,7 +722,8 @@ function eazydocs_get_template( $template_name, $args = [] ) {
 function ezd_reading_time() {
     $content     = get_post_field( 'post_content', get_the_ID() );
     $word_count  = str_word_count( wp_strip_all_tags( $content ) );
-    $readingtime = (int) ceil( $word_count / 200 );
+    $wpm         = max( 1, absint( ezd_get_opt( 'reading_time_wpm', 200 ) ) );
+    $readingtime = (int) ceil( $word_count / $wpm );
 
     if ( 1 === $readingtime ) {
         $timer = esc_html__( " minute", 'eazydocs' );
@@ -470,6 +847,10 @@ if ( ! function_exists( 'eazydocs_get_breadcrumb_item' ) ) {
 	 * @return string
 	 */
 	function eazydocs_get_breadcrumb_item( $label, $permalink, $position = 1 ) {
+		// Breadcrumbs are plain-text navigation: strip any markup (e.g. a doc's
+		// featured-image/icon) so only the title text is shown.
+		$label = wp_strip_all_tags( $label );
+
 		return '<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
             <a itemprop="item" href="' . esc_url( $permalink ) . '" target="_top">
             <span itemprop="name">' . esc_html( $label ) . '</span></a>
@@ -479,7 +860,7 @@ if ( ! function_exists( 'eazydocs_get_breadcrumb_item' ) ) {
 
 	function eazydocs_get_breadcrumb_root_title( $label ) {
 		return '<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-             ' . esc_html( $label ) . '</li>';
+             ' . esc_html( wp_strip_all_tags( $label ) ) . '</li>';
 	}
 }
 
@@ -539,7 +920,7 @@ if ( ! function_exists( 'eazydocs_breadcrumbs' ) ) {
 			}
 		}
 
-		$html .= ' ' . $args['before'] . get_the_title() . $args['after'];
+		$html .= ' ' . $args['before'] . esc_html( wp_strip_all_tags( get_the_title() ) ) . $args['after'];
 
 		$html .= '</ol>';
 
@@ -597,7 +978,7 @@ if ( ! function_exists( 'eazydocs_search_breadcrumbs' ) ) {
 			}
 		}
 
-		$html .= ' ' . $args['before'] . get_the_title() . $args['after'];
+		$html .= ' ' . $args['before'] . esc_html( wp_strip_all_tags( get_the_title() ) ) . $args['after'];
 		$html .= '</ol>';
 		echo wp_kses_post( apply_filters( 'eazydocs_breadcrumbs_html', $html, $args ) );
 	}
@@ -798,12 +1179,37 @@ function eazydocs_pro_doc_list() {
 	];
 	$docs      		= get_posts( $args );
 	$doc_item_count = 0;
-	$doc_items 		= '<option value="">Select a doc</option>';
+	$doc_items 		= '<option value="">' . esc_html__( 'Select a doc', 'eazydocs' ) . '</option>';
+
+	// Batch-fetch direct child counts for all parent docs in one grouped query
+	// (avoids an N+1 lookup inside the loop below).
+	$child_counts = [];
+	$parent_ids   = wp_list_pluck( $docs, 'ID' );
+	if ( ! empty( $parent_ids ) ) {
+		global $wpdb;
+		$placeholders = implode( ', ', array_fill( 0, count( $parent_ids ), '%d' ) );
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT post_parent, COUNT(*) AS total
+				 FROM {$wpdb->posts}
+				 WHERE post_type = 'docs'
+				   AND post_status = 'publish'
+				   AND post_parent IN ($placeholders)
+				 GROUP BY post_parent",
+				...$parent_ids
+			)
+		);
+		foreach ( $rows as $row ) {
+			$child_counts[ (int) $row->post_parent ] = (int) $row->total;
+		}
+	}
 
 	foreach ( $docs as $doc ) {
 		if ( ! get_page_by_path( $doc->post_name, OBJECT, 'onepage-docs' ) ) {
 			$doc_item_count ++;
-			$doc_items .= '<option _wpnonce="'.wp_create_nonce('ezd_make_onepage').'" value="' . $doc->ID . '">' . $doc->post_title . '</option>';
+			$child_count = $child_counts[ $doc->ID ] ?? 0;
+			$label       = $doc->post_title . ' (' . $child_count . ')';
+			$doc_items  .= '<option _wpnonce="' . esc_attr( wp_create_nonce( 'ezd_make_onepage' ) ) . '" value="' . esc_attr( $doc->ID ) . '" data-child-count="' . esc_attr( $child_count ) . '">' . esc_html( $label ) . '</option>';
 		}
 	}
 	if ( 0 === $doc_item_count ) {
@@ -918,6 +1324,39 @@ function ezd_hex2rgba( $color, $opacity = false ) {
 
 	//Return rgb(a) color string
 	return $output;
+}
+
+/**
+ * Determine whether a hex color is visually dark.
+ *
+ * Used to decide whether light (white) text is legible over a background color.
+ * Uses the perceived-brightness (YIQ) formula. Empty or unparseable values
+ * (e.g. an rgba() string) are treated as dark so existing dark styling is preserved.
+ *
+ * @param string $hex       Hex color, with or without leading "#", 3 or 6 digits.
+ * @param int    $threshold Brightness cutoff (0-255); below this is "dark". Default 140.
+ *
+ * @return bool True when the color is dark (or cannot be parsed).
+ */
+function ezd_is_dark_color( $hex, $threshold = 140 ) {
+	$hex = ltrim( (string) $hex, '#' );
+
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+
+	if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+		return true; // Unknown format — assume dark to preserve default styling.
+	}
+
+	$r = hexdec( substr( $hex, 0, 2 ) );
+	$g = hexdec( substr( $hex, 2, 2 ) );
+	$b = hexdec( substr( $hex, 4, 2 ) );
+
+	// Perceived brightness (YIQ).
+	$brightness = ( ( $r * 299 ) + ( $g * 587 ) + ( $b * 114 ) ) / 1000;
+
+	return $brightness < $threshold;
 }
 
 /**
@@ -1220,7 +1659,7 @@ function ezd_admin_pages( $pages = [] ) {
         // Default admin pages of EazyDocs
 	    $admin_pages = !empty($_GET['page']) ? in_array( sanitize_text_field( $_GET['page'] ), [
 		    'eazydocs-builder', 'eazydocs-settings', 'ezd-user-feedback', 'ezd-user-feedback-archived',
-            'ezd-analytics', 'ezd-onepage-presents', 'onepage-docs', 'eazydocs-initial-setup', 'eazydocs-account', 'eazydocs-migration', 'ezd-faq-builder', 'ezd-integrated-themes', 'eazydocs'
+            'ezd-analytics', 'ezd-onepage-presents', 'onepage-docs', 'eazydocs-initial-setup', 'eazydocs-account', 'eazydocs-migration', 'eazydocs-import-export', 'ezd-faq-builder', 'ezd-integrated-themes', 'eazydocs'
 	    ], true ) : '';
     } else {
         // Selected admin pages of EazyDocs
@@ -1683,11 +2122,28 @@ function ezd_internal_doc_security( $doc_id = 0 ) {
 			}
 		}
 		
-		// Access denied - show message
+		// Access denied - show the locked content area (with login button for
+		// logged-out users) inside the normal single-doc layout.
 		if ( is_singular( 'docs' ) ) {
-			$denied_message = ezd_get_opt( 'role_visibility_denied_message', esc_html__( "You don't have permission to access this document!", 'eazydocs' ) );
-			$output = sprintf( '<div class="ezd-lg-col-9"><span class="ezd-doc-warning-wrap"><i class="icon_lock"></i><span>%s</span></span></div>', esc_html( $denied_message ) );
-			echo wp_kses_post( $output );
+			if ( class_exists( '\eazyDocsPro\Frontend\Login_Popup' ) ) {
+				// Trusted, internally-escaped markup from the Pro popup helper.
+				$gated_id = get_the_ID();
+				echo '<div class="ezd-xl-col-7 ezd-lg-col-6 ezd-grid-column-full doc-middle-content">'
+					. \eazyDocsPro\Frontend\Login_Popup::locked_block_html( [
+						'post_id'      => $gated_id,
+						'message'      => ezd_get_opt( 'role_visibility_denied_message', '' ),
+						'button_label' => ezd_get_opt( 'private_doc_login_prompt', '' ),
+						'with_title'   => true,
+						'redirect'     => get_permalink( $gated_id ),
+						'gate_type'    => 'private',
+						'gate_post'    => $gated_id,
+					] )
+					. '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			} else {
+				$denied_message = ezd_get_opt( 'role_visibility_denied_message', esc_html__( "You don't have permission to access this document!", 'eazydocs' ) );
+				$output = sprintf( '<div class="ezd-lg-col-9"><span class="ezd-doc-warning-wrap"><i class="icon_lock"></i><span>%s</span></span></div>', esc_html( $denied_message ) );
+				echo wp_kses_post( $output );
+			}
 		}
 		return null;
 	}
@@ -1737,6 +2193,298 @@ function ezd_get_doc_parent_id( $doc_id = 0 ) {
 		return $ancestors;
 	} else {
 		return $doc_id;
+	}
+}
+
+/**
+ * Get IDs of top-level docs that have NO child docs ("empty" docs).
+ *
+ * Used by the "Hide Empty Docs" option so empty docs can be excluded at the
+ * query level (via post__not_in / exclude), which keeps the requested number
+ * of docs accurate instead of filtering after the query limit is applied.
+ *
+ * Runs two lightweight queries (no per-doc loops) and caches the result per
+ * status set for the duration of the request.
+ *
+ * @param array $statuses Post statuses to consider (e.g. ['publish'] or ['publish','private']).
+ * @return int[] List of empty parent doc IDs.
+ */
+function ezd_get_empty_doc_ids( $statuses = [ 'publish' ] ) {
+	global $wpdb;
+
+	$statuses = array_values( array_filter( array_map( 'sanitize_key', (array) $statuses ) ) );
+	if ( empty( $statuses ) ) {
+		$statuses = [ 'publish' ];
+	}
+
+	static $cache = [];
+	$cache_key = implode( ',', $statuses );
+	if ( isset( $cache[ $cache_key ] ) ) {
+		return $cache[ $cache_key ];
+	}
+
+	$placeholders = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
+
+	// Distinct parents that have at least one child doc.
+	$parents_with_children = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT DISTINCT post_parent FROM {$wpdb->posts}
+			 WHERE post_type = 'docs' AND post_parent > 0 AND post_status IN ($placeholders)",
+			...$statuses
+		)
+	);
+	$parents_with_children = array_map( 'absint', (array) $parents_with_children );
+
+	// All top-level docs.
+	$top_level = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts}
+			 WHERE post_type = 'docs' AND post_parent = 0 AND post_status IN ($placeholders)",
+			...$statuses
+		)
+	);
+	$top_level = array_map( 'absint', (array) $top_level );
+
+	// Empty docs = top-level docs that are not a parent of anything.
+	$empty = array_values( array_diff( $top_level, $parents_with_children ) );
+
+	$cache[ $cache_key ] = $empty;
+
+	return $empty;
+}
+
+/**
+ * Build the CSS classes that flag a doc as private or password-protected.
+ *
+ * Used by every doc skin/preset so restricted docs read consistently.
+ *
+ * @param int $post_id Doc post ID.
+ * @return string Space-separated classes (empty for public docs).
+ */
+function ezd_doc_status_classes( $post_id ) {
+	$classes = [];
+
+	if ( 'private' === get_post_status( $post_id ) ) {
+		$classes[] = 'ezd-doc-private';
+	}
+
+	$post = get_post( $post_id );
+	if ( $post && '' !== $post->post_password ) {
+		$classes[] = 'ezd-doc-protected';
+	}
+
+	return implode( ' ', $classes );
+}
+
+/**
+ * Read a yes/no display toggle from a widget/block settings array.
+ *
+ * Normalises the many truthy shapes used across Elementor switchers ('yes'),
+ * block attributes (true / '1') and shortcode atts ('true') into a boolean so
+ * every surface can share the same visibility helpers.
+ *
+ * @param array  $settings Settings / attributes array.
+ * @param string $key      Setting key to read.
+ * @param string $default  Value to assume when the key is missing.
+ * @return bool True when the toggle is enabled.
+ */
+function ezd_setting_enabled( $settings, $key, $default = 'yes' ) {
+	$value = isset( $settings[ $key ] ) ? $settings[ $key ] : $default;
+
+	return in_array( $value, [ 'yes', 'true', '1', 1, true ], true );
+}
+
+/**
+ * Read a global restricted-docs display toggle from the Settings page.
+ *
+ * Acts as a master switch for the status badge / lock icon across every
+ * surface (shortcode, blocks, Elementor widgets). When off, the element is
+ * hidden everywhere regardless of any per-widget toggle.
+ *
+ * @param string $key     Option key (e.g. 'restricted_show_badge').
+ * @param bool   $default Value to assume when the option is unset.
+ * @return bool True when the element should render.
+ */
+function ezd_global_restricted_enabled( $key, $default = true ) {
+	$value = ezd_get_opt( $key, $default ? '1' : '0' );
+
+	return in_array( $value, [ 'yes', 'true', '1', 1, true ], true );
+}
+
+/**
+ * Flag the restricted-docs "Outline" card style on the front-end <body>.
+ *
+ * Lets one admin setting re-style every restricted doc card (shortcode,
+ * blocks, Elementor) without touching markup. The matching CSS lives in
+ * assets/scss/ezd-docs-widgets.scss (body.ezd-restricted--outline).
+ *
+ * @param array $classes Existing body classes.
+ * @return array Body classes, with the outline flag appended when selected.
+ */
+function ezd_restricted_body_class( $classes ) {
+	if ( 'outline' === ezd_get_opt( 'restricted_card_style', 'filled' ) ) {
+		$classes[] = 'ezd-restricted--outline';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'ezd_restricted_body_class' );
+
+/**
+ * Resolve which post statuses a docs listing query should request.
+ *
+ * Password-protected docs are post_status 'publish', so they are always
+ * included here and filtered out separately via ezd_filter_doc_visibility().
+ * Private docs are only surfaced when the toggle is on and the current user
+ * is allowed to read them.
+ *
+ * @param bool $show_private Whether private docs should be listed.
+ * @return array Post statuses for the query.
+ */
+function ezd_doc_listing_statuses( $show_private = true ) {
+	$statuses = [ 'publish' ];
+
+	if ( $show_private && ( is_user_logged_in() || current_user_can( 'read_private_posts' ) ) ) {
+		$statuses[] = 'private';
+	}
+
+	return $statuses;
+}
+
+/**
+ * Filter a list of doc posts by the per-widget visibility toggles.
+ *
+ * Removes password-protected docs when $show_protected is false and private
+ * docs when $show_private is false. Accepts WP_Post objects or post IDs and
+ * returns a re-indexed array of the same shape it received.
+ *
+ * @param array $docs           Array of WP_Post objects or post IDs.
+ * @param bool  $show_private   Whether to keep private docs.
+ * @param bool  $show_protected Whether to keep password-protected docs.
+ * @return array Filtered, re-indexed array.
+ */
+function ezd_filter_doc_visibility( $docs, $show_private = true, $show_protected = true ) {
+	if ( ( $show_private && $show_protected ) || empty( $docs ) ) {
+		return $docs;
+	}
+
+	$filtered = array_filter(
+		(array) $docs,
+		function ( $doc ) use ( $show_private, $show_protected ) {
+			$post = is_object( $doc ) ? $doc : get_post( $doc );
+
+			if ( ! $post ) {
+				return false;
+			}
+
+			if ( ! $show_protected && '' !== (string) $post->post_password ) {
+				return false;
+			}
+
+			if ( ! $show_private && 'private' === $post->post_status ) {
+				return false;
+			}
+
+			return true;
+		}
+	);
+
+	// Preserve the original keys for ID-keyed arrays (e.g. sections), otherwise re-index.
+	$is_assoc = array_keys( $docs ) !== range( 0, count( $docs ) - 1 );
+
+	return $is_assoc ? $filtered : array_values( $filtered );
+}
+
+/**
+ * Return the status badge markup for a private or password-protected doc.
+ *
+ * Password-protected takes priority when a doc is both. The markup is fully
+ * controlled here (only the label is dynamic, and it is escaped), so callers
+ * echo the return value directly.
+ *
+ * @param int  $post_id Doc post ID.
+ * @param bool $show    Whether status badges should render (per-widget toggle).
+ * @return string Badge HTML, or an empty string for public docs / when disabled.
+ */
+function ezd_doc_status_badge( $post_id, $show = true ) {
+	if ( ! $show || ! ezd_global_restricted_enabled( 'restricted_show_badge' ) ) {
+		return '';
+	}
+
+	$post         = get_post( $post_id );
+	$is_protected = $post && '' !== $post->post_password;
+	$is_private   = ( 'private' === get_post_status( $post_id ) );
+
+	if ( $is_protected ) {
+		$icon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm3 8H9V6a3 3 0 016 0v3z"/></svg>';
+		return '<span class="ezd-doc-flag ezd-doc-flag--protected">' . $icon . esc_html__( 'Protected', 'eazydocs' ) . '</span>';
+	}
+
+	if ( $is_private ) {
+		$icon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>';
+		return '<span class="ezd-doc-flag ezd-doc-flag--private">' . $icon . esc_html__( 'Private', 'eazydocs' ) . '</span>';
+	}
+
+	return '';
+}
+
+/**
+ * Return a compact, inline lock icon for a restricted doc.
+ *
+ * Unlike ezd_render_doc_indicators() (an absolutely-positioned card overlay),
+ * this is a small inline badge meant to sit next to a doc title in lists — used
+ * by the Gutenberg blocks where the overlay markup would be mis-positioned.
+ *
+ * @param int  $post_id Doc post ID.
+ * @param bool $show    Whether lock icons should render (per-block toggle).
+ * @return string Lock icon HTML, or an empty string for public docs / when disabled.
+ */
+function ezd_doc_lock_icon( $post_id, $show = true ) {
+	if ( ! $show || ! ezd_global_restricted_enabled( 'restricted_show_lock' ) ) {
+		return '';
+	}
+
+	$post         = get_post( $post_id );
+	$is_protected = $post && '' !== $post->post_password;
+	$is_private   = ( 'private' === get_post_status( $post_id ) );
+
+	if ( ! $is_protected && ! $is_private ) {
+		return '';
+	}
+
+	$label = $is_protected ? esc_attr__( 'Password protected', 'eazydocs' ) : esc_attr__( 'Private', 'eazydocs' );
+	$class = $is_protected ? 'ezd-doc-lock-inline--protected' : 'ezd-doc-lock-inline--private';
+	$icon  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm3 8H9V6a3 3 0 016 0v3z"/></svg>';
+
+	return '<span class="ezd-doc-lock-inline ' . $class . '" title="' . $label . '">' . $icon . '</span>';
+}
+
+/**
+ * Render the absolutely-positioned corner lock overlay for a restricted doc.
+ *
+ * Shared by every card-style surface (shortcode, Elementor doc skins). Lives in
+ * functions.php (always loaded) because the shortcode can run on pages where the
+ * Elementor template helpers are not included. Honours the global lock toggle.
+ *
+ * @param int  $post_id Doc post ID.
+ * @param bool $show    Per-widget lock toggle.
+ * @return void
+ */
+function ezd_render_doc_indicators( $post_id, $show = true ) {
+	if ( ! $show || ! ezd_global_restricted_enabled( 'restricted_show_lock' ) ) {
+		return;
+	}
+
+	if ( get_post_status( $post_id ) === 'private' ) {
+		echo '<div class="private" title="' . esc_attr__( 'Private Doc', 'eazydocs' ) . '"><i class="icon_lock"></i></div>';
+	}
+
+	if ( ! empty( get_post( $post_id )->post_password ) ) {
+		echo '<div class="private" title="' . esc_attr__( 'Password Protected Doc', 'eazydocs' ) . '">';
+		echo '<svg width="50px" height="50px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#4e5668">';
+		echo '<g><path fill="none" d="M0 0h24v24H0z"/><path d="M18 8h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2V7a6 6 0 1 1 12 0v1zm-2 0V7a4 4 0 1 0-8 0v1h8zm-5 6v2h2v-2h-2zm-4 0v2h2v-2H7zm8 0v2h2v-2h-2z"/></g>';
+		echo '</svg>';
+		echo '</div>';
 	}
 }
 
@@ -1877,7 +2625,7 @@ function ezd_update_footnotes_content($content) {
                 esc_attr($original_title),
                 $i_attributes,
                 esc_html($i_content),
-                esc_html($footnote_content)
+                wp_kses_post($footnote_content)
             );
         }, $content);
     }
@@ -1928,6 +2676,43 @@ function customizer_visibility_callback() {
 /**
  * Setup wizard save settings
  */
+/**
+ * Create (or reuse) a documentation archive page with the [eazydocs] shortcode.
+ *
+ * The setup wizard auto-saves on every step change, so this must be idempotent —
+ * it tracks the created page in an option and reuses it instead of duplicating.
+ *
+ * @return int The archive page ID, or 0 on failure.
+ */
+function ezd_create_docs_archive_page() {
+	// Reuse a page created by a previous run to avoid duplicates.
+	$existing_id = absint( get_option( 'ezd_wizard_archive_page_id' ) );
+	if ( $existing_id && 'page' === get_post_type( $existing_id ) && 'trash' !== get_post_status( $existing_id ) ) {
+		return $existing_id;
+	}
+
+	$page_id = wp_insert_post(
+		array(
+			'post_title'   => __( 'Documentation', 'eazydocs' ),
+			'post_name'    => 'documentation',
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+			'post_content' => '[eazydocs]',
+		)
+	);
+
+	if ( is_wp_error( $page_id ) || ! $page_id ) {
+		return 0;
+	}
+
+	update_option( 'ezd_wizard_archive_page_id', $page_id, false );
+
+	return $page_id;
+}
+
+/**
+ * Save the EazyDocs setup wizard settings via AJAX.
+ */
 function ezd_setup_wizard_save_settings() {
 
 	check_ajax_referer( 'eazydocs-admin-nonce', 'security' );
@@ -1936,15 +2721,21 @@ function ezd_setup_wizard_save_settings() {
 		wp_send_json_error( 'Unauthorized user' );
 	}
 
-	$rootslug        = isset( $_POST['rootslug'] ) ? sanitize_text_field( $_POST['rootslug'] ) : '';
-	$brandColor      = isset( $_POST['brandColor'] ) ? sanitize_text_field( $_POST['brandColor'] ) : '';
-	$slugType        = isset( $_POST['slugType'] ) ? sanitize_text_field( $_POST['slugType'] ) : '';
-	$docSingleLayout = isset( $_POST['docSingleLayout'] ) ? sanitize_text_field( $_POST['docSingleLayout'] ) : '';
-	$docsPageWidth   = isset( $_POST['docsPageWidth'] ) ? sanitize_text_field( $_POST['docsPageWidth'] ) : '';
-	$live_customizer = isset( $_POST['live_customizer'] ) ? sanitize_text_field( $_POST['live_customizer'] ) : '';
-	// int value
-	$archivePage = isset( $_POST['archivePage'] ) ? intval( $_POST['archivePage'] ) : '';
-	$options     = get_option( 'eazydocs_settings' );
+	$rootslug        = isset( $_POST['rootslug'] ) ? sanitize_text_field( wp_unslash( $_POST['rootslug'] ) ) : '';
+	$brandColor      = isset( $_POST['brandColor'] ) ? sanitize_hex_color( wp_unslash( $_POST['brandColor'] ) ) : '';
+	$slugType        = isset( $_POST['slugType'] ) ? sanitize_text_field( wp_unslash( $_POST['slugType'] ) ) : '';
+	$docSingleLayout = isset( $_POST['docSingleLayout'] ) ? sanitize_text_field( wp_unslash( $_POST['docSingleLayout'] ) ) : '';
+	$docsPageWidth   = isset( $_POST['docsPageWidth'] ) ? sanitize_text_field( wp_unslash( $_POST['docsPageWidth'] ) ) : '';
+	$live_customizer = isset( $_POST['live_customizer'] ) ? sanitize_text_field( wp_unslash( $_POST['live_customizer'] ) ) : '';
+	$is_dark_switcher = isset( $_POST['is_dark_switcher'] ) ? sanitize_text_field( wp_unslash( $_POST['is_dark_switcher'] ) ) : '';
+
+	// Archive page can be an existing page ID or the "create_new" sentinel.
+	$archive_raw = isset( $_POST['archivePage'] ) ? sanitize_text_field( wp_unslash( $_POST['archivePage'] ) ) : '';
+	$archivePage = ( 'create_new' === $archive_raw )
+		? ezd_create_docs_archive_page()
+		: absint( $archive_raw );
+
+	$options = get_option( 'eazydocs_settings' );
 
 	// Check if the option exists and is an array
 	if ( is_array( $options ) ) {
@@ -1956,8 +2747,13 @@ function ezd_setup_wizard_save_settings() {
 		$options['docs_single_layout']     = $docSingleLayout;
 		$options['docs_page_width']        = $docsPageWidth;
 		$options['customizer_visibility']  = $live_customizer;
-		$options['docs-slug']              = $archivePage;
+		$options['is_dark_switcher']       = $is_dark_switcher;
 		$options['setup_wizard_completed'] = true;
+
+		// Only overwrite the archive page when a valid one was provided/created.
+		if ( $archivePage ) {
+			$options['docs-slug'] = $archivePage;
+		}
 
 		// Update the option in the database
 		update_option( 'eazydocs_settings', $options );
@@ -2175,25 +2971,18 @@ function ezd_private_docs_access() {
                 // Get the private doc mode setting (only for pro users)
                 $private_doc_mode = ezd_is_premium() ? ezd_get_opt( 'private_doc_mode', 'none' ) : 'none';
                 
-                // If mode is 'login', redirect to login page instead of showing 404
+                // If mode is 'login', show the login popup in place (locked view)
+                // instead of redirecting to a dedicated login page.
                 if ( 'login' === $private_doc_mode ) {
-                    $login_page_id = ezd_get_opt( 'private_doc_login_page', '' );
-                    
-                    if ( ! empty( $login_page_id ) ) {
-                        $login_page_url = get_permalink( $login_page_id );
-                        
-                        if ( $login_page_url ) {
-                            // Add redirect parameters
-                            $permalink_structure = get_option( 'permalink_structure' );
-                            $separator = empty( $permalink_structure ) ? '&' : '?';
-                            $redirect_url = $login_page_url . $separator . 'post_id=' . $post->ID . '&private_doc=yes';
-                            
-                            wp_safe_redirect( $redirect_url );
-                            exit;
-                        }
+                    if ( class_exists( '\eazyDocsPro\Frontend\Login_Popup' ) ) {
+                        $redirect_back = ezd_get_opt( 'private_doc_redirect_back', true );
+                        $redirect_to   = $redirect_back ? get_permalink( $post->ID ) : home_url();
+
+                        \eazyDocsPro\Frontend\Login_Popup::request_gate( $post->ID, $redirect_to, 'private' );
+                        return;
                     }
-                    
-                    // Fallback to WordPress login if no custom login page set
+
+                    // Fallback to WordPress login if the popup is unavailable.
                     wp_safe_redirect( wp_login_url( get_permalink( $post->ID ) ) );
                     exit;
                 }
@@ -2300,37 +3089,128 @@ function ezd_get_all_descendant_ids( $parent_id, $post_type = 'docs', $post_stat
 }
 
 /**
+ * Active language codes from Polylang or WPML (empty array if neither is active).
+ *
+ * @return string[]
+ */
+function ezd_active_language_codes() {
+	static $codes = null;
+	if ( null !== $codes ) {
+		return $codes;
+	}
+
+	$codes = [];
+	if ( function_exists( 'pll_languages_list' ) ) {
+		$codes = (array) pll_languages_list( [ 'fields' => 'slug' ] );
+	}
+	if ( empty( $codes ) ) {
+		$wpml = apply_filters( 'wpml_active_languages', null );
+		if ( is_array( $wpml ) ) {
+			$codes = array_keys( $wpml );
+		}
+	}
+
+	$codes = array_values( array_filter( array_map( 'sanitize_key', $codes ) ) );
+	return $codes;
+}
+
+/**
+ * Whether a known multilingual plugin (WPML or Polylang) is active with >1 language.
+ *
+ * @return bool
+ */
+function ezd_is_multilingual() {
+	return count( ezd_active_language_codes() ) > 1;
+}
+
+/**
+ * Current request language code, or '' when the site is not multilingual.
+ *
+ * @return string
+ */
+function ezd_current_language() {
+	if ( function_exists( 'pll_current_language' ) ) {
+		$lang = pll_current_language( 'slug' );
+		if ( $lang ) {
+			return sanitize_key( $lang );
+		}
+	}
+	$wpml = apply_filters( 'wpml_current_language', null );
+	return $wpml ? sanitize_key( $wpml ) : '';
+}
+
+/**
+ * Transient key for the flat docs tree, segmented per language so a cached tree
+ * from one language is never served on another.
+ *
+ * @param string $post_type
+ * @return string
+ */
+function ezd_docs_tree_cache_key( $post_type ) {
+	$lang = ezd_current_language();
+	return 'ezd_docs_tree_flat_' . $post_type . ( $lang ? '_' . $lang : '' );
+}
+
+/**
+ * Build the flat, ordered list of doc IDs for a post type.
+ *
+ * On multilingual sites suppress_filters is disabled so WPML/Polylang scope the
+ * query to the current language instead of mixing every translation into one tree.
+ *
+ * @param string $post_type
+ * @return int[]
+ */
+function ezd_build_docs_tree_flat_ids( $post_type ) {
+	$args = [
+		'post_type'   => $post_type,
+		'post_status' => 'publish',
+		'post_parent' => 0,
+		'orderby'     => 'menu_order title',
+		'order'       => 'ASC',
+		'fields'      => 'ids',
+		'numberposts' => -1,
+	];
+
+	if ( ezd_is_multilingual() ) {
+		$args['suppress_filters'] = false;
+	}
+
+	$ordered_ids = [];
+	foreach ( get_posts( $args ) as $top_id ) {
+		ezd_docs_build_tree_flat( $top_id, $ordered_ids );
+	}
+
+	return $ordered_ids;
+}
+
+/**
  * Get cached flat document tree (array of IDs in order)
  *
  * @param string $post_type
  * @return array
  */
 function ezd_get_docs_tree_flat_cached( $post_type ) {
-	$cache_key   = 'ezd_docs_tree_flat_' . $post_type;
+	$cache_key   = ezd_docs_tree_cache_key( $post_type );
 	$ordered_ids = get_transient( $cache_key );
 
 	if ( false === $ordered_ids ) {
-		// Step 1: Get all top-level docs
-		$top_level_docs = get_posts( [
-			'post_type'   => $post_type,
-			'post_status' => 'publish',
-			'post_parent' => 0,
-			'orderby'     => 'menu_order title',
-			'order'       => 'ASC',
-			'fields'      => 'ids',
-			'numberposts' => -1,
-		] );
-
-		// Step 2: Recursively build a flat ordered list
-		$ordered_ids = [];
-		foreach ( $top_level_docs as $top_id ) {
-			ezd_docs_build_tree_flat( $top_id, $ordered_ids );
-		}
-
+		$ordered_ids = ezd_build_docs_tree_flat_ids( $post_type );
 		set_transient( $cache_key, $ordered_ids, 12 * HOUR_IN_SECONDS );
 	}
 
 	return $ordered_ids;
+}
+
+/**
+ * Delete the flat docs-tree cache for a post type across every active language.
+ *
+ * @param string $post_type
+ */
+function ezd_delete_docs_tree_cache_all_langs( $post_type ) {
+	delete_transient( 'ezd_docs_tree_flat_' . $post_type );
+	foreach ( ezd_active_language_codes() as $code ) {
+		delete_transient( 'ezd_docs_tree_flat_' . $post_type . '_' . $code );
+	}
 }
 
 /**
@@ -2340,8 +3220,8 @@ function ezd_get_docs_tree_flat_cached( $post_type ) {
  * @param WP_Post $post
  */
 function ezd_clear_docs_tree_cache( $post_id, $post ) {
-	if ( in_array( $post->post_type, [ 'docs', 'onepage-docs' ] ) ) {
-		delete_transient( 'ezd_docs_tree_flat_' . $post->post_type );
+	if ( in_array( $post->post_type, [ 'docs', 'onepage-docs' ], true ) ) {
+		ezd_delete_docs_tree_cache_all_langs( $post->post_type );
 	}
 }
 add_action( 'save_post', 'ezd_clear_docs_tree_cache', 10, 2 );
@@ -2355,33 +3235,8 @@ add_action( 'delete_post', 'ezd_clear_docs_tree_cache', 10, 2 );
  * @return array
  */
 function ezd_prev_next_docs( $current_post_id ) {
-	$post_type = get_post_type( $current_post_id );
-
-	// Check for cached flat tree
-	$cache_key   = 'ezd_docs_tree_flat_' . $post_type;
-	$ordered_ids = get_transient( $cache_key );
-
-	if ( false === $ordered_ids ) {
-		// Step 1: Get all top-level docs
-		$top_level_docs = get_posts( [
-			'post_type'   => $post_type,
-			'post_status' => 'publish',
-			'post_parent' => 0,
-			'orderby'     => 'menu_order title',
-			'order'       => 'ASC',
-			'fields'      => 'ids',
-			'numberposts' => -1,
-		] );
-
-		// Step 2: Recursively build a flat ordered list
-		$ordered_ids = [];
-		foreach ( $top_level_docs as $top_id ) {
-			ezd_docs_build_tree_flat( $top_id, $ordered_ids );
-		}
-
-		// Cache the result for 12 hours
-		set_transient( $cache_key, $ordered_ids, 12 * HOUR_IN_SECONDS );
-	}
+	$post_type   = get_post_type( $current_post_id );
+	$ordered_ids = ezd_get_docs_tree_flat_cached( $post_type );
 
 	// Find current index and prev/next IDs
 	$current_index = array_search( $current_post_id, $ordered_ids );
@@ -2403,7 +3258,7 @@ function ezd_prev_next_docs( $current_post_id ) {
 function ezd_flush_docs_tree_cache( $post_id ) {
 	$post_type = get_post_type( $post_id );
 	if ( 'docs' === $post_type || 'onepage-docs' === $post_type ) {
-		delete_transient( 'ezd_docs_tree_flat_' . $post_type );
+		ezd_delete_docs_tree_cache_all_langs( $post_type );
 	}
 }
 add_action( 'save_post', 'ezd_flush_docs_tree_cache' );
@@ -2413,7 +3268,7 @@ add_action( 'delete_post', 'ezd_flush_docs_tree_cache' );
 function ezd_docs_build_tree_flat( $post_id, &$list ) {
 	$list[] = $post_id;
 
-	$children = get_posts( [
+	$args = [
 		'post_type'   => get_post_type( $post_id ),
 		'post_status' => 'publish',
 		'post_parent' => $post_id,
@@ -2421,172 +3276,536 @@ function ezd_docs_build_tree_flat( $post_id, &$list ) {
 		'order'       => 'ASC',
 		'fields'      => 'ids',
 		'numberposts' => -1,
-	] );
+	];
 
-	foreach ( $children as $child_id ) {
+	if ( ezd_is_multilingual() ) {
+		$args['suppress_filters'] = false;
+	}
+
+	foreach ( get_posts( $args ) as $child_id ) {
 		ezd_docs_build_tree_flat( $child_id, $list );
 	}
 }
 
 /**
- * AJAX handler to migrate BetterDocs to EazyDocs
- * This function will create parent docs for each category and re-parent existing docs.
+ * Get the IDs of docs built with Elementor, cached.
+ *
+ * This list is only consumed by the AJAX doc loader on single doc pages, yet the
+ * underlying unbounded meta query previously ran on every front-end page load via
+ * the asset localizer. Caching it for 12 hours (flushed on doc save/delete) keeps
+ * large doc libraries from re-running the query on unrelated requests.
+ *
+ * @return int[] Doc post IDs edited with Elementor.
  */
-add_action('wp_ajax_ezd_migrate_to_eazydocs', function () {
+function ezd_get_elementor_doc_ids() {
+	if ( ! class_exists( '\Elementor\Plugin' ) ) {
+		return [];
+	}
+
+	$cache_key = 'ezd_elementor_doc_ids';
+	$doc_ids   = get_transient( $cache_key );
+
+	if ( false === $doc_ids ) {
+		$doc_ids = get_posts(
+			[
+				'post_type'   => 'docs',
+				'post_status' => 'publish',
+				'numberposts' => -1,
+				'fields'      => 'ids',
+				'meta_key'    => '_elementor_edit_mode',
+				'meta_value'  => 'builder',
+			]
+		);
+
+		$doc_ids = array_map( 'absint', (array) $doc_ids );
+		set_transient( $cache_key, $doc_ids, 12 * HOUR_IN_SECONDS );
+	}
+
+	return $doc_ids;
+}
+
+/**
+ * Flush the cached Elementor doc IDs when a doc is saved or deleted.
+ *
+ * @param int $post_id Post ID.
+ */
+function ezd_flush_elementor_doc_ids_cache( $post_id ) {
+	if ( 'docs' === get_post_type( $post_id ) ) {
+		delete_transient( 'ezd_elementor_doc_ids' );
+	}
+}
+add_action( 'save_post', 'ezd_flush_elementor_doc_ids_cache' );
+add_action( 'delete_post', 'ezd_flush_elementor_doc_ids_cache' );
+
+/**
+ * Raise memory and execution limits for the one-page doc render / "print to PDF".
+ *
+ * The one-page layout renders an entire doc tree in a single synchronous request,
+ * and with Elementor active it renders every node's builder output. On large trees
+ * this can exhaust PHP's default memory/time limits and return a 500 mid-render.
+ * Both limits are filterable, and wp_raise_memory_limit() never lowers a value that
+ * is already higher.
+ *
+ * @return void
+ */
+function ezd_raise_onepage_render_limits() {
+	// Respects WP_MAX_MEMORY_LIMIT and the {$context}_memory_limit filter.
+	wp_raise_memory_limit( 'ezd_onepage' );
+
+	// Give a large export room to finish instead of timing out part-way through.
+	$time_limit = (int) apply_filters( 'ezd_onepage_time_limit', 300 );
+	if ( $time_limit > 0 && function_exists( 'set_time_limit' ) ) {
+		@set_time_limit( $time_limit );
+	}
+}
+
+/**
+ * Render a single doc's body for the one-page view, cached in the object cache.
+ *
+ * Centralises the rendering logic that was previously duplicated at every depth of
+ * the one-page templates. Elementor's get_builder_content() is expensive, so the
+ * rendered markup is stored in the object cache; on hosts with a persistent backend
+ * (Redis/Memcached) it is reused across requests. The entry is flushed on doc save.
+ *
+ * The cache is only used for logged-out visitors. the_content can render
+ * user-specific markup (login-gated shortcodes, draft previews, per-user nonces),
+ * so caching a single rendering by post ID alone could leak it across users on a
+ * persistent backend; logged-in requests always render fresh.
+ *
+ * The caller is responsible for escaping the return value (e.g. with wp_kses_post()),
+ * preserving the previous template behaviour.
+ *
+ * @param int|WP_Post $doc Post ID or object.
+ * @return string Rendered doc body HTML.
+ */
+function ezd_get_onepage_doc_content( $doc ) {
+	$post = get_post( $doc );
+	if ( ! $post ) {
+		return '';
+	}
+
+	$use_cache = ! is_user_logged_in();
+
+	if ( $use_cache ) {
+		$cached = wp_cache_get( $post->ID, 'ezd_onepage_content' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
+	if ( did_action( 'elementor/loaded' ) ) {
+		$builder = \Elementor\Plugin::instance()->frontend->get_builder_content( $post->ID );
+		$content = ! empty( $builder ) ? $builder : apply_filters( 'the_content', $post->post_content );
+	} else {
+		$content = apply_filters( 'the_content', $post->post_content );
+	}
+
+	if ( $use_cache ) {
+		wp_cache_set( $post->ID, $content, 'ezd_onepage_content' );
+	}
+
+	return $content;
+}
+
+/**
+ * Flush the cached one-page render for a doc when it changes.
+ *
+ * @param int $post_id Post ID.
+ */
+function ezd_flush_onepage_doc_content_cache( $post_id ) {
+	if ( in_array( get_post_type( $post_id ), [ 'docs', 'onepage-docs' ], true ) ) {
+		wp_cache_delete( $post_id, 'ezd_onepage_content' );
+	}
+}
+add_action( 'save_post', 'ezd_flush_onepage_doc_content_cache' );
+add_action( 'delete_post', 'ezd_flush_onepage_doc_content_cache' );
+
+/**
+ * Aggregate stat metrics for the One-Page banner.
+ *
+ * Summarises a parent doc and all of its descendants: total doc count, most
+ * recent update time, distinct author count, and estimated reading time. All
+ * values come from a single batched query (after the descendant-ID lookup) and
+ * the result is cached in a transient that is flushed whenever a doc is saved.
+ *
+ * @param int $parent_id Parent doc ID.
+ * @return array{count:int,modified:int,authors:int,author_ids:int[],reading_time:int} Metric set.
+ */
+function ezd_get_onepage_banner_meta( $parent_id ) {
+	$parent_id = absint( $parent_id );
+	$empty     = [ 'count' => 0, 'modified' => 0, 'authors' => 0, 'author_ids' => [], 'reading_time' => 0 ];
+
+	if ( ! $parent_id ) {
+		return $empty;
+	}
+
+	// The version suffix lets a structure change (e.g. new keys) invalidate any
+	// data cached by an older build instead of returning an incomplete shape.
+	$cache_key = 'ezd_onepage_banner_meta_v2_' . $parent_id;
+	$cached    = get_transient( $cache_key );
+	if ( is_array( $cached ) && isset( $cached['author_ids'] ) ) {
+		return $cached;
+	}
+
+	// Parent + every descendant make up the metric set.
+	$ids   = ezd_get_all_descendant_ids( $parent_id );
+	$ids[] = $parent_id;
+	$ids   = array_values( array_unique( array_map( 'absint', $ids ) ) );
+
+	if ( empty( $ids ) ) {
+		return $empty;
+	}
+
+	global $wpdb;
+
+	// One batched query for everything the metrics need — no per-doc lookups.
+	$placeholders = implode( ', ', array_fill( 0, count( $ids ), '%d' ) );
+	$rows         = $wpdb->get_results( $wpdb->prepare(
+		"SELECT post_author, post_modified_gmt, post_content
+		 FROM {$wpdb->posts}
+		 WHERE ID IN ($placeholders)",
+		...$ids
+	) );
+
+	$authors     = [];
+	$latest      = 0;
+	$total_words = 0;
+	foreach ( $rows as $row ) {
+		$authors[ (int) $row->post_author ] = true;
+		$modified                           = (int) mysql2date( 'U', $row->post_modified_gmt );
+		if ( $modified > $latest ) {
+			$latest = $modified;
+		}
+		$total_words += str_word_count( wp_strip_all_tags( (string) $row->post_content ) );
+	}
+
+	$wpm        = max( 1, absint( ezd_get_opt( 'reading_time_wpm', 200 ) ) );
+	$author_ids = array_map( 'intval', array_keys( $authors ) );
+	$meta       = [
+		// Exclude the parent itself from the "docs" count.
+		'count'        => max( 0, count( $ids ) - 1 ),
+		'modified'     => $latest,
+		'authors'      => count( $author_ids ),
+		'author_ids'   => $author_ids,
+		'reading_time' => max( 1, (int) ceil( $total_words / $wpm ) ),
+	];
+
+	set_transient( $cache_key, $meta, 12 * HOUR_IN_SECONDS );
+
+	return $meta;
+}
+
+/**
+ * Flush every cached One-Page banner metric set when a doc changes.
+ *
+ * Metrics are keyed by ancestor, so a child edit must invalidate its parent's
+ * cache too; the simplest correct approach is to clear them all on any doc save.
+ *
+ * @param int $post_id Post ID.
+ */
+function ezd_flush_onepage_banner_meta_cache( $post_id ) {
+	if ( ! in_array( get_post_type( $post_id ), [ 'docs', 'onepage-docs' ], true ) ) {
+		return;
+	}
+
+	global $wpdb;
+	$wpdb->query(
+		"DELETE FROM {$wpdb->options}
+		 WHERE option_name LIKE '\_transient\_ezd\_onepage\_banner\_meta\_%'
+		    OR option_name LIKE '\_transient\_timeout\_ezd\_onepage\_banner\_meta\_%'"
+	);
+}
+add_action( 'save_post', 'ezd_flush_onepage_banner_meta_cache' );
+add_action( 'delete_post', 'ezd_flush_onepage_banner_meta_cache' );
+
+/**
+ * Get docs ranked by feedback votes via a single aggregated query.
+ *
+ * Replaces the previous approach of loading every doc into memory and summing
+ * 'positive'/'negative' meta per post. The votes are aggregated in one GROUP BY
+ * query and only docs that actually have votes are returned, ordered by the
+ * requested vote type. This mirrors the direct-SQL aggregation already used by
+ * the dashboard health widget.
+ *
+ * @param string $order_by 'positive' or 'negative'. Sort key (DESC) and HAVING filter.
+ * @param int    $limit    Max rows to return. 0 for no limit.
+ * @return array[] Each row: [ 'post_id' => int, 'positive' => int, 'negative' => int ].
+ */
+function ezd_get_ranked_docs_by_votes( $order_by = 'positive', $limit = 0 ) {
+	global $wpdb;
+
+	// Whitelist the sortable column so it is safe to interpolate directly.
+	$order_by = ( 'negative' === $order_by ) ? 'negative' : 'positive';
+
+	$sql = "SELECT p.ID AS post_id,
+			COALESCE( SUM( CASE WHEN pm.meta_key = 'positive' THEN pm.meta_value ELSE 0 END ), 0 ) AS positive,
+			COALESCE( SUM( CASE WHEN pm.meta_key = 'negative' THEN pm.meta_value ELSE 0 END ), 0 ) AS negative
+		FROM {$wpdb->posts} p
+		INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+		WHERE p.post_type = 'docs'
+		  AND p.post_status = 'publish'
+		  AND pm.meta_key IN ( 'positive', 'negative' )
+		GROUP BY p.ID
+		HAVING {$order_by} > 0
+		ORDER BY {$order_by} DESC, post_id DESC";
+
+	if ( $limit > 0 ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $order_by is whitelisted above; $limit is bound below.
+		$rows = $wpdb->get_results( $wpdb->prepare( "{$sql} LIMIT %d", $limit ), ARRAY_A );
+	} else {
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $order_by is whitelisted above; query has no dynamic input.
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+	}
+
+	return is_array( $rows ) ? $rows : [];
+}
+
+/**
+ * Map ranked vote rows to the display array used by the dashboard/analytics panels.
+ *
+ * Loads the matching posts in a single query (which also primes the meta cache)
+ * instead of one lookup per row, and preserves the SQL ordering of $rows.
+ *
+ * @param array[] $rows Rows from ezd_get_ranked_docs_by_votes().
+ * @return array[]
+ */
+function ezd_map_ranked_docs_for_display( $rows ) {
+	if ( empty( $rows ) ) {
+		return [];
+	}
+
+	$post_ids = array_map(
+		static function ( $row ) {
+			return (int) $row['post_id'];
+		},
+		$rows
+	);
+
+	// Single query for the (already limited) set of ranked docs.
+	$posts = get_posts(
+		[
+			'post_type'   => 'docs',
+			'post__in'    => $post_ids,
+			'numberposts' => count( $post_ids ),
+			'post_status' => 'publish',
+		]
+	);
+
+	$posts_by_id = [];
+	foreach ( $posts as $post ) {
+		$posts_by_id[ $post->ID ] = $post;
+	}
+
+	$data = [];
+	foreach ( $rows as $row ) {
+		$post_id = (int) $row['post_id'];
+		if ( empty( $posts_by_id[ $post_id ] ) ) {
+			continue;
+		}
+
+		$post     = $posts_by_id[ $post_id ];
+		$data[]   = [
+			'post_id'        => $post_id,
+			'post_title'     => $post->post_title,
+			'post_permalink' => get_permalink( $post_id ),
+			'post_edit_link' => get_edit_post_link( $post_id ),
+			'positive_time'  => (int) $row['positive'],
+			'negative_time'  => (int) $row['negative'],
+			'created_at'     => get_the_time( 'U', $post_id ),
+		];
+	}
+
+	return $data;
+}
+
+/**
+ * AJAX handler to migrate BetterDocs content into EazyDocs.
+ *
+ * Converts every doc_category into a parent doc and nests existing docs beneath
+ * the parent that matches their deepest category. The run is idempotent: parent
+ * docs created by an earlier migration (flagged _ezd_migrated_parent) are removed
+ * and rebuilt, while user-authored docs are never deleted. Returns a count
+ * summary so the UI can report exactly what changed.
+ */
+add_action( 'wp_ajax_ezd_migrate_to_eazydocs', 'ezd_migrate_betterdocs_to_eazydocs' );
+function ezd_migrate_betterdocs_to_eazydocs() {
 
 	check_ajax_referer( 'eazydocs-admin-nonce', 'security' );
 
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_send_json_error( ['message' => 'Unauthorized user'] );
+	// Mirror the capability the Migrate tab itself is gated behind.
+	$settings_cap = function_exists( 'ezd_get_opt' ) ? ezd_get_opt( 'settings-edit-access', 'manage_options' ) : 'manage_options';
+	if ( ! current_user_can( $settings_cap ) && ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( [ 'message' => __( 'You do not have permission to run a migration.', 'eazydocs' ) ] );
 	}
 
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
 	if ( ! is_plugin_active( 'betterdocs/betterdocs.php' ) ) {
-		wp_send_json_error( ['message' => 'BetterDocs is not active. Please activate it first.'] );
+		wp_send_json_error( [ 'message' => __( 'BetterDocs is not active. Please activate it first.', 'eazydocs' ) ] );
 	}
 
-    $from = isset( $_POST[ 'migrate_from' ] ) ? sanitize_text_field( $_POST[ 'migrate_from' ]) : '';
+	$from = isset( $_POST['migrate_from'] ) ? sanitize_text_field( wp_unslash( $_POST['migrate_from'] ) ) : '';
+	if ( 'betterdocs' !== $from ) {
+		wp_send_json_error( [ 'message' => __( 'Only BetterDocs migration is supported currently.', 'eazydocs' ) ] );
+	}
 
-    if ( 'betterdocs' !== $from ) {
-        wp_send_json_error('Only BetterDocs migration is supported currently.');
-    }
+	// A whole-library migration can be slow on shared hosting.
+	wp_raise_memory_limit( 'admin' );
+	if ( function_exists( 'set_time_limit' ) ) {
+		@set_time_limit( 0 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- disabled on some hosts.
+	}
 
-    /**
-     * OPTIONAL CLEANUP:
-     * Remove only previously created CATEGORY PARENT docs from earlier runs.
-     * (They were marked with _ezd_migrated_parent = yes)
-     */
-    $old_parent_docs = get_posts( [
-        'post_type'      => 'docs',
-        'post_status'    => 'any',
-        'numberposts'    => -1,
-        'fields'         => 'ids',
-        'meta_key'       => '_ezd_migrated_parent',
-        'meta_value'     => 'yes',
-    ] );
-    foreach ( $old_parent_docs as $pid ) {
-        wp_delete_post( $pid, true );
-    }
+	/**
+	 * Cleanup: remove only the category parent docs a previous migration created
+	 * (flagged _ezd_migrated_parent) so re-running stays clean. -1 is intentional —
+	 * a one-time admin migration must see the whole library.
+	 */
+	$old_parent_docs = get_posts( [
+		'post_type'              => 'docs',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'fields'                 => 'ids',
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
+		'meta_key'               => '_ezd_migrated_parent',
+		'meta_value'             => 'yes',
+	] );
+	foreach ( $old_parent_docs as $pid ) {
+		wp_delete_post( $pid, true );
+	}
 
-    $created_docs = []; // term_id => parent_doc_id
+	// PASS 1 — one parent doc per category (recursive); returns the count created.
+	$created_docs    = []; // term_id => parent_doc_id.
+	$parents_created = ezd_create_parent_docs_from_terms( $created_docs, 0 );
 
-    /**
-     * PASS 1
-     * Create a parent doc for every category (recursively), but DO NOT create any child posts.
-     */
-    function ezd_create_parent_docs_from_terms( &$created_docs, $parent_term_id = 0 ) {
-        $categories = get_categories( [
-            'taxonomy'   => 'doc_category',
-            'hide_empty' => false,
-            'parent'     => $parent_term_id
-        ] );
+	// PASS 2 — nest existing docs under the parent for their deepest category.
+	$docs_reparented = 0;
+	if ( ! empty( $created_docs ) ) {
+		$created_parent_doc_ids = array_values( $created_docs );
 
-        foreach ( $categories as $cat ) {
-            $parent_doc_parent_id = ( $cat->parent && isset( $created_docs[ $cat->parent ] ) ) ? $created_docs[ $cat->parent ] : 0;
+		$posts = get_posts( [
+			'post_type'              => 'docs',
+			'post_status'            => 'any',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'post__not_in'           => $created_parent_doc_ids,
+			'tax_query'              => [
+				[
+					'taxonomy' => 'doc_category',
+					'operator' => 'EXISTS',
+				],
+			],
+		] );
 
-            // Create the parent Doc for this term
-            $parent_doc_id = wp_insert_post( [
-                'post_type'   => 'docs',
-                'post_title'  => $cat->name,
-                'post_name'   => $cat->slug,
-                'post_status' => 'publish',
-                'post_parent' => $parent_doc_parent_id,
-                'meta_input'  => [
-                    '_ezd_migrated_parent' => 'yes',
-                    '_ezd_parent_term'     => $cat->term_id
-                ]
-            ] );
+		foreach ( $posts as $post ) {
+			// Leave docs that already sit under a parent untouched.
+			if ( 0 !== (int) $post->post_parent ) {
+				continue;
+			}
 
-            if ( is_wp_error( $parent_doc_id ) ) {
-                continue;
-            }
+			$terms = wp_get_post_terms( $post->ID, 'doc_category' );
+			if ( empty( $terms ) || is_wp_error( $terms ) ) {
+				continue;
+			}
 
-            // (Optional) attach the category to its parent doc, keep taxonomy intact
-            wp_set_post_terms( $parent_doc_id, [ $cat->term_id ], 'doc_category', false );
+			// Deepest (most specific) category wins.
+			$deepest_term = null;
+			$max_depth    = -1;
+			foreach ( $terms as $term ) {
+				$depth = count( get_ancestors( $term->term_id, 'doc_category' ) );
+				if ( $depth > $max_depth ) {
+					$max_depth    = $depth;
+					$deepest_term = $term;
+				}
+			}
 
-            $created_docs[ $cat->term_id ] = $parent_doc_id;
+			if ( ! $deepest_term || ! isset( $created_docs[ $deepest_term->term_id ] ) ) {
+				continue;
+			}
 
-            // Recurse
-            ezd_create_parent_docs_from_terms( $created_docs, $cat->term_id, );
-        }
-    }
+			$parent_doc_id = $created_docs[ $deepest_term->term_id ];
 
-    ezd_create_parent_docs_from_terms( $created_docs, 0 );
+			wp_update_post( [
+				'ID'          => $post->ID,
+				'post_parent' => $parent_doc_id,
+				'menu_order'  => $post->menu_order,
+			] );
 
-    /**
-     * PASS 2
-     * Re-parent existing posts (do NOT create new ones).
-     * Each post will be attached under the doc created for its *deepest* category,
-     * BUT ONLY if it doesn't already have a parent (we won't touch existing relations).
-     */
-    if ( ! empty( $created_docs )) {
+			// Flags for future cleanups / debugging.
+			update_post_meta( $post->ID, '_ezd_migrated', 'yes' );
+			update_post_meta( $post->ID, '_ezd_parent_doc', $parent_doc_id );
+			update_post_meta( $post->ID, '_ezd_parent_term', $deepest_term->term_id );
 
-        // Collect IDs of all parent docs we just created so we don't try to re-parent them
-        $created_parent_doc_ids = array_values( $created_docs );
+			$docs_reparented++;
+		}
+	}
 
-        // Get all existing docs that have doc_category terms and are NOT the parent docs we created
-        $posts = get_posts( [
-            'post_type'      => 'docs',
-            'post_status'    => 'any',
-            'numberposts'    => -1,
-            'post__not_in'   => $created_parent_doc_ids,
-            'tax_query'      => [
-                [
-                    'taxonomy' => 'doc_category',
-                    'operator' => 'EXISTS'
-                ]
-            ]
-        ] );
+	// Build a translated, pluralised summary for the success dialog.
+	$summary_parts   = [];
+	/* translators: %d: number of categories converted into parent docs. */
+	$summary_parts[] = sprintf( _n( '%d category converted into a parent doc.', '%d categories converted into parent docs.', $parents_created, 'eazydocs' ), $parents_created );
+	/* translators: %d: number of docs nested under their category. */
+	$summary_parts[] = sprintf( _n( '%d doc organised under its category.', '%d docs organised under their categories.', $docs_reparented, 'eazydocs' ), $docs_reparented );
 
-        foreach ( $posts as $post ) {
-            // Do NOT change any already-related child (keep whatever parent it has)
-            if ( 0 !== (int) $post->post_parent ) {
-                continue;
-            }
+	wp_send_json_success( [
+		'message'    => __( 'Migration completed.', 'eazydocs' ),
+		'categories' => $parents_created,
+		'docs'       => $docs_reparented,
+		'summary'    => implode( '<br>', array_map( 'esc_html', $summary_parts ) ),
+	] );
+}
 
-            $terms = wp_get_post_terms( $post->ID, 'doc_category' );
+/**
+ * Recursively create a parent doc for each doc_category term.
+ *
+ * @param array $created_docs   Map of term_id => created parent doc ID (by reference).
+ * @param int   $parent_term_id Term to start from (0 = top level).
+ * @return int  Number of parent docs created within this subtree.
+ */
+if ( ! function_exists( 'ezd_create_parent_docs_from_terms' ) ) {
+	function ezd_create_parent_docs_from_terms( &$created_docs, $parent_term_id = 0 ) {
+		$created = 0;
 
-            if ( empty( $terms ) || is_wp_error( $terms ) ) {
-                continue; // no category, we skip
-            }
+		$categories = get_categories( [
+			'taxonomy'   => 'doc_category',
+			'hide_empty' => false,
+			'parent'     => $parent_term_id,
+		] );
 
-            // Find the deepest (most specific) category of the post
-            $deepest_term = null;
-            $max_depth 	  = -1;
-            foreach ($terms as $term) {
-                $depth = count( get_ancestors( $term->term_id, 'doc_category' ) );
-                if ( $depth > $max_depth ) {
-                    $max_depth 	  = $depth;
-                    $deepest_term = $term;
-                }
-            }
+		foreach ( $categories as $cat ) {
+			$parent_doc_parent_id = ( $cat->parent && isset( $created_docs[ $cat->parent ] ) ) ? $created_docs[ $cat->parent ] : 0;
 
-            if ( ! $deepest_term || !isset( $created_docs[ $deepest_term->term_id ] ) ) {
-                continue;
-            }
+			$parent_doc_id = wp_insert_post( [
+				'post_type'   => 'docs',
+				'post_title'  => $cat->name,
+				'post_name'   => $cat->slug,
+				'post_status' => 'publish',
+				'post_parent' => $parent_doc_parent_id,
+				'meta_input'  => [
+					'_ezd_migrated_parent' => 'yes',
+					'_ezd_parent_term'     => $cat->term_id,
+				],
+			] );
 
-            $parent_doc_id = $created_docs[ $deepest_term->term_id ];
+			if ( is_wp_error( $parent_doc_id ) ) {
+				continue;
+			}
 
-            // Re-parent only if it still has no parent (extra safety)
-            if ( 0 === (int) $post->post_parent ) {
-                wp_update_post( [
-                    'ID'          => $post->ID,
-                    'post_parent' => $parent_doc_id,
-					'menu_order'  => $post->menu_order
-                ] );
+			// Keep the original taxonomy term attached to its new parent doc.
+			wp_set_post_terms( $parent_doc_id, [ $cat->term_id ], 'doc_category', false );
 
-                // Optional flags for future cleanups / debugging
-                update_post_meta( $post->ID, '_ezd_migrated', 'yes' );
-                update_post_meta( $post->ID, '_ezd_parent_doc', $parent_doc_id );
-                update_post_meta( $post->ID, '_ezd_parent_term', $deepest_term->term_id );
-            }
-        }
-    }
+			$created_docs[ $cat->term_id ] = $parent_doc_id;
+			$created++;
 
-    wp_send_json_success('Migration completed');
-});
+			$created += ezd_create_parent_docs_from_terms( $created_docs, $cat->term_id );
+		}
+
+		return $created;
+	}
+}
 
 
 /**
