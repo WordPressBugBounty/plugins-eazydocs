@@ -2,25 +2,25 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: EazyDocs 2.12.0\n"
+"Project-Id-Version: EazyDocs 2.13.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/eazydocs\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-26T07:10:15+00:00\n"
+"POT-Creation-Date: 2026-07-06T06:27:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: eazydocs\n"
 
 #. Plugin Name of the plugin
 #: eazydocs.php
-#: blocks.php:132
-#: includes/Admin/Admin.php:87
-#: includes/Admin/options/opt_docs_general.php:19
+#: blocks.php:287
+#: includes/Admin/Admin.php:88
+#: includes/Admin/options/opt_docs_general.php:30
 #: includes/Admin/options/settings-options.php:138
-#: includes/Admin/setup-wizard/setup.php:50
+#: includes/Admin/setup-wizard/setup.php:53
 #: includes/Elementor/Widgets.php:41
 #: includes/Post_Types.php:51
 #: build/docs-builder/index.js:1
@@ -43,11 +43,11 @@ msgstr ""
 msgid "Spider Themes"
 msgstr ""
 
-#: eazydocs.php:362
+#: eazydocs.php:367
 msgid "EazyDocs database needs an update. Please click the Update button to update your database."
 msgstr ""
 
-#: eazydocs.php:365
+#: eazydocs.php:370
 msgid "Update Database"
 msgstr ""
 
@@ -67,15 +67,15 @@ msgid "Get Support"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:21
-#: includes/Admin/Api/DocsBuilderController.php:692
+#: includes/Admin/Api/DocsBuilderController.php:703
 msgid "Public Doc"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:26
-#: includes/Admin/Api/DocsBuilderController.php:696
+#: includes/Admin/Api/DocsBuilderController.php:707
 #: includes/Admin/options/opt_restricted_docs.php:176
 #: includes/Frontend/Walker_Docs.php:291
-#: includes/functions.php:2479
+#: includes/functions.php:2539
 msgid "Private Doc"
 msgstr ""
 
@@ -108,124 +108,126 @@ msgstr ""
 
 #: includes/Admin/admin-helpers.php:169
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Public"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:174
-#: includes/functions.php:2425
-#: includes/functions.php:2455
+#: includes/functions.php:2485
+#: includes/functions.php:2515
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Private"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:179
-#: includes/functions.php:2420
-#: build/docs-builder/index.js:1
+#: includes/functions.php:2480
+#: build/docs-builder/index.js:2
 msgid "Protected"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:184
-#: includes/Admin/Import_Export.php:287
-#: build/docs-builder/index.js:1
+#: includes/Admin/Import_Export.php:299
+#: build/docs-builder/index.js:2
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin.php:87
+#: includes/Admin/Admin.php:88
 msgid "EazyDocs Pro"
 msgstr ""
 
-#: includes/Admin/Admin.php:97
+#: includes/Admin/Admin.php:98
 #: includes/Admin/template/dashboard/header.php:102
 msgid "Dashboard"
 msgstr ""
 
-#: includes/Admin/Admin.php:98
+#: includes/Admin/Admin.php:99
 #: includes/Admin/template/dashboard/header.php:78
 msgid "Docs Builder"
 msgstr ""
 
-#: includes/Admin/Admin.php:102
+#: includes/Admin/Admin.php:103
 msgid "OnePage Docs"
 msgstr ""
 
-#: includes/Admin/Admin.php:104
+#: includes/Admin/Admin.php:105
 msgid "OnePage Doc"
 msgstr ""
 
-#: includes/Admin/Admin.php:107
+#: includes/Admin/Admin.php:108
 #: includes/Post_Types.php:112
 msgid "Tags"
 msgstr ""
 
-#: includes/Admin/Admin.php:111
+#: includes/Admin/Admin.php:112
 msgid "Customize"
 msgstr ""
 
-#: includes/Admin/Admin.php:118
+#: includes/Admin/Admin.php:119
 msgid "Users Feedback"
 msgstr ""
 
-#: includes/Admin/Admin.php:119
+#: includes/Admin/Admin.php:120
 #: includes/Admin/setup-wizard/step1_welcome.php:61
 #: includes/Admin/template/dashboard/header.php:85
 msgid "Analytics"
 msgstr ""
 
-#: includes/Admin/Admin.php:128
+#: includes/Admin/Admin.php:129
 msgid "FAQ Builder"
 msgstr ""
 
-#: includes/Admin/Admin.php:131
+#: includes/Admin/Admin.php:132
 msgid "Integrated Themes"
 msgstr ""
 
-#: includes/Admin/Admin.php:132
-#: includes/Admin/setup-wizard/setup.php:51
+#: includes/Admin/Admin.php:133
+#: includes/Admin/setup-wizard/setup.php:54
 msgid "Setup Wizard"
 msgstr ""
 
-#: includes/Admin/Admin.php:136
+#: includes/Admin/Admin.php:137
 msgid "Migration"
 msgstr ""
 
-#: includes/Admin/Admin.php:350
+#: includes/Admin/Admin.php:351
 msgid "crown icon"
 msgstr ""
 
-#: includes/Admin/Admin.php:351
+#: includes/Admin/Admin.php:352
 msgid "Add Your OnePage Doc"
 msgstr ""
 
-#: includes/Admin/Admin.php:353
+#: includes/Admin/Admin.php:354
 msgid "Onepage documentation format will generate all the pages of a Doc as sections in a single page which is scrollable by sections. Visitors can find the all guides on a single page and they can navigate through the different sections very fast."
 msgstr ""
 
-#: includes/Admin/Admin.php:359
+#: includes/Admin/Admin.php:360
 msgid "Go Pro"
 msgstr ""
 
-#: includes/Admin/Admin.php:362
+#: includes/Admin/Admin.php:363
 msgid "View Classic Frontend Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:363
+#: includes/Admin/Admin.php:364
 msgid "Classic Layout Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:366
+#: includes/Admin/Admin.php:367
 msgid "View Fullscreen Frontend Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:367
+#: includes/Admin/Admin.php:368
 msgid "Fullscreen Layout Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:603
-#: includes/functions.php:2668
+#: includes/Admin/Admin.php:604
+#: includes/functions.php:2728
 msgid "Docs Archive"
 msgstr ""
 
-#: includes/Admin/Admin.php:626
+#: includes/Admin/Admin.php:627
 msgid "Switch to Docs Builder"
 msgstr ""
 
@@ -254,7 +256,7 @@ msgid "Install Plugin"
 msgstr ""
 
 #: includes/Admin/AntimanualNotice.php:100
-#: includes/Admin/options/opt_docs_assistant.php:444
+#: includes/Admin/options/opt_docs_assistant.php:59
 #: includes/Admin/template/analytics-presentation.php:42
 #: includes/Admin/template/dashboard/antimanual-ai.php:164
 #: includes/Admin/template/feedback-presentation.php:41
@@ -262,65 +264,68 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:685
-#: includes/functions.php:2483
+#: includes/Admin/Api/DocsBuilderController.php:696
+#: includes/functions.php:2543
 #: build/docs-builder/index.js:1
 msgid "Password Protected Doc"
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:700
+#: includes/Admin/Api/DocsBuilderController.php:711
 msgid "Draft Doc"
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1026
-#: includes/Admin/Api/DocsBuilderController.php:1043
-#: includes/Admin/Api/DocsBuilderController.php:1073
+#: includes/Admin/Api/DocsBuilderController.php:1037
+#: includes/Admin/Api/DocsBuilderController.php:1054
+#: includes/Admin/Api/DocsBuilderController.php:1084
 msgid " ago"
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1119
-#: includes/Admin/Api/DocsBuilderController.php:1175
-#: includes/Admin/Api/DocsBuilderController.php:1190
-#: includes/Admin/Api/DocsBuilderController.php:1230
+#: includes/Admin/Api/DocsBuilderController.php:1130
+#: includes/Admin/Api/DocsBuilderController.php:1186
+#: includes/Admin/Api/DocsBuilderController.php:1201
+#: includes/Admin/Api/DocsBuilderController.php:1241
 msgid "Invalid document."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1124
+#: includes/Admin/Api/DocsBuilderController.php:1135
 msgid "Invalid visibility option."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1182
+#: includes/Admin/Api/DocsBuilderController.php:1193
 msgid "EazyDocs Pro is required for document duplication."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1197
+#: includes/Admin/Api/DocsBuilderController.php:1208
 msgid "Failed to duplicate the document."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1271
-#: includes/Admin/Api/DocsBuilderController.php:1330
-#: includes/Admin/Api/DocsBuilderController.php:1396
+#: includes/Admin/Api/DocsBuilderController.php:1282
+#: includes/Admin/Api/DocsBuilderController.php:1341
+#: includes/Admin/Api/DocsBuilderController.php:1407
+#: includes/Admin/Api/DocsBuilderController.php:1519
 msgid "A title is required."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1334
+#: includes/Admin/Api/DocsBuilderController.php:1345
 msgid "The specified parent document does not exist."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1338
-#: includes/Admin/Api/DocsBuilderController.php:1406
+#: includes/Admin/Api/DocsBuilderController.php:1349
+#: includes/Admin/Api/DocsBuilderController.php:1417
+#: includes/Admin/Api/DocsBuilderController.php:1529
 #: includes/Admin/Create_Post.php:55
 #: includes/Admin/Create_Post.php:77
 msgid "You do not have permission to edit this document."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1402
-#: includes/Admin/Api/DocsBuilderController.php:1460
+#: includes/Admin/Api/DocsBuilderController.php:1413
+#: includes/Admin/Api/DocsBuilderController.php:1471
+#: includes/Admin/Api/DocsBuilderController.php:1525
 #: includes/Admin/Create_Post.php:73
 msgid "The specified document does not exist."
 msgstr ""
 
-#: includes/Admin/Api/DocsBuilderController.php:1464
+#: includes/Admin/Api/DocsBuilderController.php:1475
 msgid "You do not have permission to delete this document."
 msgstr ""
 
@@ -368,6 +373,7 @@ msgstr ""
 #: includes/csf/classes/comment-options.class.php:202
 #: includes/csf/classes/metabox-options.class.php:281
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Cancel"
 msgstr ""
 
@@ -392,7 +398,7 @@ msgid "Migration failed"
 msgstr ""
 
 #: includes/Admin/Assets.php:225
-#: includes/Frontend/Assets.php:121
+#: includes/Frontend/Assets.php:123
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -405,142 +411,142 @@ msgstr ""
 msgid "Import / Export"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:191
+#: includes/Admin/Import_Export.php:203
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:202
+#: includes/Admin/Import_Export.php:214
 msgid "Import &amp; Export"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:203
+#: includes/Admin/Import_Export.php:215
 msgid "Move documentation in and out of EazyDocs — import Markdown or CSV, download a portable backup, or migrate from another plugin."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:211
+#: includes/Admin/Import_Export.php:223
 msgid "Markdown import/export needs PHP 8.1 or newer, so the Markdown option is disabled. CSV import/export still works."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:217
-#: includes/Admin/Import_Export.php:310
+#: includes/Admin/Import_Export.php:229
+#: includes/Admin/Import_Export.php:322
 #: includes/csf/fields/backup/backup.php:26
 msgid "Import"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:220
-#: includes/Admin/Import_Export.php:368
-#: includes/Admin/Import_Export.php:487
+#: includes/Admin/Import_Export.php:232
+#: includes/Admin/Import_Export.php:380
+#: includes/Admin/Import_Export.php:499
 msgid "Export"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:223
+#: includes/Admin/Import_Export.php:235
 msgid "Migrate"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:254
+#: includes/Admin/Import_Export.php:266
 msgid "Import documentation"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:256
+#: includes/Admin/Import_Export.php:268
 msgid "Upload a single .md file, a .zip of Markdown files (folders become parent docs; index.md is the folder's own page), or a .csv exported from EazyDocs."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:257
-#: includes/Admin/Import_Export.php:331
+#: includes/Admin/Import_Export.php:269
+#: includes/Admin/Import_Export.php:343
 msgid "Learn more"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:265
+#: includes/Admin/Import_Export.php:277
 msgid "File"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:268
+#: includes/Admin/Import_Export.php:280
 msgid "Accepts .md, .markdown, .zip or .csv — up to 20 MB."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:269
+#: includes/Admin/Import_Export.php:281
 msgid "Download a sample CSV"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:275
+#: includes/Admin/Import_Export.php:287
 msgid "Import under"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:277
+#: includes/Admin/Import_Export.php:289
 msgid "— Top level —"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:285
+#: includes/Admin/Import_Export.php:297
 msgid "Status for new docs"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:288
+#: includes/Admin/Import_Export.php:300
 msgid "Published"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:294
+#: includes/Admin/Import_Export.php:306
 msgid "If a document already exists"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:296
+#: includes/Admin/Import_Export.php:308
 msgid "Always create new documents"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:297
+#: includes/Admin/Import_Export.php:309
 msgid "Update the existing document"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:299
+#: includes/Admin/Import_Export.php:311
 msgid "Re-importing an EazyDocs export carries each doc's ID, so \"Update\" refreshes the original instead of creating a duplicate."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:304
+#: includes/Admin/Import_Export.php:316
 msgid "Images are kept as links to their original location — they are not uploaded to your Media Library during import."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:328
+#: includes/Admin/Import_Export.php:340
 msgid "Export documentation"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:330
+#: includes/Admin/Import_Export.php:342
 msgid "Download any document and its sub-tree as Markdown files (.zip, folders mirror the hierarchy) or a flat CSV spreadsheet. All statuses — published, draft and private — are included."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:336
+#: includes/Admin/Import_Export.php:348
 msgid "There are no documents to export yet."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:344
+#: includes/Admin/Import_Export.php:356
 msgid "Document to export"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:350
+#: includes/Admin/Import_Export.php:362
 msgid "The selected document and everything beneath it is exported."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:354
+#: includes/Admin/Import_Export.php:366
 msgid "Format"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:357
+#: includes/Admin/Import_Export.php:369
 msgid "Markdown (.zip)"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:359
+#: includes/Admin/Import_Export.php:371
 msgid "CSV (.csv)"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:361
+#: includes/Admin/Import_Export.php:373
 msgid "Images stay linked to this site; they are not bundled into the file."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:387
-#: includes/functions.php:3638
+#: includes/Admin/Import_Export.php:399
+#: includes/functions.php:3836
 msgid "You do not have permission to run a migration."
 msgstr ""
 
 #. translators: %d: number of documents created
-#: includes/Admin/Import_Export.php:425
+#: includes/Admin/Import_Export.php:437
 #, php-format
 msgid "%d created"
 msgid_plural "%d created"
@@ -548,7 +554,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of documents updated
-#: includes/Admin/Import_Export.php:429
+#: includes/Admin/Import_Export.php:441
 #, php-format
 msgid "%d updated"
 msgid_plural "%d updated"
@@ -556,45 +562,53 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of documents that failed to import
-#: includes/Admin/Import_Export.php:433
+#: includes/Admin/Import_Export.php:445
 #, php-format
 msgid "%d failed"
 msgid_plural "%d failed"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/Import_Export.php:436
+#: includes/Admin/Import_Export.php:448
 msgid "Nothing to import"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:443
+#: includes/Admin/Import_Export.php:455
 msgid "Import finished:"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:482
+#: includes/Admin/Import_Export.php:494
 msgid "Working… please wait"
 msgstr ""
 
-#: includes/Admin/Import_Export.php:504
-#: includes/Admin/Import_Export.php:550
-#: includes/Admin/Import_Export.php:581
+#: includes/Admin/Import_Export.php:516
+#: includes/Admin/Import_Export.php:572
+#: includes/Admin/Import_Export.php:603
 msgid "Unauthorized."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:628
+#: includes/Admin/Import_Export.php:532
+msgid "You are not allowed to export this document."
+msgstr ""
+
+#: includes/Admin/Import_Export.php:621
+msgid "You are not allowed to import under the selected document."
+msgstr ""
+
+#: includes/Admin/Import_Export.php:671
 msgid "No file uploaded."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:637
+#: includes/Admin/Import_Export.php:680
 msgid "File is empty or too large."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:640
+#: includes/Admin/Import_Export.php:683
 msgid "Only .md, .markdown, .zip or .csv files are allowed."
 msgstr ""
 
-#: includes/Admin/Import_Export.php:653
-#: includes/IO/Csv.php:124
+#: includes/Admin/Import_Export.php:696
+#: includes/IO/Csv.php:130
 msgid "Could not read the uploaded file."
 msgstr ""
 
@@ -693,6 +707,7 @@ msgid "Read the full migration guide"
 msgstr ""
 
 #: includes/Admin/options/opt_appearance.php:13
+#: includes/Admin/options/opt_docs_assistant.php:674
 #: build/docs-builder/index.js:1
 msgid "Appearance"
 msgstr ""
@@ -758,8 +773,10 @@ msgid "Show EazyDocs settings in the WordPress Theme Customizer for live preview
 msgstr ""
 
 #: includes/Admin/options/opt_customizer.php:22
-#: includes/Admin/options/opt_docs_assistant.php:32
-#: includes/Admin/options/opt_docs_collaboration.php:25
+#: includes/Admin/options/opt_docs_assistant.php:285
+#: includes/Admin/options/opt_docs_assistant.php:409
+#: includes/Admin/options/opt_docs_collaboration.php:50
+#: includes/Admin/options/opt_docs_collaboration.php:249
 #: includes/Admin/options/opt_docs_subscription.php:28
 #: includes/Admin/options/opt_doc_single.php:84
 #: includes/Admin/options/opt_doc_single.php:291
@@ -776,8 +793,10 @@ msgid "Enabled"
 msgstr ""
 
 #: includes/Admin/options/opt_customizer.php:23
-#: includes/Admin/options/opt_docs_assistant.php:33
-#: includes/Admin/options/opt_docs_collaboration.php:26
+#: includes/Admin/options/opt_docs_assistant.php:286
+#: includes/Admin/options/opt_docs_assistant.php:410
+#: includes/Admin/options/opt_docs_collaboration.php:51
+#: includes/Admin/options/opt_docs_collaboration.php:250
 #: includes/Admin/options/opt_docs_subscription.php:29
 #: includes/Admin/options/opt_doc_single.php:85
 #: includes/Admin/options/opt_doc_single.php:292
@@ -806,11 +825,10 @@ msgid "Allow visitors to switch between light and dark themes. The toggle button
 msgstr ""
 
 #: includes/Admin/options/opt_dark_mode.php:23
-#: includes/Admin/options/opt_docs_collaboration.php:74
-#: includes/Admin/options/opt_docs_collaboration.php:109
-#: includes/Admin/options/opt_docs_collaboration.php:144
-#: includes/Admin/options/opt_docs_collaboration.php:183
-#: includes/Admin/options/opt_docs_collaboration.php:199
+#: includes/Admin/options/opt_docs_collaboration.php:120
+#: includes/Admin/options/opt_docs_collaboration.php:157
+#: includes/Admin/options/opt_docs_collaboration.php:194
+#: includes/Admin/options/opt_docs_collaboration.php:233
 #: includes/Admin/options/opt_docs_subscription.php:162
 #: includes/Admin/options/opt_docs_subscription.php:172
 #: includes/Admin/options/opt_docs_subscription.php:182
@@ -827,12 +845,11 @@ msgid "Show"
 msgstr ""
 
 #: includes/Admin/options/opt_dark_mode.php:24
-#: includes/Admin/options/opt_docs_assistant.php:512
-#: includes/Admin/options/opt_docs_collaboration.php:75
-#: includes/Admin/options/opt_docs_collaboration.php:110
-#: includes/Admin/options/opt_docs_collaboration.php:145
-#: includes/Admin/options/opt_docs_collaboration.php:184
-#: includes/Admin/options/opt_docs_collaboration.php:200
+#: includes/Admin/options/opt_docs_assistant.php:183
+#: includes/Admin/options/opt_docs_collaboration.php:121
+#: includes/Admin/options/opt_docs_collaboration.php:158
+#: includes/Admin/options/opt_docs_collaboration.php:195
+#: includes/Admin/options/opt_docs_collaboration.php:234
 #: includes/Admin/options/opt_docs_subscription.php:163
 #: includes/Admin/options/opt_docs_subscription.php:173
 #: includes/Admin/options/opt_docs_subscription.php:183
@@ -848,15 +865,44 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:31
+#: includes/Admin/options/opt_dark_mode.php:33
+msgid "Default Appearance"
+msgstr ""
+
+#: includes/Admin/options/opt_dark_mode.php:34
+msgid "Which theme first-time visitors see before they choose. \"Follow system\" respects each visitor's OS light/dark setting."
+msgstr ""
+
+#: includes/Admin/options/opt_dark_mode.php:36
+#: includes/Admin/setup-wizard/step3_settings.php:47
+#: includes/Admin/setup-wizard/step3_settings.php:210
+#: includes/Elementor/Single_Doc/Single_Doc.php:71
+#: build/tabbed-docs/index.js:1
+#: src/tabbed-docs/edit.js:458
+#: build/tabbed-docs/index.js:465
+msgid "Light"
+msgstr ""
+
+#: includes/Admin/options/opt_dark_mode.php:37
+#: includes/Admin/setup-wizard/step3_settings.php:51
+#: includes/Admin/setup-wizard/step3_settings.php:211
+msgid "Dark"
+msgstr ""
+
+#: includes/Admin/options/opt_dark_mode.php:38
+#: includes/Admin/setup-wizard/step3_settings.php:212
+msgid "Follow system"
+msgstr ""
+
+#: includes/Admin/options/opt_dark_mode.php:46
 msgid "Custom Dark Mode Accent"
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:32
+#: includes/Admin/options/opt_dark_mode.php:47
 msgid "Use a different accent color when dark mode is active. Useful for improving contrast and visibility."
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:35
+#: includes/Admin/options/opt_dark_mode.php:50
 #: includes/Admin/options/opt_docs_subscription.php:242
 #: includes/Admin/options/opt_doc_single.php:226
 #: includes/Admin/options/opt_doc_single.php:544
@@ -868,7 +914,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:36
+#: includes/Admin/options/opt_dark_mode.php:51
 #: includes/Admin/options/opt_docs_subscription.php:243
 #: includes/Admin/options/opt_doc_single.php:227
 #: includes/Admin/options/opt_doc_single.php:545
@@ -879,222 +925,331 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:46
+#: includes/Admin/options/opt_dark_mode.php:61
 msgid "Dark Mode Brand Color"
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:47
+#: includes/Admin/options/opt_dark_mode.php:62
 msgid "Choose an accent color optimized for dark backgrounds. Lighter colors typically work better."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:15
-#: includes/Admin/options/opt_docs_assistant.php:31
-msgid "Docs Assistant"
+#: includes/Admin/options/opt_docs_assistant.php:40
+msgid "Connected"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:25
-msgid "Assistant Settings"
+#: includes/Admin/options/opt_docs_assistant.php:41
+msgid "AI chatbot powered by Antimanual"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:42
-msgid "Display Location"
+msgid "Antimanual is active. Your Docs Assistant can now answer visitors with an AI chatbot trained on your documentation — alongside the built-in knowledge base and contact tabs below."
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:43
-msgid "Set your assistant where should be appears."
+msgid "Configure Antimanual"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:46
-msgid "Everywhere"
+msgid "Action needed"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:47
+msgid "Activate Antimanual to add an AI chatbot"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:48
+msgid "Antimanual is installed but not active. Activate it to upgrade your Docs Assistant into an AI chatbot trained on your docs, with smart semantic search."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:49
+#: includes/Admin/template/dashboard/antimanual-ai.php:105
+msgid "Activate Antimanual"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:52
+msgid "Free add-on"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:53
+msgid "Turn your Docs Assistant into an AI chatbot"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:54
+msgid "Install the free Antimanual plugin to train an AI chatbot on your documentation. Visitors get instant, conversational answers from your docs — reducing repetitive support tickets."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:55
+msgid "Install Antimanual"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:58
+msgid "View on WordPress.org"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:91
+msgid "Preview Assistant"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:94
+msgid "Opens a live preview in a new tab. Save your changes first to see them reflected."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:180
+msgid "Chat Icon"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:181
+#: includes/Admin/options/opt_docs_assistant.php:364
+msgid "Close Icon"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:205
+msgid "How to embed the assistant on another site"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:207
+msgid "(Optional) Enter a Site / Product Label below — the name of the site or product where you are pasting this embed. This tells the assistant which product the visitor is asking about so it does not confuse multiple products in one knowledge base."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:208
+msgid "Copy the generated Embed Code from the box below."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:209
+msgid "Paste it into the HTML of the target site — anywhere inside the <body>. The assistant loads as a floating widget."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:211
+msgid "When to fill the label:"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:211
+msgid "only when one knowledge base serves multiple products or brands. If you have one product on one site, leave it empty."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:212
+#: includes/Admin/options/opt_restricted_docs.php:375
+msgid "Example:"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:212
+msgid "on eazydocs.com use label \"Eazydocs\"; on antimanual.com use \"Antimanual\". Both iframes load the same KB but answer in their own product context."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:216
+msgid "Site / Product Label (optional)"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:217
+msgid "e.g., Eazydocs, Acme CRM, Plan Pro"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:218
+msgid "Max 200 characters. The label is passed as scope only — it never appears in the user message."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:268
+msgid "Docs Assistant"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:278
+msgid "Assistant Settings"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:284
+msgid "Enable Assistant"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:303
+msgid "Display Location"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:304
+msgid "Set your assistant where should be appears."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:307
+msgid "Everywhere"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:308
 #: includes/functions.php:757
 #: includes/Walker_Docs_Onepage.php:279
 #: includes/Walker_Docs_Onepage_Fullscreen.php:276
 msgid "Pages"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:48
+#: includes/Admin/options/opt_docs_assistant.php:309
 #: includes/Elementor/Search/Search_Widget.php:156
 msgid "Post Type"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:59
+#: includes/Admin/options/opt_docs_assistant.php:320
 msgid "Select Pages"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:60
+#: includes/Admin/options/opt_docs_assistant.php:321
 msgid "Select pages where should be appears."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:74
+#: includes/Admin/options/opt_docs_assistant.php:335
 msgid "Select Post Types"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:75
+#: includes/Admin/options/opt_docs_assistant.php:336
 msgid "Pick your preferred post types where should be appears."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:89
+#: includes/Admin/options/opt_docs_assistant.php:350
 msgid "Open Icon"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:103
-#: includes/Admin/options/opt_docs_assistant.php:510
-msgid "Close Icon"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:118
+#: includes/Admin/options/opt_docs_assistant.php:379
 msgid "Tab Settings"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:124
-#: includes/Admin/options/opt_docs_assistant.php:137
+#: includes/Admin/options/opt_docs_assistant.php:385
+#: includes/Admin/options/opt_docs_assistant.php:398
 #: includes/Admin/template/dashboard/antimanual-ai.php:62
 msgid "Knowledge Base"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:128
+#: includes/Admin/options/opt_docs_assistant.php:389
 msgid "Knowledge-base Tab"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:136
-#: includes/Admin/options/opt_docs_assistant.php:227
+#: includes/Admin/options/opt_docs_assistant.php:397
+#: includes/Admin/options/opt_docs_assistant.php:490
 msgid "Heading"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:145
-#: includes/Admin/options/opt_docs_collaboration.php:181
+#: includes/Admin/options/opt_docs_assistant.php:407
+msgid "Instant Answer"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:408
+msgid "Open docs inside the assistant panel instead of navigating away from the page."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:420
+#: includes/Admin/options/opt_docs_collaboration.php:231
 msgid "Search"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:156
+#: includes/Admin/options/opt_docs_assistant.php:431
 msgid "Search Placeholder"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:157
+#: includes/Admin/options/opt_docs_assistant.php:432
 #: includes/csf/classes/admin-options.class.php:513
 #: includes/csf/fields/icon/icon.php:57
 #: includes/csf/fields/map/map.php:23
 msgid "Search..."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:166
+#: includes/Admin/options/opt_docs_assistant.php:441
 #: includes/Admin/options/opt_doc_single.php:613
 msgid "Breadcrumb"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:177
-#: includes/Admin/options/opt_docs_assistant.php:178
+#: includes/Admin/options/opt_docs_assistant.php:452
+#: includes/Admin/options/opt_docs_assistant.php:453
 msgid "Docs not Found"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:187
-msgid "Instant Answer"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:188
-msgid "Eanble"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:189
-msgid "Disable"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:200
+#: includes/Admin/options/opt_docs_assistant.php:462
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:162
+#: src/shortcode/edit.js:152
 #: src/tabbed-docs/edit.js:547
-#: build/shortcode/index.js:213
+#: build/shortcode/index.js:210
 #: build/tabbed-docs/index.js:554
 msgid "Number of Docs"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:201
-msgid "Leave this field empty to display all available docs."
+#: includes/Admin/options/opt_docs_assistant.php:463
+msgid "How many docs to list in the Knowledge Base tab. Defaults to 20 if left empty. Maximum 100."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:215
-#: includes/Admin/options/opt_docs_assistant.php:228
+#: includes/Admin/options/opt_docs_assistant.php:478
+#: includes/Admin/options/opt_docs_assistant.php:491
 msgid "Contact"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:219
+#: includes/Admin/options/opt_docs_assistant.php:482
 msgid "Contact Tab"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:237
+#: includes/Admin/options/opt_docs_assistant.php:500
 msgid "Receiver Email"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:247
+#: includes/Admin/options/opt_docs_assistant.php:510
 msgid "Form Input"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:256
-#: includes/Admin/options/opt_docs_assistant.php:257
+#: includes/Admin/options/opt_docs_assistant.php:519
+#: includes/Admin/options/opt_docs_assistant.php:520
 msgid "Full name"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:266
+#: includes/Admin/options/opt_docs_assistant.php:529
 #: includes/Admin/options/opt_docs_subscription.php:79
 #: templates/content-modal.php:31
 msgid "Email"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:267
+#: includes/Admin/options/opt_docs_assistant.php:530
 msgid "name@example.com"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:276
-#: includes/Admin/options/opt_docs_assistant.php:277
+#: includes/Admin/options/opt_docs_assistant.php:539
+#: includes/Admin/options/opt_docs_assistant.php:540
 #: templates/content-modal.php:36
 msgid "Subject"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:286
+#: includes/Admin/options/opt_docs_assistant.php:549
 #: templates/content-modal.php:40
 msgid "Message"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:287
+#: includes/Admin/options/opt_docs_assistant.php:550
 msgid "Write Your Message"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:296
-#: includes/Admin/options/opt_docs_assistant.php:343
+#: includes/Admin/options/opt_docs_assistant.php:559
+#: includes/Admin/options/opt_docs_assistant.php:631
 #: includes/Admin/options/opt_docs_subscription.php:91
 #: includes/Elementor/Search/style-control.php:115
 msgid "Submit Button"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:297
+#: includes/Admin/options/opt_docs_assistant.php:560
 msgid "Send Message"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:306
+#: includes/Admin/options/opt_docs_assistant.php:569
 #: includes/csf/fields/background/background.php:278
 #: includes/Elementor/Single_Doc/Single_Doc.php:473
 #: includes/Elementor/Single_Doc/Single_Doc.php:505
 msgid "Color"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:311
+#: includes/Admin/options/opt_docs_assistant.php:574
 msgid "Icon Color"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:319
+#: includes/Admin/options/opt_docs_assistant.php:582
 msgid "Icon Hover Color"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:327
+#: includes/Admin/options/opt_docs_assistant.php:590
 #: includes/Admin/options/opt_restricted_docs.php:633
 msgid "Header Background"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:335
+#: includes/Admin/options/opt_docs_assistant.php:598
 #: includes/Elementor/Search/style-control.php:200
 #: includes/Elementor/Search/style-control.php:230
 #: includes/Elementor/Search/style-control.php:500
@@ -1102,200 +1257,155 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:351
-#: includes/Admin/options/opt_docs_assistant.php:356
+#: includes/Admin/options/opt_docs_assistant.php:606
+#: includes/Admin/options/opt_restricted_docs.php:110
+#: includes/Admin/options/opt_restricted_docs.php:138
+msgid "Card Background"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:607
+msgid "Background of each doc item in the Knowledge Base list."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:615
+msgid "Doc Title Color"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:623
+msgid "Doc Text Color"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:639
+#: includes/Admin/options/opt_docs_assistant.php:644
 msgid "Position"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:362
+#: includes/Admin/options/opt_docs_assistant.php:650
 msgid "Vertical Position"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:374
+#: includes/Admin/options/opt_docs_assistant.php:662
 msgid "Horizontal Position"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:388
+#: includes/Admin/options/opt_docs_assistant.php:680
+msgid "Panel Width"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:681
+msgid "Width of the assistant panel on desktop. It still shrinks to fit small screens."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:694
+msgid "Corner Radius"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_assistant.php:709
 msgid "Cross Domain Embed"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:389
+#: includes/Admin/options/opt_docs_assistant.php:710
 msgid "Extend your docs assistant to other websites by embedding it across multiple domains with a simple code snippet."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_assistant.php:427
-msgid "Connected"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:428
-msgid "AI chatbot powered by Antimanual"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:429
-msgid "Antimanual is active. Your Docs Assistant can now answer visitors with an AI chatbot trained on your documentation — alongside the built-in knowledge base and contact tabs below."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:430
-msgid "Configure Antimanual"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:432
-msgid "Action needed"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:433
-msgid "Activate Antimanual to add an AI chatbot"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:434
-msgid "Antimanual is installed but not active. Activate it to upgrade your Docs Assistant into an AI chatbot trained on your docs, with smart semantic search."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:435
-#: includes/Admin/template/dashboard/antimanual-ai.php:105
-msgid "Activate Antimanual"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:437
-msgid "Free add-on"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:438
-msgid "Turn your Docs Assistant into an AI chatbot"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:439
-msgid "Install the free Antimanual plugin to train an AI chatbot on your documentation. Visitors get instant, conversational answers from your docs — reducing repetitive support tickets."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:440
-msgid "Install Antimanual"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:443
-msgid "View on WordPress.org"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:509
-msgid "Chat Icon"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:534
-msgid "How to embed the assistant on another site"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:536
-msgid "(Optional) Enter a Site / Product Label below — the name of the site or product where you are pasting this embed. This tells the assistant which product the visitor is asking about so it does not confuse multiple products in one knowledge base."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:537
-msgid "Copy the generated Embed Code from the box below."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:538
-msgid "Paste it into the HTML of the target site — anywhere inside the <body>. The assistant loads as a floating widget."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:540
-msgid "When to fill the label:"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:540
-msgid "only when one knowledge base serves multiple products or brands. If you have one product on one site, leave it empty."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:541
-#: includes/Admin/options/opt_restricted_docs.php:375
-msgid "Example:"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:541
-msgid "on eazydocs.com use label \"Eazydocs\"; on antimanual.com use \"Antimanual\". Both iframes load the same KB but answer in their own product context."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:545
-msgid "Site / Product Label (optional)"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:546
-msgid "e.g., Eazydocs, Acme CRM, Plan Pro"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_assistant.php:547
-msgid "Max 200 characters. The label is passed as scope only — it never appears in the user message."
-msgstr ""
-
 #: includes/Admin/options/opt_docs_collaboration.php:15
+#: includes/Admin/options/opt_docs_collaboration.php:30
 msgid "Docs Collaboration"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:21
-msgid "Collaboration Feature"
+#: includes/Admin/options/opt_docs_collaboration.php:31
+msgid "Let trusted users help maintain your documentation. When enabled, \"Add Doc\" and \"Edit Doc\" buttons appear in the documentation right sidebar so the roles you allow can create and edit docs straight from the front end — no wp-admin access required."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:22
-msgid "Collaboration buttons on the doc Right Sidebar."
+#: includes/Admin/options/opt_docs_collaboration.php:33
+msgid "Front-end Add Doc"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:23
-msgid "By enabling this feature, you are allowing to Administrator & Editor people to contribute the docs. This will also let you manage the contributors from the Doc post editor."
+#: includes/Admin/options/opt_docs_collaboration.php:34
+msgid "Front-end Edit Doc"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:35
+msgid "Contributor credits"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:46
+msgid "Collaboration Feature"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:47
+msgid "Show the collaboration buttons in the documentation right sidebar."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:48
+msgid "Adds \"Add Doc\" / \"Edit Doc\" buttons to the documentation right sidebar so the user roles you allow below can create and edit docs directly from the front end. Selected roles also receive the matching doc-editing capabilities, and you can manage contributors from the Doc post editor."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:60
 msgid "Contributor Access Control"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:36
+#: includes/Admin/options/opt_docs_collaboration.php:61
 msgid "Manage which user roles can contribute to your documentation."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:45
+#: includes/Admin/options/opt_docs_collaboration.php:70
 #: includes/Admin/options/opt_restricted_docs.php:329
 msgid "Allowed User Roles"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:46
+#: includes/Admin/options/opt_docs_collaboration.php:71
 msgid "Select the user roles that can add or edit documentation from the frontend. These roles will have contributor privileges."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:48
-#: includes/Admin/options/opt_docs_role_manager.php:24
-#: includes/Admin/options/opt_docs_role_manager.php:58
+#: includes/Admin/options/opt_docs_collaboration.php:73
+#: includes/Admin/options/opt_docs_role_manager.php:15
 #: includes/Admin/options/opt_restricted_docs.php:334
+#: includes/functions.php:3000
 msgid "Administrator"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:49
-#: includes/Admin/options/opt_docs_role_manager.php:25
-#: includes/Admin/options/opt_docs_role_manager.php:59
+#: includes/Admin/options/opt_docs_collaboration.php:74
+#: includes/Admin/options/opt_docs_role_manager.php:16
 #: includes/Admin/options/opt_restricted_docs.php:335
+#: includes/functions.php:3001
 msgid "Editor"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:50
-#: includes/Admin/options/opt_docs_role_manager.php:26
-#: includes/Admin/options/opt_docs_role_manager.php:60
+#: includes/Admin/options/opt_docs_collaboration.php:75
+#: includes/Admin/options/opt_docs_role_manager.php:17
 #: includes/Admin/options/opt_restricted_docs.php:336
+#: includes/functions.php:3002
 #: templates/onepage/default-layout.php:72
 msgid "Author"
 msgid_plural "Authors"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:51
-#: includes/Admin/options/opt_docs_role_manager.php:27
+#: includes/Admin/options/opt_docs_collaboration.php:76
+#: includes/Admin/options/opt_docs_role_manager.php:18
 #: includes/Admin/options/opt_restricted_docs.php:337
+#: includes/functions.php:3003
 msgid "Contributor"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:52
-#: includes/Admin/options/opt_docs_role_manager.php:28
+#: includes/Admin/options/opt_docs_collaboration.php:77
+#: includes/Admin/options/opt_docs_role_manager.php:19
 #: includes/Admin/options/opt_restricted_docs.php:338
+#: includes/functions.php:3004
 msgid "Subscriber"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:64
-#: includes/Admin/options/opt_docs_collaboration.php:88
+#: includes/Admin/options/opt_docs_collaboration.php:95
+msgid "These roles also gain doc-editing capabilities."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:96
+msgid "The roles you allow here are combined with the Documentation Authors selected under User Permissions, and receive the same create / edit capabilities everywhere — the Docs Builder, the block editor and the front end. Review User Permissions too if you intend to restrict who can edit docs."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:108
+#: includes/Admin/options/opt_docs_collaboration.php:134
 #: includes/Admin/template/dashboard/header.php:146
 #: includes/One_Page_Docs.php:56
 #: includes/Post_Types.php:55
@@ -1303,38 +1413,55 @@ msgstr ""
 msgid "Add Doc"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:73
+#: includes/Admin/options/opt_docs_collaboration.php:109
+msgid "Let contributors create new docs from the front end."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:118
 msgid "Add Button"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:87
-#: includes/Admin/options/opt_docs_collaboration.php:122
-#: includes/Admin/options/opt_doc_single.php:1108
-#: includes/Admin/options/opt_doc_single.php:1186
-#: includes/Elementor/Docs/Doc_Widget.php:1061
-#: includes/Elementor/Search/Search_Widget.php:96
-msgid "Button"
+#: includes/Admin/options/opt_docs_collaboration.php:119
+msgid "Show the \"Add Doc\" button in the right sidebar."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:99
-#: includes/Admin/options/opt_docs_collaboration.php:123
+#: includes/Admin/options/opt_docs_collaboration.php:133
+#: includes/Admin/options/opt_docs_collaboration.php:170
+msgid "Button Label"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:145
+#: includes/Admin/options/opt_docs_collaboration.php:171
 #: includes/Post_Types.php:57
 msgid "Edit Doc"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:108
+#: includes/Admin/options/opt_docs_collaboration.php:146
+msgid "Let contributors edit existing docs from the front end."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:155
 msgid "Edit Button"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:134
-msgid "Meta Content"
+#: includes/Admin/options/opt_docs_collaboration.php:156
+msgid "Show the \"Edit Doc\" button in the right sidebar."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:143
-msgid "Enable / Disable"
+#: includes/Admin/options/opt_docs_collaboration.php:182
+#: includes/Admin/options/opt_docs_collaboration.php:192
+msgid "Contributors Box"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:157
+#: includes/Admin/options/opt_docs_collaboration.php:183
+msgid "Display and manage the list of contributors shown on each doc."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:193
+msgid "Show the contributors list on the doc."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_collaboration.php:207
 #: includes/Admin/options/opt_doc_single.php:1011
 #: includes/Admin/options/opt_doc_single.php:1068
 #: includes/Admin/options/opt_doc_single.php:1146
@@ -1346,183 +1473,276 @@ msgstr ""
 #: includes/Elementor/Single_Doc/Single_Doc.php:467
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:72
+#: src/shortcode/edit.js:70
 #: src/tabbed-docs/edit.js:369
-#: build/shortcode/index.js:123
+#: build/shortcode/index.js:128
 #: build/tabbed-docs/index.js:376
 msgid "Title"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:158
+#: includes/Admin/options/opt_docs_collaboration.php:208
 msgid "Contributors"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:169
+#: includes/Admin/options/opt_docs_collaboration.php:219
 msgid "Dropdown Heading"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:170
+#: includes/Admin/options/opt_docs_collaboration.php:220
 msgid "Manage Contributors"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:182
+#: includes/Admin/options/opt_docs_collaboration.php:232
 msgid "Search through the existing users"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:197
+#: includes/Admin/options/opt_docs_collaboration.php:247
 msgid "Load More By Ajax"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:198
-msgid "Enable / Disable the Load more users with scrolling"
+#: includes/Admin/options/opt_docs_collaboration.php:248
+msgid "Load more users on scroll instead of a fixed number."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:213
+#: includes/Admin/options/opt_docs_collaboration.php:263
 msgid "Load More Text"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:214
+#: includes/Admin/options/opt_docs_collaboration.php:264
 msgid "Loading"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:226
+#: includes/Admin/options/opt_docs_collaboration.php:276
 msgid "Load Per Scroll"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:227
-msgid "3"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_collaboration.php:239
+#: includes/Admin/options/opt_docs_collaboration.php:289
 msgid "Show User Number"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_collaboration.php:240
+#: includes/Admin/options/opt_docs_collaboration.php:290
 msgid "Number of users that can be added"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:14
-msgid "General Settings"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_general.php:17
-msgid "Admin Menu Label"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_general.php:18
-msgid "Customize the documentation menu name displayed in your WordPress admin sidebar."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_general.php:24
-msgid "Documentation Archive Page"
+#: includes/Admin/options/opt_docs_general.php:21
+msgid "View Page"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_general.php:25
-msgid "Select the main page that displays all your documentation. This page will appear in breadcrumbs and serve as your docs homepage."
+msgid "General Settings"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:26
-msgid "Create this page using the [eazydocs] shortcode, EazyDocs Gutenberg blocks, or Elementor widgets."
+#: includes/Admin/options/opt_docs_general.php:28
+msgid "Admin Menu Label"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:33
-msgid "\"View All\" Button"
-msgstr ""
-
-#: includes/Admin/options/opt_docs_general.php:34
-msgid "Display a \"View All\" or \"Read More\" button on the documentation archive page."
+#: includes/Admin/options/opt_docs_general.php:29
+msgid "Customize the documentation menu name displayed in your WordPress admin sidebar."
 msgstr ""
 
 #: includes/Admin/options/opt_docs_general.php:35
-msgid "When hidden, docs without child pages won't show this button."
+msgid "Documentation Archive Page"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:43
-msgid "URL Structure"
+#: includes/Admin/options/opt_docs_general.php:36
+msgid "Select the main page that displays all your documentation. This page will appear in breadcrumbs and serve as your docs homepage."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_general.php:37
+msgid "Create this page using the [eazydocs] shortcode, EazyDocs Gutenberg blocks, or Elementor widgets."
 msgstr ""
 
 #: includes/Admin/options/opt_docs_general.php:44
+msgid "\"View All\" Button"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_general.php:45
+msgid "Display a \"View All\" or \"Read More\" button on the documentation archive page."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_general.php:46
+msgid "When hidden, docs without child pages won't show this button."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_general.php:54
+msgid "URL Structure"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_general.php:55
 msgid "Choose how your documentation URLs are formatted."
 msgstr ""
 
 #. translators: %1$s and %2$s are HTML link tags
-#: includes/Admin/options/opt_docs_general.php:46
+#: includes/Admin/options/opt_docs_general.php:57
 #, php-format
 msgid "<strong>Important:</strong> After changing this setting, visit %1$sSettings → Permalinks%2$s and click \"Save Changes\" to apply."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:49
+#: includes/Admin/options/opt_docs_general.php:60
 msgid "Custom Slug (e.g., /docs/article-name)"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:50
+#: includes/Admin/options/opt_docs_general.php:61
 msgid "Direct URLs (e.g., /article-name)"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:59
+#: includes/Admin/options/opt_docs_general.php:70
 msgid "Note: Plain and numeric permalink structures are not supported."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:65
+#: includes/Admin/options/opt_docs_general.php:76
 msgid "Documentation URL Slug"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:66
+#: includes/Admin/options/opt_docs_general.php:77
 msgid "Define the base URL path for all documentation pages. Cannot be left empty."
 msgstr ""
 
 #. translators: %1$s and %2$s are HTML link tags
-#: includes/Admin/options/opt_docs_general.php:70
+#: includes/Admin/options/opt_docs_general.php:81
 #, php-format
 msgid "<strong>Important:</strong> After changing, visit %1$sSettings → Permalinks%2$s and click \"Save Changes\"."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:79
+#: includes/Admin/options/opt_docs_general.php:90
 msgid "Primary Brand Color"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_general.php:80
+#: includes/Admin/options/opt_docs_general.php:91
 msgid "Set the main accent color used throughout your documentation for buttons, links, and highlights."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:15
+#: includes/Admin/options/opt_docs_role_manager.php:27
+#: includes/Admin/options/opt_docs_role_manager.php:42
 msgid "User Permissions"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:21
+#: includes/Admin/options/opt_docs_role_manager.php:43
+msgid "Decide which user roles can author documentation, manage EazyDocs settings, and view analytics. Permissions are applied as WordPress capabilities, so they work everywhere — the Docs Builder, the block editor and the front end."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:45
+msgid "Authoring access"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:46
+msgid "Settings access"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:47
+msgid "Analytics access"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:59
+msgid "Documentation Access"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:65
 msgid "Documentation Authors"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:22
+#: includes/Admin/options/opt_docs_role_manager.php:66
 msgid "Select which user roles can create and manage documentation from the Docs Builder interface."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:39
+#: includes/Admin/options/opt_docs_role_manager.php:67
+msgid "These roles receive the doc authoring capabilities (create, edit, publish and delete docs). Roles that can already edit others' posts also gain manager capabilities for private and others' docs."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:83
+msgid "Heads up: Docs Collaboration also grants authoring access."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:84
+msgid "Any roles selected under Docs Collaboration → Allowed User Roles receive the same doc-editing capabilities as the authors chosen here. Both lists are combined, so review that screen too if you intend to restrict who can edit docs."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:98
+msgid "Granting access to low-privilege roles"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:99
+msgid "Roles such as Subscriber or Contributor cannot normally edit content. Adding them as Documentation Authors lets them create and edit docs — only do this if you trust those users."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:109
+msgid "Administration Access"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:115
 msgid "Settings Managers"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:40
+#: includes/Admin/options/opt_docs_role_manager.php:116
 msgid "Define which user roles have access to modify EazyDocs settings."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:42
-msgid "Administrator Only"
+#: includes/Admin/options/opt_docs_role_manager.php:117
+msgid "Access is granted by capability tier, so each option includes every role above it."
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:43
+#: includes/Admin/options/opt_docs_role_manager.php:119
+msgid "Administrator only"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:120
 msgid "Administrator & Editor"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:44
+#: includes/Admin/options/opt_docs_role_manager.php:121
 msgid "Administrator, Editor & Author"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:55
+#: includes/Admin/options/opt_docs_role_manager.php:132
 msgid "Analytics Viewers"
 msgstr ""
 
-#: includes/Admin/options/opt_docs_role_manager.php:56
+#: includes/Admin/options/opt_docs_role_manager.php:133
 msgid "Choose which user roles can view documentation analytics and performance metrics."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:147
+msgid "What each access level can do"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:151
+msgid "Access level"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:152
+msgid "Capabilities granted"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:157
+msgid "Documentation Author"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:158
+msgid "Create, edit, publish and delete their own docs from the Docs Builder."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:161
+msgid "Documentation Manager"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:162
+msgid "All author actions, plus editing and deleting others' docs and private docs. Applied automatically to roles that can edit others' posts."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:165
+msgid "Settings Manager"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:166
+msgid "Open and change the EazyDocs settings screens."
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:169
+msgid "Analytics Viewer"
+msgstr ""
+
+#: includes/Admin/options/opt_docs_role_manager.php:170
+msgid "View documentation analytics and user feedback reports."
 msgstr ""
 
 #: includes/Admin/options/opt_docs_shortcodes.php:16
@@ -1854,7 +2074,7 @@ msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:54
 #: includes/Admin/options/opt_onepage_doc.php:58
-#: includes/Admin/setup-wizard/step3_settings.php:153
+#: includes/Admin/setup-wizard/step3_settings.php:165
 msgid "Full Width"
 msgstr ""
 
@@ -2042,7 +2262,7 @@ msgstr ""
 #: includes/Admin/options/opt_doc_single.php:266
 #: includes/Elementor/Docs/Doc_Widget.php:325
 #: includes/Elementor/Single_Doc/Single_Doc.php:218
-#: templates/onepage/default-layout.php:230
+#: templates/onepage/default-layout.php:231
 #: templates/single-doc-content.php:133
 msgid "Articles"
 msgstr ""
@@ -2343,7 +2563,7 @@ msgstr ""
 #: includes/Elementor/Search/ezd-search.php:29
 #: includes/Elementor/Search/Search_Widget.php:160
 #: includes/Frontend/Ajax.php:245
-#: includes/Frontend/Ajax.php:447
+#: includes/Frontend/Ajax.php:453
 #: includes/functions.php:893
 #: includes/functions.php:955
 #: includes/functions.php:1021
@@ -2361,8 +2581,8 @@ msgid "Updated on"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:739
-#: includes/Admin/setup-wizard/step3_settings.php:103
-#: includes/Admin/setup-wizard/step3_settings.php:105
+#: includes/Admin/setup-wizard/step3_settings.php:115
+#: includes/Admin/setup-wizard/step3_settings.php:117
 #: build/docs-builder/index.js:1
 msgid "Left Sidebar"
 msgstr ""
@@ -2453,8 +2673,8 @@ msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:861
 #: includes/Admin/options/opt_onepage_doc.php:252
-#: includes/Admin/setup-wizard/step3_settings.php:115
-#: includes/Admin/setup-wizard/step3_settings.php:117
+#: includes/Admin/setup-wizard/step3_settings.php:127
+#: includes/Admin/setup-wizard/step3_settings.php:129
 #: build/docs-builder/index.js:1
 msgid "Right Sidebar"
 msgstr ""
@@ -2609,6 +2829,13 @@ msgstr ""
 #: includes/Admin/options/opt_doc_single.php:1095
 #: includes/Admin/options/opt_doc_single.php:1173
 msgid "Fullwidth"
+msgstr ""
+
+#: includes/Admin/options/opt_doc_single.php:1108
+#: includes/Admin/options/opt_doc_single.php:1186
+#: includes/Elementor/Docs/Doc_Widget.php:1061
+#: includes/Elementor/Search/Search_Widget.php:96
+msgid "Button"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:1109
@@ -3013,7 +3240,7 @@ msgid "Recommended SMTP Plugins:"
 msgstr ""
 
 #: includes/Admin/options/opt_email_reporting.php:448
-#: includes/Admin/setup-wizard/step3_settings.php:92
+#: includes/Admin/setup-wizard/step3_settings.php:104
 #: includes/Admin/setup-wizard/step4_install_plugins.php:40
 msgid "Recommended"
 msgstr ""
@@ -3217,7 +3444,7 @@ msgstr ""
 #: includes/Admin/options/opt_footnotes.php:13
 #: includes/Admin/options/opt_footnotes.php:33
 #: includes/Admin/options/opt_footnotes.php:102
-#: includes/Frontend/Frontend.php:76
+#: includes/Frontend/Frontend.php:77
 #: build/eazydocs-toolbar/index.js:1
 #: src/eazydocs-toolbar/index.js:89
 #: build/eazydocs-toolbar/index.js:117
@@ -3652,7 +3879,6 @@ msgid "One-Page Layout"
 msgstr ""
 
 #: includes/Admin/options/opt_onepage_doc.php:36
-#: includes/Admin/setup-wizard/setup.php:31
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:698
 #: build/tabbed-docs/index.js:705
@@ -3728,7 +3954,7 @@ msgstr ""
 #: includes/Admin/template/dashboard/antimanual-ai.php:191
 #: includes/Admin/template/dashboard/system-status.php:101
 #: includes/Admin/template/feedback-presentation.php:215
-#: includes/functions.php:2696
+#: includes/functions.php:2756
 #: templates/onepage/default-layout.php:93
 #: build/docs-builder/index.js:1
 msgid "Documentation"
@@ -3872,9 +4098,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:562
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:218
+#: src/shortcode/edit.js:208
 #: src/tabbed-docs/edit.js:851
-#: build/shortcode/index.js:269
+#: build/shortcode/index.js:266
 #: build/tabbed-docs/index.js:858
 msgid "Restricted Docs"
 msgstr ""
@@ -3942,11 +4168,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:104
 msgid "Private Doc Colours"
-msgstr ""
-
-#: includes/Admin/options/opt_restricted_docs.php:110
-#: includes/Admin/options/opt_restricted_docs.php:138
-msgid "Card Background"
 msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:111
@@ -4262,7 +4483,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_restricted_docs.php:570
 #: includes/Frontend/Walker_Docs.php:305
-#: build/docs-builder/index.js:1
 msgid "Password Protected"
 msgstr ""
 
@@ -4374,70 +4594,74 @@ msgstr ""
 msgid "Unknown action."
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:23
+#: includes/Admin/setup-wizard/setup.php:26
 msgid "Welcome"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:27
+#: includes/Admin/setup-wizard/setup.php:30
 #: includes/Admin/setup-wizard/step2_settings.php:14
 msgid "Basic Setup"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:35
+#: includes/Admin/setup-wizard/setup.php:34
+msgid "Design"
+msgstr ""
+
+#: includes/Admin/setup-wizard/setup.php:38
 msgid "Plugins"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:39
+#: includes/Admin/setup-wizard/setup.php:42
 msgid "Finish"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:49
+#: includes/Admin/setup-wizard/setup.php:52
 msgid "EazyDocs icon"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:57
+#: includes/Admin/setup-wizard/setup.php:60
 msgid "What's New"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:60
+#: includes/Admin/setup-wizard/setup.php:63
 msgid "Skip Setup"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:117
+#: includes/Admin/setup-wizard/setup.php:120
 msgid "Setup Complete!"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:118
+#: includes/Admin/setup-wizard/setup.php:121
 msgid "Your documentation site is ready. Here's what you can do next:"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:126
+#: includes/Admin/setup-wizard/setup.php:129
 #: includes/Admin/template/dashboard/getting-started.php:29
 msgid "Create Your First Doc"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:127
+#: includes/Admin/setup-wizard/setup.php:130
 msgid "Start building your documentation now"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:137
+#: includes/Admin/setup-wizard/setup.php:140
 msgid "Advanced Settings"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:138
+#: includes/Admin/setup-wizard/setup.php:141
 msgid "Customize more options"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:148
+#: includes/Admin/setup-wizard/setup.php:151
 #: includes/Admin/template/partials/ai-create-doc-popup.php:101
 msgid "View Documentation"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:149
+#: includes/Admin/setup-wizard/setup.php:152
 msgid "Learn how to use EazyDocs"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:160
+#: includes/Admin/setup-wizard/setup.php:163
 #: includes/Admin/template/dashboard/antimanual-ai.php:202
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:105
@@ -4449,49 +4673,49 @@ msgstr ""
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:161
+#: includes/Admin/setup-wizard/setup.php:164
 msgid "Unlock all premium features"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:176
-#: includes/Frontend/Frontend.php:368
+#: includes/Admin/setup-wizard/setup.php:179
+#: includes/Frontend/Frontend.php:414
 msgid "Previous"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:187
-#: includes/Frontend/Frontend.php:369
+#: includes/Admin/setup-wizard/setup.php:190
+#: includes/Frontend/Frontend.php:415
 msgid "Next"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:192
+#: includes/Admin/setup-wizard/setup.php:195
 msgid "Finish & Go to Dashboard"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:202
+#: includes/Admin/setup-wizard/setup.php:205
 msgid "Quick Tips"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:203
+#: includes/Admin/setup-wizard/setup.php:206
 msgid "Toggle Quick Tips"
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:210
+#: includes/Admin/setup-wizard/setup.php:213
 msgid "Watch the video tutorial to get started quickly with EazyDocs."
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:214
+#: includes/Admin/setup-wizard/setup.php:217
 msgid "Choose a brand color that matches your website theme for consistency."
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:218
+#: includes/Admin/setup-wizard/setup.php:221
 msgid "Use the Light/Dark toggle on the preview to see both appearances. Everything here can be changed later in settings."
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:222
+#: includes/Admin/setup-wizard/setup.php:225
 msgid "You can skip plugin installation now and install them later."
 msgstr ""
 
-#: includes/Admin/setup-wizard/setup.php:226
+#: includes/Admin/setup-wizard/setup.php:229
 msgid "All settings can be modified from the EazyDocs settings page."
 msgstr ""
 
@@ -4594,7 +4818,7 @@ msgid "Default Slug"
 msgstr ""
 
 #: includes/Admin/setup-wizard/step2_settings.php:93
-#: includes/Admin/setup-wizard/step3_settings.php:198
+#: includes/Admin/setup-wizard/step3_settings.php:231
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:86
 #: build/tabbed-docs/index.js:93
@@ -4610,11 +4834,11 @@ msgid "Define your own URL structure"
 msgstr ""
 
 #: includes/Admin/setup-wizard/step3_settings.php:14
-msgid "Choose Your Layout"
+msgid "Design Your Docs"
 msgstr ""
 
 #: includes/Admin/setup-wizard/step3_settings.php:15
-msgid "Select how your documentation pages will look. Pick a layout that suits your content best."
+msgid "Shape how your documentation looks — layout, width, brand color and dark mode. Watch the live preview update as you go."
 msgstr ""
 
 #: includes/Admin/setup-wizard/step3_settings.php:16
@@ -4625,96 +4849,97 @@ msgstr ""
 msgid "Restore defaults"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:29
-#: includes/Admin/setup-wizard/step3_settings.php:30
+#: includes/Admin/setup-wizard/step3_settings.php:35
+#: includes/Admin/setup-wizard/step3_settings.php:36
 msgid "Brand color"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:32
+#: includes/Admin/setup-wizard/step3_settings.php:41
+msgid "Dark accent"
+msgstr ""
+
+#: includes/Admin/setup-wizard/step3_settings.php:42
+msgid "Dark mode accent color"
+msgstr ""
+
+#: includes/Admin/setup-wizard/step3_settings.php:44
 msgid "Preview appearance"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:35
-#: includes/Elementor/Single_Doc/Single_Doc.php:71
-#: build/tabbed-docs/index.js:1
-#: src/tabbed-docs/edit.js:458
-#: build/tabbed-docs/index.js:465
-msgid "Light"
-msgstr ""
-
-#: includes/Admin/setup-wizard/step3_settings.php:39
-msgid "Dark"
-msgstr ""
-
-#: includes/Admin/setup-wizard/step3_settings.php:68
+#: includes/Admin/setup-wizard/step3_settings.php:80
 msgid "Live preview — updates instantly as you change the options"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:79
+#: includes/Admin/setup-wizard/step3_settings.php:91
 msgid "Sidebar Layout"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:80
+#: includes/Admin/setup-wizard/step3_settings.php:92
 msgid "Choose the sidebar configuration for documentation pages."
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:88
-#: includes/Admin/setup-wizard/step3_settings.php:91
+#: includes/Admin/setup-wizard/step3_settings.php:100
+#: includes/Admin/setup-wizard/step3_settings.php:103
 msgid "Both Sidebars"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:94
+#: includes/Admin/setup-wizard/step3_settings.php:106
 msgid "Left: Navigation | Right: TOC"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:106
+#: includes/Admin/setup-wizard/step3_settings.php:118
 msgid "Navigation on left side"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:118
+#: includes/Admin/setup-wizard/step3_settings.php:130
 msgid "Navigation on right side"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:134
+#: includes/Admin/setup-wizard/step3_settings.php:146
 msgid "Page Width"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:135
+#: includes/Admin/setup-wizard/step3_settings.php:147
 msgid "Choose between boxed or full-width content area."
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:145
+#: includes/Admin/setup-wizard/step3_settings.php:157
 #: build/tabbed-docs/index.js:1
 #: src/tabbed-docs/edit.js:404
 #: build/tabbed-docs/index.js:411
 msgid "Boxed"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:166
+#: includes/Admin/setup-wizard/step3_settings.php:178
 msgid "Live Customizer"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:167
+#: includes/Admin/setup-wizard/step3_settings.php:179
 msgid "Enable the frontend customizer for real-time styling adjustments."
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:183
+#: includes/Admin/setup-wizard/step3_settings.php:195
 msgid "Dark Mode Switcher"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:184
-msgid "Let visitors switch between light and dark themes. Use the toggle above to preview both."
+#: includes/Admin/setup-wizard/step3_settings.php:196
+msgid "Add a light/dark toggle to your docs. Turning this on switches the preview to dark so you can see it."
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:201
+#: includes/Admin/setup-wizard/step3_settings.php:206
+#: includes/Admin/setup-wizard/step3_settings.php:207
+msgid "Default appearance for new visitors"
+msgstr ""
+
+#: includes/Admin/setup-wizard/step3_settings.php:234
 msgid "Unlock More Layouts with Pro"
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:202
+#: includes/Admin/setup-wizard/step3_settings.php:235
 msgid "Get access to advanced layout options, floating TOC, print mode, and more."
 msgstr ""
 
-#: includes/Admin/setup-wizard/step3_settings.php:205
+#: includes/Admin/setup-wizard/step3_settings.php:238
 msgid "Upgrade Now"
 msgstr ""
 
@@ -5577,7 +5802,6 @@ msgid "View All"
 msgstr ""
 
 #: includes/Admin/template/dashboard/top-ranked-docs.php:69
-#: build/docs-builder/index.js:1
 msgid "No rates"
 msgstr ""
 
@@ -6194,6 +6418,7 @@ msgstr ""
 
 #: includes/csf/classes/admin-options.class.php:516
 #: includes/csf/classes/admin-options.class.php:639
+#: build/docs-builder/index.js:1
 msgid "Save"
 msgstr ""
 
@@ -6247,6 +6472,7 @@ msgid "update post"
 msgstr ""
 
 #: includes/csf/classes/setup.class.php:617
+#: build/docs-builder/index.js:1
 msgid "Are you sure?"
 msgstr ""
 
@@ -6837,16 +7063,16 @@ msgid "Please enter a valid URL."
 msgstr ""
 
 #. translators: %d: number of additional authors
-#: includes/Elementor/Docs/docs-6.php:117
+#: includes/Elementor/Docs/docs-6.php:125
 #, php-format
 msgid " and %d others"
 msgstr ""
 
-#: includes/Elementor/Docs/docs-6.php:122
+#: includes/Elementor/Docs/docs-6.php:130
 msgid "Article in this Docs."
 msgstr ""
 
-#: includes/Elementor/Docs/docs-6.php:124
+#: includes/Elementor/Docs/docs-6.php:132
 msgid "Written by "
 msgstr ""
 
@@ -6963,9 +7189,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:221
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:59
+#: src/shortcode/edit.js:57
 #: src/tabbed-docs/edit.js:385
-#: build/shortcode/index.js:110
+#: build/shortcode/index.js:115
 #: build/tabbed-docs/index.js:392
 msgid "Masonry"
 msgstr ""
@@ -7070,9 +7296,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:383
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:71
+#: src/shortcode/edit.js:69
 #: src/tabbed-docs/edit.js:370
-#: build/shortcode/index.js:122
+#: build/shortcode/index.js:127
 #: build/tabbed-docs/index.js:377
 msgid "Post Author"
 msgstr ""
@@ -7080,9 +7306,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:384
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:73
+#: src/shortcode/edit.js:71
 #: src/tabbed-docs/edit.js:371
-#: build/shortcode/index.js:124
+#: build/shortcode/index.js:129
 #: build/tabbed-docs/index.js:378
 msgid "Date"
 msgstr ""
@@ -7090,9 +7316,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:385
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:70
+#: src/shortcode/edit.js:68
 #: src/tabbed-docs/edit.js:372
-#: build/shortcode/index.js:121
+#: build/shortcode/index.js:126
 #: build/tabbed-docs/index.js:379
 msgid "Post ID"
 msgstr ""
@@ -7100,9 +7326,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:386
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:74
+#: src/shortcode/edit.js:72
 #: src/tabbed-docs/edit.js:373
-#: build/shortcode/index.js:125
+#: build/shortcode/index.js:130
 #: build/tabbed-docs/index.js:380
 msgid "Last Modified Date"
 msgstr ""
@@ -7110,9 +7336,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:387
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:75
+#: src/shortcode/edit.js:73
 #: src/tabbed-docs/edit.js:374
-#: build/shortcode/index.js:126
+#: build/shortcode/index.js:131
 #: build/tabbed-docs/index.js:381
 msgid "Random"
 msgstr ""
@@ -7120,9 +7346,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:388
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:77
+#: src/shortcode/edit.js:75
 #: src/tabbed-docs/edit.js:375
-#: build/shortcode/index.js:128
+#: build/shortcode/index.js:133
 #: build/tabbed-docs/index.js:382
 msgid "Menu Order"
 msgstr ""
@@ -7130,9 +7356,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:400
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:147
+#: src/shortcode/edit.js:137
 #: src/tabbed-docs/edit.js:676
-#: build/shortcode/index.js:198
+#: build/shortcode/index.js:195
 #: build/tabbed-docs/index.js:683
 msgid "Parent Docs Order"
 msgstr ""
@@ -7141,9 +7367,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:419
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:54
+#: src/shortcode/edit.js:52
 #: src/tabbed-docs/edit.js:364
-#: build/shortcode/index.js:105
+#: build/shortcode/index.js:110
 #: build/tabbed-docs/index.js:371
 msgid "Ascending"
 msgstr ""
@@ -7152,9 +7378,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:420
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:55
+#: src/shortcode/edit.js:53
 #: src/tabbed-docs/edit.js:365
-#: build/shortcode/index.js:106
+#: build/shortcode/index.js:111
 #: build/tabbed-docs/index.js:372
 msgid "Descending"
 msgstr ""
@@ -7162,9 +7388,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:416
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:155
+#: src/shortcode/edit.js:145
 #: src/tabbed-docs/edit.js:685
-#: build/shortcode/index.js:206
+#: build/shortcode/index.js:203
 #: build/tabbed-docs/index.js:692
 msgid "Child Docs Order"
 msgstr ""
@@ -7240,9 +7466,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:583
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:226
+#: src/shortcode/edit.js:216
 #: src/tabbed-docs/edit.js:861
-#: build/shortcode/index.js:277
+#: build/shortcode/index.js:274
 #: build/tabbed-docs/index.js:868
 msgid "Show Private Docs"
 msgstr ""
@@ -7257,9 +7483,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:594
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:231
+#: src/shortcode/edit.js:221
 #: src/tabbed-docs/edit.js:872
-#: build/shortcode/index.js:282
+#: build/shortcode/index.js:279
 #: build/tabbed-docs/index.js:879
 msgid "Show Password Protected Docs"
 msgstr ""
@@ -7274,9 +7500,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:605
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:236
+#: src/shortcode/edit.js:226
 #: src/tabbed-docs/edit.js:883
-#: build/shortcode/index.js:287
+#: build/shortcode/index.js:284
 #: build/tabbed-docs/index.js:890
 msgid "Show Status Badges"
 msgstr ""
@@ -7291,9 +7517,9 @@ msgstr ""
 #: includes/Elementor/Docs/Doc_Widget.php:616
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:241
+#: src/shortcode/edit.js:231
 #: src/tabbed-docs/edit.js:894
-#: build/shortcode/index.js:292
+#: build/shortcode/index.js:289
 #: build/tabbed-docs/index.js:901
 msgid "Show Lock Icons"
 msgstr ""
@@ -7677,21 +7903,21 @@ msgstr ""
 msgid "Thanks for your feedback!"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:318
+#: includes/Frontend/Ajax.php:324
 msgid "Invalid document ID"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:366
-#: includes/functions.php:2143
+#: includes/Frontend/Ajax.php:372
+#: includes/functions.php:2198
 msgid "You don't have permission to access this document!"
 msgstr ""
 
-#: includes/Frontend/Assets.php:120
+#: includes/Frontend/Assets.php:122
 msgid "Loading…"
 msgstr ""
 
 #. translators: %d: number of search results found.
-#: includes/Frontend/Assets.php:124
+#: includes/Frontend/Assets.php:126
 #, php-format
 msgid "%d results found"
 msgstr ""
@@ -7833,7 +8059,7 @@ msgstr ""
 
 #. translators: %d: ID of a post
 #: includes/Frontend/Walker_Docs.php:159
-#: includes/functions.php:4072
+#: includes/functions.php:4270
 #: includes/Walker_Docs_Onepage.php:151
 #: includes/Walker_Docs_Onepage_Fullscreen.php:163
 #, php-format
@@ -7947,41 +8173,41 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: includes/functions.php:2172
+#: includes/functions.php:2227
 msgid "You don't have permission to "
 msgstr ""
 
-#: includes/functions.php:2174
+#: includes/functions.php:2229
 msgid " this post."
 msgstr ""
 
-#: includes/functions.php:2179
+#: includes/functions.php:2234
 msgid "You don't have sufficient permission to perform this action."
 msgstr ""
 
-#: includes/functions.php:2455
+#: includes/functions.php:2515
 #: build/docs-builder/index.js:1
 msgid "Password protected"
 msgstr ""
 
-#: includes/functions.php:2524
+#: includes/functions.php:2584
 msgid "Please avoid using special characters other than hyphens and underscores!"
 msgstr ""
 
-#: includes/functions.php:2671
+#: includes/functions.php:2731
 msgid "Single Doc"
 msgstr ""
 
-#: includes/functions.php:3645
+#: includes/functions.php:3843
 msgid "BetterDocs is not active. Please activate it first."
 msgstr ""
 
-#: includes/functions.php:3650
+#: includes/functions.php:3848
 msgid "Only BetterDocs migration is supported currently."
 msgstr ""
 
 #. translators: %d: number of categories converted into parent docs.
-#: includes/functions.php:3749
+#: includes/functions.php:3947
 #, php-format
 msgid "%d category converted into a parent doc."
 msgid_plural "%d categories converted into parent docs."
@@ -7989,36 +8215,36 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of docs nested under their category.
-#: includes/functions.php:3751
+#: includes/functions.php:3949
 #, php-format
 msgid "%d doc organised under its category."
 msgid_plural "%d docs organised under their categories."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/functions.php:3754
+#: includes/functions.php:3952
 msgid "Migration completed."
 msgstr ""
 
-#: includes/functions.php:3864
+#: includes/functions.php:4062
 msgid "You do not have permission to import data."
 msgstr ""
 
-#: includes/functions.php:3872
+#: includes/functions.php:4070
 msgid "Sample data file not found."
 msgstr ""
 
-#: includes/functions.php:3896
-#: includes/functions.php:3909
-#: includes/functions.php:3916
+#: includes/functions.php:4094
+#: includes/functions.php:4107
+#: includes/functions.php:4114
 msgid "Sample data imported successfully!"
 msgstr ""
 
-#: includes/functions.php:3931
+#: includes/functions.php:4129
 msgid "The sample data file is empty."
 msgstr ""
 
-#: includes/functions.php:3939
+#: includes/functions.php:4137
 msgid "Failed to parse the sample data file."
 msgstr ""
 
@@ -8055,15 +8281,15 @@ msgstr ""
 msgid "Could not create the export stream."
 msgstr ""
 
-#: includes/IO/Csv.php:130
+#: includes/IO/Csv.php:136
 msgid "The CSV file is empty."
 msgstr ""
 
-#: includes/IO/Csv.php:136
+#: includes/IO/Csv.php:142
 msgid "The CSV file must include a \"title\" column."
 msgstr ""
 
-#: includes/IO/Csv.php:223
+#: includes/IO/Csv.php:245
 msgid "No rows could be imported from the CSV."
 msgstr ""
 
@@ -8100,7 +8326,7 @@ msgstr ""
 msgid "The document could not be created."
 msgstr ""
 
-#: includes/Markdown/Importer.php:329
+#: includes/Markdown/Importer.php:338
 msgid "Untitled"
 msgstr ""
 
@@ -8304,7 +8530,7 @@ msgstr ""
 
 #: includes/One_Page_Docs.php:54
 #: includes/Post_Types.php:53
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "All Docs"
 msgstr ""
 
@@ -8578,7 +8804,7 @@ msgstr ""
 msgid "Recently Viewed Articles"
 msgstr ""
 
-#: templates/docs-sidebar.php:80
+#: templates/docs-sidebar.php:84
 msgid "Filter"
 msgstr ""
 
@@ -8601,7 +8827,7 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-#: templates/onepage/default-layout.php:142
+#: templates/onepage/default-layout.php:143
 msgid "Close documentation menu"
 msgstr ""
 
@@ -8625,6 +8851,10 @@ msgstr ""
 #: templates/single-docs.php:29
 #, php-format
 msgid "Powered By %1$s EazyDocs %2$s"
+msgstr ""
+
+#: templates/tools/dark-mode-switcher.php:25
+msgid "Toggle dark mode"
 msgstr ""
 
 #: templates/tools/font-switcher.php:12
@@ -8688,11 +8918,25 @@ msgid "Please enter a title."
 msgstr ""
 
 #: build/docs-builder/index.js:1
-msgid "Success!"
+msgid "You won't be able to revert this!"
 msgstr ""
 
 #: build/docs-builder/index.js:1
+msgid "Yes, delete it!"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+msgid "Moved to Trash"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Error"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
+msgid "Success!"
 msgstr ""
 
 #: build/docs-builder/index.js:1
@@ -8752,18 +8996,42 @@ msgid "Documentations"
 msgstr ""
 
 #: build/docs-builder/index.js:1
+msgid "Documentation totals"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+msgid "doc"
+msgid_plural "docs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/docs-builder/index.js:1
+msgid "draft"
+msgid_plural "drafts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/docs-builder/index.js:1
+msgid "private"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Documentation saved as draft."
 msgstr ""
 
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Documentation created successfully."
 msgstr ""
 
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Failed to create documentation."
 msgstr ""
 
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Adding…"
 msgstr ""
 
@@ -8976,11 +9244,42 @@ msgid "Sidebar"
 msgstr ""
 
 #: build/docs-builder/index.js:1
+msgid "Rename document"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+msgid "Save name"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+msgid "Matches inside this doc"
+msgstr ""
+
+#: build/docs-builder/index.js:1
 msgid "Drag to reorder"
 msgstr ""
 
 #: build/docs-builder/index.js:1
-msgid "Edit this doc"
+#: build/docs-builder/index.js:2
+msgid "Drag, or focus and press Space then arrow keys, to reorder"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
+msgid "Rename this doc"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
+msgid "Rename"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+msgid "Edit content in the editor"
+msgstr ""
+
+#: build/docs-builder/index.js:1
+msgid "Edit content"
 msgstr ""
 
 #: build/docs-builder/index.js:1
@@ -8992,49 +9291,17 @@ msgid "More options"
 msgstr ""
 
 #: build/docs-builder/index.js:1
-msgid "Yes, delete it!"
-msgstr ""
-
-#: build/docs-builder/index.js:1
-msgid "Deleted!"
-msgstr ""
-
-#: build/docs-builder/index.js:1
-msgid "The document has been moved to trash."
-msgstr ""
-
-#: build/docs-builder/index.js:1
 msgid "Failed to delete the document."
 msgstr ""
 
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Order saved"
 msgstr ""
 
 #: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Failed to save order"
-msgstr ""
-
-#: build/docs-builder/index.js:1
-#, js-format
-msgid "%d Positive vote, "
-msgid_plural "%d Positive votes and "
-msgstr[0] ""
-msgstr[1] ""
-
-#: build/docs-builder/index.js:1
-msgid "No Positive votes, "
-msgstr ""
-
-#: build/docs-builder/index.js:1
-#, js-format
-msgid "%d Negative vote found."
-msgid_plural "%d Negative votes found."
-msgstr[0] ""
-msgstr[1] ""
-
-#: build/docs-builder/index.js:1
-msgid "No Negative votes."
 msgstr ""
 
 #: build/docs-builder/index.js:1
@@ -9049,155 +9316,149 @@ msgstr ""
 msgid "Failed to create the document."
 msgstr ""
 
-#: build/docs-builder/index.js:1
-msgid "Add new doc under this section"
+#. translators: 1: positive vote count, 2: negative vote count.
+#: build/docs-builder/index.js:2
+#, js-format
+msgid "Votes: %1$d positive, %2$d negative"
 msgstr ""
 
-#: build/docs-builder/index.js:1
-msgid "Click on the title to edit the page"
-msgstr ""
-
-#: build/docs-builder/index.js:1
-msgid "Private Doc - Visible to logged-in users only"
-msgstr ""
-
-#: build/docs-builder/index.js:1
-msgid "Role-Based Access:"
-msgstr ""
-
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Drag to reorder this section"
 msgstr ""
 
-#: build/docs-builder/index.js:1
-msgid "Click to Edit"
+#: build/docs-builder/index.js:2
+msgid "Open the editor"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
+msgid "Role-Based Access:"
+msgstr ""
+
+#: build/docs-builder/index.js:2
 msgid "Expand section"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Collapse section"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Drop items here to make them a sub-section"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Section saved as draft."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Section created successfully."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Failed to create section."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Filter documentation by status"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Collapse all sections"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Expand all sections"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Collapse All"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Expand All"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "No docs match your search."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "No docs match this filter."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Clear search & filters"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "This doc has no sections yet."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Add your first section to start organising articles under this doc."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Add section"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Add Section"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Failed to import sample data."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "An error occurred while importing. Please try again."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Folder Open"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Ready to Start Your Knowledge Base?"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "It looks like you haven't created any documentation yet. Get started by creating your first doc or import our sample data to see how it works."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Create First Doc"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Import Sample Data?"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "This will populate your knowledge base with a complete set of demo documentation items."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Yes, Import Demo"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "This will import demo documentation to help you get started. Do you want to continue?"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Importing..."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Import Sample Data"
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Loading documentation builder..."
 msgstr ""
 
-#: build/docs-builder/index.js:1
+#: build/docs-builder/index.js:2
 msgid "Failed to load builder data."
 msgstr ""
 
@@ -9253,149 +9514,161 @@ msgstr ""
 
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:60
+#: src/shortcode/edit.js:58
 #: src/tabbed-docs/edit.js:380
-#: build/shortcode/index.js:111
+#: build/shortcode/index.js:116
 #: build/tabbed-docs/index.js:387
 msgid "Grid"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:64
-#: build/shortcode/index.js:115
+#: src/shortcode/edit.js:62
+#: build/shortcode/index.js:120
 msgid "Thumbnail (50x50)"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:65
-#: build/shortcode/index.js:116
+#: src/shortcode/edit.js:63
+#: build/shortcode/index.js:121
 msgid "Full Size"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:69
-#: build/shortcode/index.js:120
+#: src/shortcode/edit.js:67
+#: build/shortcode/index.js:125
 msgid "No Order"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:76
-#: build/shortcode/index.js:127
+#: src/shortcode/edit.js:74
+#: build/shortcode/index.js:132
 msgid "Comment Count"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:104
-#: build/shortcode/index.js:155
+#: src/shortcode/edit.js:94
+#: build/shortcode/index.js:152
 msgid "Filters"
 msgstr ""
 
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:110
+#: src/shortcode/edit.js:100
 #: src/tabbed-docs/edit.js:700
-#: build/shortcode/index.js:161
+#: build/shortcode/index.js:158
 #: build/tabbed-docs/index.js:707
 msgid "Columns"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:118
-#: build/shortcode/index.js:169
+#: src/shortcode/edit.js:108
+#: build/shortcode/index.js:166
 msgid "Button/link to get the full docs"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:119
-#: build/shortcode/index.js:170
+#: src/shortcode/edit.js:109
+#: build/shortcode/index.js:167
 msgid "View More Button"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:125
-#: build/shortcode/index.js:176
+#: src/shortcode/edit.js:115
+#: build/shortcode/index.js:173
 msgid "Show Topic"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:132
-#: build/shortcode/index.js:183
+#: src/shortcode/edit.js:122
+#: build/shortcode/index.js:180
 msgid "Topics Count Text"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:139
-#: build/shortcode/index.js:190
+#: src/shortcode/edit.js:129
+#: build/shortcode/index.js:187
 msgid "Parent Docs Order By"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:169
-#: build/shortcode/index.js:220
+#: src/shortcode/edit.js:159
+#: build/shortcode/index.js:217
 msgid "Number of Main Docs to show"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:173
-#: build/shortcode/index.js:224
+#: src/shortcode/edit.js:163
+#: build/shortcode/index.js:221
 msgid "Number of Articles"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:180
-#: build/shortcode/index.js:231
+#: src/shortcode/edit.js:170
+#: build/shortcode/index.js:228
 msgid "Number of Articles to show under each Docs."
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:184
-#: build/shortcode/index.js:235
+#: src/shortcode/edit.js:174
+#: build/shortcode/index.js:232
 msgid "Docs Layout "
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:192
-#: build/shortcode/index.js:243
+#: src/shortcode/edit.js:182
+#: build/shortcode/index.js:240
 msgid "Feature Image Size"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:196
-#: build/shortcode/index.js:247
+#: src/shortcode/edit.js:186
+#: build/shortcode/index.js:244
 msgid "Select the size for document feature images."
 msgstr ""
 
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:202
+#: src/shortcode/edit.js:192
 #: src/tabbed-docs/edit.js:614
-#: build/shortcode/index.js:253
+#: build/shortcode/index.js:250
 #: build/tabbed-docs/index.js:621
 msgid "Docs to Show"
 msgstr ""
 
 #: build/shortcode/index.js:1
-#: src/shortcode/edit.js:211
-#: build/shortcode/index.js:262
+#: src/shortcode/edit.js:201
+#: build/shortcode/index.js:259
 msgid "Docs Not to Show"
 msgstr ""
 
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:220
+#: src/shortcode/edit.js:210
 #: src/tabbed-docs/edit.js:855
-#: build/shortcode/index.js:271
+#: build/shortcode/index.js:268
 #: build/tabbed-docs/index.js:862
 msgid "Card colours, style and badge/lock visibility for restricted docs are set globally for the whole site."
 msgstr ""
 
 #: build/shortcode/index.js:1
 #: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:222
+#: src/shortcode/edit.js:212
 #: src/tabbed-docs/edit.js:857
-#: build/shortcode/index.js:273
+#: build/shortcode/index.js:270
 #: build/tabbed-docs/index.js:864
 msgid "Customize in Settings → Restricted Docs → Card Design"
+msgstr ""
+
+#: build/shortcode/index.js:1
+#: src/shortcode/edit.js:245
+#: build/shortcode/index.js:303
+msgid "Loading docs preview…"
+msgstr ""
+
+#: build/shortcode/index.js:1
+#: src/shortcode/edit.js:250
+#: build/shortcode/index.js:308
+msgid "No docs to display yet. Publish some docs or adjust the filters to preview the grid here."
 msgstr ""
 
 #: build/tabbed-docs/index.js:1

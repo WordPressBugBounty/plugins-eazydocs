@@ -4,7 +4,7 @@ Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.12.0
+Stable tag: 2.13.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -348,69 +348,35 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 == Changelog ==
 
-= 2.12.0 (26 June 2026) =
-* New: Doc Tags – Added option switcher to toggle display of associated tags at the bottom of each document page.
-* New: Docs Assistant AI Upgrade – Added a guided panel in the Docs Assistant settings to connect the free Antimanual plugin and turn the assistant into an AI chatbot trained on your documentation.
-* New: Document Restricted Badges – Added visual status indicators and custom CSS classes for private and password-protected documents across layout skins.
-* New: Google Login Test – Added a "Test Connection" button in the admin settings to verify credentials and redirect URIs with Google.
-* New: Hide Empty Docs – Added a switcher option to hide top-level documents that do not contain any child articles.
-* New: Last Updated Date – Added option switcher to display the last modified date on single document pages.
-* New: Markdown & CSV Import-Export – Export your documentation as Markdown or CSV and import Markdown or CSV files back into your doc tree, making content migration and backups simple.
-* New: Multilingual Documentation – Added WPML and Polylang support so docs, categories, and tags can be translated and managed in multiple languages.
-* New: One-Page Content Width – Added a content width option to configure boxed (centered) or full-width layouts.
-* New: One-Page Page Banner – Added a fully customizable hero banner at the top of One-Page documents displaying the document title, description, and at-a-glance stat metrics.
-* New: One-Page Style Options – Added color and background customization settings for the sidebar, content area, right sidebar, and section numbers.
-* New: Redirect URI Clipboard Copy – Added a quick-copy button next to the Google Redirect URI field in the admin settings.
-* New: Restricted Docs Card Design – Added a global Card Design panel to style private and password-protected doc cards — choose a filled or outline style and set custom badge and background colors that apply everywhere docs appear: the shortcode, Gutenberg blocks, and Elementor widgets.
-* New: Restricted Docs Visibility Controls – Added per-widget, block, and shortcode options to show or hide private and password-protected documents, status badges, and lock icons across Elementor widgets, Gutenberg blocks, and the shortcode.
-* New: Dashboard Getting Started – Added a first-run welcome banner on the dashboard with quick links to create your first document, run the setup wizard, and read the documentation.
-* New: Setup Wizard Live Preview – Added a live layout preview that instantly reflects your brand color, light/dark mode, layout, and content width choices as you configure them.
-* New: Auto-Create Documentation Page – The setup wizard can now create a ready-to-use Documentation page with the docs shortcode in a single click.
-* Updated: Settings Architecture – Nested all visual settings under a unified Appearance parent tab for a cleaner dashboard navigation.
-* Updated: Authentication Settings – Grouped the Login & Sign-up Popup and Google Sign-In settings under a single "Authentication" tab for easier navigation.
-* Updated: Google Login Configuration – Refreshed instructions and settings for the new Google Auth Platform.
-* Updated: Restricted Docs Access – Replaced the old login page with the new login/sign up popup for better user experience. The old login form page will not work from this version.
-* Updated: Dashboard Overview – Redesigned the dashboard with at-a-glance stat cards (Total Docs, Total Views, Helpful Rate, Failed Searches), each showing a week-over-week trend, alongside a cleaner overall layout.
-* Updated: Performance Chart – Rebuilt the dashboard Performance Overview chart to show accurate day-by-day Views, Searches, and Failed Searches for the last 7 or 30 days.
-* Improved: AJAX Doc Loading – Enhanced the AJAX document loading experience with race-condition prevention (aborts older requests), an accessible loading spinner, auto-scrolling to the top of the content, and clean error notices.
-* Improved: Article Printing – Upgraded the print button with accessibility enhancements, a loading state indicator, a cleaner print/PDF layout, and resolved issues with the browser print dialog not opening on iOS Safari.
-* Improved: Breadcrumbs Navigation – Ensured breadcrumbs display clean, plain-text titles by stripping HTML tags and icons from page links.
-* Improved: Inline Child Navigation – Added support to dynamically load child documents inline when clicking parent links in search results.
-* Improved: In-Page Navigation – Added offset scroll positioning to prevent sticky headers from overlapping target sections when clicking navigation sidebar links.
-* Improved: Multilingual Support – Loaded the plugin textdomain and added pre-translated language files for Arabic, Bengali, German, Spanish, French, Portuguese, Russian, and Chinese Simplified.
-* Improved: One-Page Mobile UX – Redesigned the classic one-page sidebar with an accessible floating trigger, dedicated close button, smooth backdrop, and escape key closing.
-* Improved: One-Page Docs – Large one-page documents now load and print to PDF reliably without timing out, and the sidebar navigation is cleaner and stays scrollable on smaller screens.
-* Improved: Reading Time Estimation – Allowed customizing the words-per-minute (WPM) rate in settings for more accurate estimations.
-* Improved: Restricted Doc Presentation – Aligned status badges and lock icons neatly beside document titles and refined card styling for a cleaner restricted-document layout.
-* Improved: Search Accessibility – Added polite screen reader announcements (aria-live) for search status/results count, enqueued standard ARIA attributes/labels, and added keyboard navigation support (arrow keys and Escape).
-* Improved: Search Banner – Added settings to configure a custom banner title and subtitle above the search field.
-* Improved: Search Form – Changed live-search form submission method from POST to GET to improve native SEO compatibility.
-* Improved: Tabbed Docs – The tabbed documentation blocks and the Elementor docs widget now remember the last opened tab when the page is reloaded.
-* Improved: Admin Session Persistence – Restored the state of the Create One-Page modal window when the dashboard page is refreshed.
-* Improved: Article Tree Navigation – Re-designed the sidebar article lists with compact indentation, vertical guide lines, active page highlights, and custom brand color support.
-* Improved: Setup Wizard – Added step-by-step validation, clear inline notices in place of browser pop-ups, keyboard-accessible navigation between completed steps, automatic saving of your progress, and a dark mode toggle option.
-* Improved: Docs Builder Search – Searching and filtering documents now shows a friendly "no results" message with a one-click way to clear filters, and automatically expands matching branches so results are never hidden.
-* Improved: Add Doc Experience – The Add Doc button now shows a loading state, prevents accidental double submissions, and continues to work even when the pop-up library is unavailable.
-* Improved: Dashboard Readability – Large numbers now display in a compact form (e.g. 1.2k, 3.4M), recent activity entries wrap neatly, and long lists scroll within their cards.
-* Optimized: Analytics Queries – Improved database query performance on the dashboard by selecting only necessary columns from the search log table.
-* Optimized: Asset Performance – Simplified inline scripts and optimized shortcode assets loading.
-* Optimized: Color Contrast Detection – Integrated perceived-brightness (YIQ) calculation to automatically apply the dark theme contrast classes based on custom background colors.
-* Optimized: Document List Performance – Improved database loading efficiency by counting child documents in a single query when selecting parent articles.
-* Optimized: One-Page Banner Queries – Aggregated stats for the One-Page hero banner in a single database query, caching results in transient records that are automatically updated when documents are changed.
-* Optimized: Performance – Streamlined database queries and added caching across the dashboard, doc pages, and admin area for faster loading on large documentation libraries.
-* Optimized: Search Performance – Implemented input debouncing (400ms) and automatic request aborting for in-flight queries to reduce server load.
-* Optimized: Security and Credential Storage – Added secure encryption for the Google Client Secret at rest and masked the value in the settings page for enhanced privacy.
-* Optimized: Unified AJAX Search – Consolidated duplicate inline scripts into a single, enqueued JavaScript asset (search-banner.js) serving Gutenberg blocks, Elementor widgets, and built-in templates.
-* Optimized: Dashboard Loading – Dashboard statistics and charts are now calculated once and cached for five minutes, refreshing automatically whenever documents change, for faster page loads.
-* Optimized: Admin Styling – Moved dashboard and AI panel styles into compiled stylesheets for cleaner, faster admin pages.
-* Fixed: HTML link footnotes.
-* Fixed: One-Page Sidebar Scrolling – Prevented sticky sidebar scripts from overriding one-page layouts to keep sidebar menus scrolling smoothly.
-* Fixed: Print Dialog Redundancy – Removed duplicate print triggers in one-page scripts to prevent double-firing the browser print dialog.
-* Fixed: Search banner CSS styling.
-* Fixed: Search Keywords show/hide switcher visibility control.
-* Fixed: Setup Wizard Typing – Arrow keys now move the cursor within the URL slug and brand color fields instead of unexpectedly jumping between wizard steps.
-
-
+= 2.13.0 (06 July 2026) =
+* New: Dark Mode Default Appearance – Decide what first-time visitors see — Light, Dark, or Follow System — before they choose their own preference.
+* New: Docs Assistant Appearance Controls – Style the assistant panel with custom card background, doc title and text colors, panel width, and corner radius.
+* New: Preview Assistant – Added a quick link to open a live preview of the Docs Assistant in a new tab while you adjust its settings.
+* New: Inline Doc Renaming – Rename any document right from the Docs Builder by double-clicking its title or using the new rename icon, then press Enter to save — no need to open the full editor for a quick title fix.
+* New: Archive Page Preview Link – Added a "View Page" link next to the Documentation Archive Page setting so you can quickly open the selected page in a new tab.
+* Updated: Setup Wizard Design Step – Renamed the Layout step to "Design" and expanded it to cover layout, width, brand color and dark mode, with the live preview now showing dark mode and a custom dark accent color as you adjust them.
+* Updated: Docs Assistant Knowledge Base – The Knowledge Base tab now lists 20 docs by default (up from 12), with a maximum of 100.
+* Updated: Restricted Doc Icons – Refreshed the private and password-protected status icons with a cleaner, more modern design.
+* Improved: User Permissions Settings – Redesigned the User Permissions and Docs Collaboration screens with clearer descriptions, a capability reference table, and helpful notes so it's easy to see exactly what each role can do.
+* Improved: Role Selection – The Documentation Authors and Analytics Viewers selectors now list every role on your site, including custom roles, instead of a fixed set of defaults.
+* Improved: Dark Mode – Now works across all your documentation pages — single docs, one-page docs, archives, categories, tags and shortcode pages — and the correct theme is applied instantly on load, removing the brief flash of light. Visitors following their system setting also see the theme update live when they change their OS appearance.
+* Improved: Dark Mode Switcher – Made the light/dark toggle clearer for screen reader users, and themes that include their own switcher no longer show a duplicate toggle.
+* Improved: Docs Assistant Instant Answer – Docs now open inside the assistant panel by default instead of navigating away from the page.
+* Improved: Docs Builder Search – Searching now also matches titles of nested sub-docs, keeping a matching top-level doc visible with a badge showing how many nested docs matched, instead of hiding it from the list.
+* Improved: Docs Builder Header – The header now shows your total document count along with how many are drafts or private, right under the "Documentations" title.
+* Improved: Docs Builder Actions – Delete confirmations now show a toast notification for a smoother, more consistent experience, and the add, edit, and rename icons across the builder were made more visually consistent.
+* Improved: Docs Builder Reordering – Drag handles now note that items can also be reordered with the keyboard, making it easier to discover for keyboard users.
+* Improved: Docs Grid Block Preview – The block editor preview for the Docs Grid (shortcode) block now renders exactly like the live page instead of showing a placeholder shortcode tag.
+* Improved: Documentation Widgets – Polished spacing, image corners, and hover styling across the recommended articles, topic, and article list widgets, and improved the protected-document badge's contrast in dark mode.
+* Optimized: Role Capabilities – Documentation role capabilities now update only when your permission settings change, removing unnecessary work on every admin page load.
+* Fixed: Documentation Menu Visibility – The Documentation admin menu now appears for exactly the roles you've granted access, keeping menu visibility in step with the permissions you set.
+* Fixed: Search Result Thumbnails – Search results now fall back to the document icon when a thumbnail image is missing, preventing blank thumbnails.
+* Fixed: Documentation Widget – The topic-count badge now drops to its own line below the document title instead of crowding it.
+* Fixed: Docs Builder Role-Based Access Badge – Section cards now correctly show the role-based access badge when a doc is restricted to specific roles.
+* Fixed: One-Page Banner – Resolved an issue that could prevent a stat block from displaying correctly when no author avatars were set.
+* Fixed: Security – Private documents now stay hidden from visitors without permission across all document listings, navigation sidebars, counts, and Markdown/CSV exports.
+* Fixed: Security – Strengthened sign-in redirect handling after Google login.
+* Fixed: Security – Importing and updating documents via Markdown or CSV now always respects your editing and publishing permissions.
 
 = 2.12.0 (26 June 2026) =
 * New: Doc Tags – Added option switcher to toggle display of associated tags at the bottom of each document page.

@@ -1737,6 +1737,58 @@ function ezd_frontend_pages() {
 }
 
 /**
+ * Whether the Dark Mode feature is enabled for the front end.
+ *
+ * Mirrors the gate used when enqueuing the dark stylesheet: the toggle must be
+ * switched on AND the active theme must support it (docy/docly) or premium be
+ * active. Use this single helper everywhere so the switcher UI, the stylesheet,
+ * and the server-side body class never drift out of sync.
+ *
+ * @return bool
+ */
+function ezd_is_dark_mode_enabled() {
+	return '1' === ezd_get_opt( 'is_dark_switcher' ) && ezd_unlock_themes( 'docy', 'docly' );
+}
+
+/**
+ * Resolve the admin-chosen default appearance for first-time visitors.
+ *
+ * @return string One of 'light', 'dark', 'system'.
+ */
+function ezd_dark_default_mode() {
+	$mode = ezd_get_opt( 'ezd_dark_default', 'system' );
+	return in_array( $mode, [ 'light', 'dark', 'system' ], true ) ? $mode : 'system';
+}
+
+/**
+ * Whether the current request is an EazyDocs front-end surface that should
+ * honour the dark theme (single docs, one-page docs, docs archive/taxonomy, or
+ * a page rendering an EazyDocs shortcode). Kept deliberately free of
+ * get_body_class() so it is safe to call from inside the body_class filter.
+ *
+ * @return bool
+ */
+function ezd_is_dark_context() {
+	return ezd_frontend_pages()
+		|| is_post_type_archive( 'docs' )
+		|| is_tax( [ 'doc_tag', 'doc_badge' ] )
+		|| eazydocs_has_shortcode();
+}
+
+/**
+ * Whether the front-end dark-mode switcher button should be rendered.
+ *
+ * Themes that ship their own dark switcher (e.g. Docy's header toggle) can
+ * return false via the `eazydocs_render_dark_switcher` filter to avoid showing
+ * two competing toggles that fight over the same `body_dark` class.
+ *
+ * @return bool
+ */
+function ezd_should_render_dark_switcher() {
+	return (bool) apply_filters( 'eazydocs_render_dark_switcher', ezd_is_dark_mode_enabled() );
+}
+
+/**
  * EazyDocs Shortcodes
  *
  * @return bool|void
@@ -1765,11 +1817,14 @@ function ezd_has_shortcode( $shortcodes = [] ) {
  * @return array
  */
 function ezd_get_posts( $post_type = 'docs' ) {
+	// get_pages() applies post_status directly in SQL with no per-user read
+	// filtering, so gate 'private' on the read_private_docs capability rather than
+	// always requesting it (prevents private doc titles leaking into pickers/lists).
 	$docs       = get_pages(
 		[
 			'post_type'   => $post_type,
 			'numberposts' => - 1,
-			'post_status' => [ 'publish', 'private' ],
+			'post_status' => ezd_doc_listing_statuses(),
 			'parent'      => 0,
 		]
 	);
@@ -2336,7 +2391,12 @@ add_filter( 'body_class', 'ezd_restricted_body_class' );
  * Password-protected docs are post_status 'publish', so they are always
  * included here and filtered out separately via ezd_filter_doc_visibility().
  * Private docs are only surfaced when the toggle is on and the current user
- * is allowed to read them.
+ * holds the plugin's read_private_docs capability — the same capability that
+ * gates the single-doc view (see ezd_private_docs_access()). This is mapped
+ * from the docs CPT's read_private_posts meta cap and assigned per the
+ * "who can access private docs" setting. Being merely logged in is not enough,
+ * which also prevents private metadata/excerpt disclosure through the
+ * get_pages()-based listing paths (those skip core's per-user private filter).
  *
  * @param bool $show_private Whether private docs should be listed.
  * @return array Post statuses for the query.
@@ -2344,7 +2404,7 @@ add_filter( 'body_class', 'ezd_restricted_body_class' );
 function ezd_doc_listing_statuses( $show_private = true ) {
 	$statuses = [ 'publish' ];
 
-	if ( $show_private && ( is_user_logged_in() || current_user_can( 'read_private_posts' ) ) ) {
+	if ( $show_private && current_user_can( 'read_private_docs' ) ) {
 		$statuses[] = 'private';
 	}
 
@@ -2729,6 +2789,12 @@ function ezd_setup_wizard_save_settings() {
 	$live_customizer = isset( $_POST['live_customizer'] ) ? sanitize_text_field( wp_unslash( $_POST['live_customizer'] ) ) : '';
 	$is_dark_switcher = isset( $_POST['is_dark_switcher'] ) ? sanitize_text_field( wp_unslash( $_POST['is_dark_switcher'] ) ) : '';
 
+	// Default appearance is allowlisted; anything unexpected falls back to "system".
+	$ezd_dark_default_raw = isset( $_POST['ezd_dark_default'] ) ? sanitize_key( wp_unslash( $_POST['ezd_dark_default'] ) ) : 'system';
+	$ezd_dark_default     = in_array( $ezd_dark_default_raw, [ 'light', 'dark', 'system' ], true ) ? $ezd_dark_default_raw : 'system';
+	$is_dark_accent       = isset( $_POST['is_dark_accent'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['is_dark_accent'] ) ) ? '1' : '';
+	$brand_color_dark     = isset( $_POST['brand_color_dark'] ) ? sanitize_hex_color( wp_unslash( $_POST['brand_color_dark'] ) ) : '';
+
 	// Archive page can be an existing page ID or the "create_new" sentinel.
 	$archive_raw = isset( $_POST['archivePage'] ) ? sanitize_text_field( wp_unslash( $_POST['archivePage'] ) ) : '';
 	$archivePage = ( 'create_new' === $archive_raw )
@@ -2748,6 +2814,11 @@ function ezd_setup_wizard_save_settings() {
 		$options['docs_page_width']        = $docsPageWidth;
 		$options['customizer_visibility']  = $live_customizer;
 		$options['is_dark_switcher']       = $is_dark_switcher;
+		$options['ezd_dark_default']       = $ezd_dark_default;
+		$options['is_dark_accent_color']   = $is_dark_accent;
+		if ( $brand_color_dark ) {
+			$options['ezd_brand_color_dark'] = $brand_color_dark;
+		}
 		$options['setup_wizard_completed'] = true;
 
 		// Only overwrite the archive page when a valid one was provided/created.
@@ -2850,36 +2921,95 @@ function ezd_read_private_docs_cap_to_user() {
         $wp_roles = new WP_Roles();
     }
 
+    $get_users_role = array_map( 'strval', (array) $get_users_role );
+
     foreach ( $wp_roles->roles as $role_key => $role_data ) {
         $role = get_role( $role_key );
+        if ( ! $role ) {
+            continue;
+        }
 
-        if ( in_array( $role_key, $get_users_role ) ) {
+        $should_have = in_array( $role_key, $get_users_role, true );
+        $has_cap     = ! empty( $role->capabilities['read_private_docs'] );
+
+        // Only touch the role (which writes to the wp_user_roles option) when
+        // the desired state actually differs from what is stored.
+        if ( $should_have && ! $has_cap ) {
             $role->add_cap( 'read_private_docs' );
-        } else {
+        } elseif ( ! $should_have && $has_cap ) {
             $role->remove_cap( 'read_private_docs' );
         }
     }
 }
-add_action( 'init', 'ezd_read_private_docs_cap_to_user' );
+
+/**
+ * Resolve the user roles that are allowed to author documentation.
+ *
+ * This is the single source of truth shared by the capability sync
+ * (ezd_docs_cap_to_user) and the admin-menu access check in Admin.php, so the
+ * granted capabilities and the menu visibility can never drift apart. It merges
+ * the "Documentation Authors" (User Permissions) and "Allowed User Roles"
+ * (Docs Collaboration) settings, because both grant doc-editing capabilities.
+ *
+ * @return string[] Role slugs allowed to author docs.
+ */
+function ezd_get_doc_author_roles() {
+	$write_access_roles  = ezd_get_opt( 'docs-write-access' );
+	$collaboration_roles = ezd_get_opt( 'ezd_add_editable_roles' );
+
+	$write_access_roles  = is_array( $write_access_roles ) ? $write_access_roles : array_filter( [ $write_access_roles ] );
+	$collaboration_roles = is_array( $collaboration_roles ) ? $collaboration_roles : array_filter( [ $collaboration_roles ] );
+
+	$active_roles = array_values( array_unique( array_merge( $write_access_roles, $collaboration_roles ) ) );
+
+	return ! empty( $active_roles ) ? $active_roles : [ 'administrator', 'editor', 'author' ];
+}
+
+/**
+ * Build the list of assignable user roles for the permission selectors.
+ *
+ * Sources roles dynamically so custom roles registered by the site (or other
+ * plugins) appear consistently across User Permissions and Docs Collaboration,
+ * instead of a hard-coded list of the five default roles. Falls back to the
+ * default roles if the editable-roles API is unavailable.
+ *
+ * @return array<string,string> Role slug => translated label.
+ */
+function ezd_assignable_role_options() {
+	// Pro ships a richer role-name helper; keep using it when available.
+	if ( function_exists( 'eazydocs_user_role_names' ) && ezd_is_premium() ) {
+		return eazydocs_user_role_names();
+	}
+
+	if ( ! function_exists( 'get_editable_roles' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/user.php';
+	}
+
+	$roles = [];
+	if ( function_exists( 'get_editable_roles' ) ) {
+		foreach ( get_editable_roles() as $slug => $details ) {
+			$roles[ $slug ] = translate_user_role( $details['name'] );
+		}
+	}
+
+	if ( ! empty( $roles ) ) {
+		return $roles;
+	}
+
+	return [
+		'administrator' => esc_html__( 'Administrator', 'eazydocs' ),
+		'editor'        => esc_html__( 'Editor', 'eazydocs' ),
+		'author'        => esc_html__( 'Author', 'eazydocs' ),
+		'contributor'   => esc_html__( 'Contributor', 'eazydocs' ),
+		'subscriber'    => esc_html__( 'Subscriber', 'eazydocs' ),
+	];
+}
 
 /**
  * Assigns or removes the 'add or edit_docs' capability to user roles
  */
 function ezd_docs_cap_to_user() {
-	$collaboration_roles = ezd_get_opt( 'ezd_add_editable_roles' );
-	$write_access_roles  = ezd_get_opt( 'docs-write-access' );
-	$default_roles       = [ 'administrator', 'editor', 'author' ];
-
-	if ( ! is_array( $collaboration_roles ) ) {
-		$collaboration_roles = array_filter( [ $collaboration_roles ] );
-	}
-
-	if ( ! is_array( $write_access_roles ) ) {
-		$write_access_roles = array_filter( [ $write_access_roles ] );
-	}
-
-	$active_roles = array_unique( array_merge( $collaboration_roles, $write_access_roles ) );
-	$active_roles = ! empty( $active_roles ) ? $active_roles : $default_roles;
+	$active_roles = ezd_get_doc_author_roles();
 
 	$author_caps = [
 		'edit_doc',
@@ -2914,29 +3044,97 @@ function ezd_docs_cap_to_user() {
 		if ( in_array( $role_key, $active_roles, true ) ) {
 			// Grant Author capabilities to all active roles
 			foreach ( $author_caps as $cap ) {
-				$role->add_cap( $cap );
+				ezd_set_role_cap( $role, $cap, true );
 			}
 
 			// Grant Manager capabilities only to roles that can normally edit others' posts
-			if ( $role->has_cap( 'edit_others_posts' ) ) {
-				foreach ( $manager_caps as $cap ) {
-					$role->add_cap( $cap );
-				}
-			} else {
-				foreach ( $manager_caps as $cap ) {
-					$role->remove_cap( $cap );
-				}
+			$grant_manager = $role->has_cap( 'edit_others_posts' );
+			foreach ( $manager_caps as $cap ) {
+				ezd_set_role_cap( $role, $cap, $grant_manager );
 			}
 		} else {
 			// Remove all documentation capabilities from inactive roles
-			$all_caps = array_merge( $author_caps, $manager_caps );
-			foreach ( $all_caps as $cap ) {
-				$role->remove_cap( $cap );
+			foreach ( array_merge( $author_caps, $manager_caps ) as $cap ) {
+				ezd_set_role_cap( $role, $cap, false );
 			}
 		}
 	}
 }
-add_action( 'init', 'ezd_docs_cap_to_user' );
+
+/**
+ * Add or remove a single capability on a role, but only when it would change
+ * the stored value. WP_Role::add_cap()/remove_cap() persist the whole
+ * wp_user_roles option on every call, so skipping no-op writes turns the
+ * capability sync from dozens of option writes into zero when nothing changed.
+ *
+ * @param WP_Role $role  Role object to modify.
+ * @param string  $cap   Capability name.
+ * @param bool    $grant Whether the role should have the capability.
+ */
+function ezd_set_role_cap( $role, $cap, $grant ) {
+	$has_cap = ! empty( $role->capabilities[ $cap ] );
+
+	if ( $grant && ! $has_cap ) {
+		$role->add_cap( $cap );
+	} elseif ( ! $grant && $has_cap ) {
+		$role->remove_cap( $cap );
+	}
+}
+
+/**
+ * A fingerprint of every setting (and the registered role list) that affects
+ * the documentation capability map. When this changes, the capabilities need
+ * re-syncing; when it does not, the heavy add_cap/remove_cap loop can be skipped.
+ *
+ * @return string MD5 signature.
+ */
+function ezd_docs_capabilities_signature() {
+	$relevant = [
+		'docs-write-access'            => ezd_get_opt( 'docs-write-access' ),
+		'ezd_add_editable_roles'       => ezd_get_opt( 'ezd_add_editable_roles' ),
+		'private_doc_access_type'      => ezd_get_opt( 'private_doc_access_type' ),
+		'private_doc_allowed_roles'    => ezd_get_opt( 'private_doc_allowed_roles' ),
+		'private_doc_user_restriction' => ezd_get_opt( 'private_doc_user_restriction' ),
+		'roles'                        => array_keys( wp_roles()->roles ),
+		'version'                      => defined( 'EZD_VERSION' ) ? EZD_VERSION : '',
+	];
+
+	return md5( maybe_serialize( $relevant ) );
+}
+
+/**
+ * Reconcile EazyDocs role capabilities with the current permission settings.
+ *
+ * Replaces the previous approach of running the capability grant/revoke loop on
+ * every `init` (which wrote the wp_user_roles option on each page load). Now the
+ * sync runs only on settings save, on activation, or once after the relevant
+ * settings change — tracked by a lightweight signature so the cheap check can
+ * safely run on admin_init without touching the database when nothing changed.
+ *
+ * @param bool $force Run the sync even if the signature is unchanged.
+ */
+function ezd_sync_docs_capabilities( $force = false ) {
+	$signature = ezd_docs_capabilities_signature();
+
+	if ( ! $force && get_option( 'ezd_docs_caps_signature' ) === $signature ) {
+		return;
+	}
+
+	// Order matters: both touch read_private_docs. Run the private-docs sync
+	// first and the author sync last (matching the original init priority) so
+	// manager roles keep read_private_docs as before.
+	ezd_read_private_docs_cap_to_user();
+	ezd_docs_cap_to_user();
+
+	update_option( 'ezd_docs_caps_signature', $signature, false );
+}
+
+// Reconcile once per admin load only when settings actually changed, and
+// immediately after the settings screen is saved.
+add_action( 'admin_init', 'ezd_sync_docs_capabilities' );
+add_action( 'csf_eazydocs_settings_saved', function () {
+	ezd_sync_docs_capabilities( true );
+} );
 
 /**
  * Admin bar hide for OnePage Docs
