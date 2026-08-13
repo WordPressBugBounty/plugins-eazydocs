@@ -2,9 +2,9 @@
 Contributors: mdjwel, spiderdevs
 Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.0.4
 Requires PHP: 7.4
-Stable tag: 2.13.0
+Stable tag: 2.13.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -202,6 +202,11 @@ EazyDocs comes with flexible pricing to suit businesses of all sizes:
 *   Full RTL Compatibility.
 *   Users Feedback Database.
 *   Attach documents to any page.
+*   Docs Assistant Dark Mode.
+*   Docs Assistant Full Article View.
+*   Documentation Subscription Button.
+*   Collaborative Docs Status Icons.
+*   DocBox Status Badges.
 
 ==EazyDocs Promax - Complete Solution==
 ***Everything in Pro, plus advanced analytics and management:***
@@ -348,6 +353,19 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 == Changelog ==
 
+= 2.13.1 (13 August 2026) =
+* New: Draft Documents Sidebar Control – Added a setting to show or hide draft documents in the frontend sidebar. Draft documents are now hidden by default, while published documents and existing sidebar behavior remain unaffected.
+* Updated: NoticePilot SDK – Updated the NoticePilot SDK and configuration for improved integration and reliability.
+* Improved: Elementor Docs Widget – Polished the widget styling, dark mode appearance, and document rename field sizing for a cleaner editing experience.
+* Improved: Documentation Subscription – The Elementor Subscribe button now uses the same subscription rendering logic as EazyDocs shortcodes and blocks, ensuring consistent behavior across documentation layouts.
+* Improved: Dark Mode – Removed unnecessary subscription form input styling and cleaned up conflicting dark mode code for better compatibility with themes such as Docy.
+* Improved: One-Page Documentation – Improved RTL support for one-page documentation layouts.
+* Improved: Build Process – Resolved a Webpack/SaaS compiler issue to improve the plugin build process and asset compilation.
+* Fixed: Draft Documents in Sidebar – Fixed an issue where draft documents could appear in the frontend documentation sidebar.
+* Fixed: Elementor Docs Widget Design – Resolved a design issue affecting the single documentation widget.
+* Fixed: Arrow Helper – Fixed the `ezd_arrow()` helper to return its class correctly for inline template usage.
+* Fixed: Dark Mode Compatibility – Removed conflicting code that could cause styling issues with Docy dark mode.
+
 = 2.13.0 (06 July 2026) =
 * New: Dark Mode Default Appearance – Decide what first-time visitors see — Light, Dark, or Follow System — before they choose their own preference.
 * New: Docs Assistant Appearance Controls – Style the assistant panel with custom card background, doc title and text colors, panel width, and corner radius.
@@ -377,6 +395,7 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 * Fixed: Security – Private documents now stay hidden from visitors without permission across all document listings, navigation sidebars, counts, and Markdown/CSV exports.
 * Fixed: Security – Strengthened sign-in redirect handling after Google login.
 * Fixed: Security – Importing and updating documents via Markdown or CSV now always respects your editing and publishing permissions.
+* Fixed: Security – Resolved a broken access control issue in the Import/Export feature. Thanks to Artus KG for responsibly disclosing this issue.
 
 = 2.12.0 (26 June 2026) =
 * New: Doc Tags – Added option switcher to toggle display of associated tags at the bottom of each document page.
@@ -540,6 +559,9 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 [See changelog for all versions](https://eazydocs.spider-themes.net/changelog/).
 
 == Upgrade Notice ==
+
+= 2.13.1 =
+Improved draft document controls, Elementor Docs Widget, dark mode compatibility, subscriptions, RTL support, and overall stability. Also fixed several sidebar, design, and compatibility issues.
 
 = 2.7.3 =
 Minor CSS improvements and enhanced scroll offset handling for better anchor positioning. Update recommended for improved visual consistency.

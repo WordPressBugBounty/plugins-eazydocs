@@ -1843,9 +1843,12 @@ function ezd_widget_excerpt( $settings_key, $limit = 10 ) {
 }
 
 /**
- * Get arrow icon based on text direction.
+ * Get the arrow icon class based on text direction.
  *
- * @return string The arrow icon class name.
+ * Returns the class name so it can be echoed or concatenated inside template
+ * markup, e.g. <i class="<?php echo ezd_arrow(); ?>"></i>.
+ *
+ * @return string
  */
 function ezd_arrow() {
     $arrow_icon = is_rtl() ? 'arrow_left' : 'arrow_right';
@@ -2409,6 +2412,29 @@ function ezd_doc_listing_statuses( $show_private = true ) {
 	}
 
 	return $statuses;
+}
+
+/**
+ * Return allowable post statuses for frontend documentation sidebar/navigation queries.
+ *
+ * Respects the administrator setting 'draft_doc_visibility' (default: 'hide').
+ * When set to 'show', 'draft' post status is allowed in sidebar navigation.
+ *
+ * @return array List of post status strings.
+ */
+function ezd_sidebar_doc_listing_statuses() {
+	$visibility = ezd_get_opt( 'draft_doc_visibility', 'hide' );
+	$statuses   = [ 'publish' ];
+
+	if ( current_user_can( 'read_private_docs' ) ) {
+		$statuses[] = 'private';
+	}
+
+	if ( 'show' === $visibility ) {
+		$statuses[] = 'draft';
+	}
+
+	return array_unique( $statuses );
 }
 
 /**
@@ -4303,3 +4329,95 @@ class EazyDocs_Article_Walker extends Walker_Page {
 		);
 	}
 }
+
+/**
+ * Return default AI Summary providers.
+ *
+ * @return array
+ */
+function ezd_get_default_ai_summary_providers() {
+	return array(
+		array(
+			'enabled'     => true,
+			'name'        => 'ChatGPT',
+			'url'         => 'https://chat.openai.com/?q=',
+			'icon'        => '',
+			'icon_class'  => '',
+			'description' => '',
+		),
+		array(
+			'enabled'     => true,
+			'name'        => 'Claude',
+			'url'         => 'https://www.claude.ai/new?q=',
+			'icon'        => '',
+			'icon_class'  => '',
+			'description' => '',
+		),
+		array(
+			'enabled'     => true,
+			'name'        => 'Grok',
+			'url'         => 'https://www.grok.com/?q=',
+			'icon'        => '',
+			'icon_class'  => '',
+			'description' => '',
+		),
+		array(
+			'enabled'     => true,
+			'name'        => 'Perplexity',
+			'url'         => 'https://www.perplexity.ai/search/new?q=',
+			'icon'        => '',
+			'icon_class'  => '',
+			'description' => '',
+		),
+		array(
+			'enabled'     => true,
+			'name'        => 'Google AI',
+			'url'         => 'https://www.google.com/search?udm=50&aep=11&q=',
+			'icon'        => '',
+			'icon_class'  => '',
+			'description' => '',
+		),
+		array(
+			'enabled'     => true,
+			'name'        => 'Mistral AI',
+			'url'         => 'https://chat.mistral.ai/chat?q=',
+			'icon'        => '',
+			'icon_class'  => '',
+			'description' => '',
+		),
+	);
+}
+
+/**
+ * Retrieve configured AI Summary providers, falling back to defaults.
+ *
+ * @param bool $active_only Whether to return only enabled providers.
+ *
+ * @return array
+ */
+function ezd_get_ai_summary_providers( $active_only = false ) {
+	$defaults  = ezd_get_default_ai_summary_providers();
+	$providers = ezd_get_opt( 'ai_summary_providers', $defaults );
+
+	if ( empty( $providers ) || ! is_array( $providers ) ) {
+		$providers = $defaults;
+	}
+
+	if ( $active_only ) {
+		$providers = array_filter(
+			$providers,
+			function ( $item ) {
+				if ( ! is_array( $item ) ) {
+					return false;
+				}
+				if ( isset( $item['enabled'] ) ) {
+					return filter_var( $item['enabled'], FILTER_VALIDATE_BOOLEAN );
+				}
+				return true;
+			}
+		);
+	}
+
+	return array_values( $providers );
+}
+
