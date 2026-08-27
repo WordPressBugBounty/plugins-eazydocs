@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: EazyDocs 2.13.1\n"
+"Project-Id-Version: EazyDocs 2.14.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/eazydocs\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-13T10:56:32+00:00\n"
+"POT-Creation-Date: 2026-08-27T05:05:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: eazydocs\n"
@@ -75,7 +75,7 @@ msgstr ""
 #: includes/Admin/Api/DocsBuilderController.php:707
 #: includes/Admin/options/opt_restricted_docs.php:176
 #: includes/Frontend/Walker_Docs.php:291
-#: includes/functions.php:2565
+#: includes/functions.php:2571
 msgid "Private Doc"
 msgstr ""
 
@@ -113,15 +113,15 @@ msgid "Public"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:174
-#: includes/functions.php:2511
-#: includes/functions.php:2541
+#: includes/functions.php:2517
+#: includes/functions.php:2547
 #: build/docs-builder/index.js:1
 #: build/docs-builder/index.js:2
 msgid "Private"
 msgstr ""
 
 #: includes/Admin/admin-helpers.php:179
-#: includes/functions.php:2506
+#: includes/functions.php:2512
 #: build/docs-builder/index.js:2
 msgid "Protected"
 msgstr ""
@@ -190,44 +190,44 @@ msgstr ""
 msgid "Migration"
 msgstr ""
 
-#: includes/Admin/Admin.php:351
+#: includes/Admin/Admin.php:356
 msgid "crown icon"
 msgstr ""
 
-#: includes/Admin/Admin.php:352
+#: includes/Admin/Admin.php:357
 msgid "Add Your OnePage Doc"
 msgstr ""
 
-#: includes/Admin/Admin.php:354
+#: includes/Admin/Admin.php:359
 msgid "Onepage documentation format will generate all the pages of a Doc as sections in a single page which is scrollable by sections. Visitors can find the all guides on a single page and they can navigate through the different sections very fast."
 msgstr ""
 
-#: includes/Admin/Admin.php:360
+#: includes/Admin/Admin.php:365
 msgid "Go Pro"
 msgstr ""
 
-#: includes/Admin/Admin.php:363
+#: includes/Admin/Admin.php:368
 msgid "View Classic Frontend Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:364
+#: includes/Admin/Admin.php:369
 msgid "Classic Layout Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:367
+#: includes/Admin/Admin.php:372
 msgid "View Fullscreen Frontend Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:368
+#: includes/Admin/Admin.php:373
 msgid "Fullscreen Layout Demo"
 msgstr ""
 
-#: includes/Admin/Admin.php:604
-#: includes/functions.php:2754
+#: includes/Admin/Admin.php:609
+#: includes/functions.php:2760
 msgid "Docs Archive"
 msgstr ""
 
-#: includes/Admin/Admin.php:627
+#: includes/Admin/Admin.php:632
 msgid "Switch to Docs Builder"
 msgstr ""
 
@@ -265,7 +265,7 @@ msgid "Learn More"
 msgstr ""
 
 #: includes/Admin/Api/DocsBuilderController.php:696
-#: includes/functions.php:2569
+#: includes/functions.php:2575
 #: build/docs-builder/index.js:1
 msgid "Password Protected Doc"
 msgstr ""
@@ -541,7 +541,7 @@ msgid "Images stay linked to this site; they are not bundled into the file."
 msgstr ""
 
 #: includes/Admin/Import_Export.php:399
-#: includes/functions.php:3862
+#: includes/functions.php:3868
 msgid "You do not have permission to run a migration."
 msgstr ""
 
@@ -627,9 +627,9 @@ msgid "Bring your existing documentation from %1$sBetterDocs%2$s into %3$sEazyDo
 msgstr ""
 
 #: includes/Admin/migration.php:75
-#: includes/Elementor/Search/ezd-search.php:28
+#: includes/Elementor/Search/ezd-search.php:31
 #: includes/Elementor/Search/Search_Widget.php:159
-#: includes/Frontend/Ajax.php:255
+#: includes/Frontend/Ajax.php:267
 #: build/docs-builder/index.js:1
 msgid "All"
 msgstr ""
@@ -704,6 +704,558 @@ msgstr ""
 
 #: includes/Admin/migration.php:126
 msgid "Read the full migration guide"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:17
+#: includes/Admin/options/opt_api_docs.php:18
+#: includes/Admin/options/opt_api_docs.php:61
+#: includes/Admin/template/feedback-presentation.php:245
+#: includes/Elementor/Search/ezd-search.php:35
+#: includes/Elementor/Search/Search_Widget.php:163
+#: includes/Frontend/Ajax.php:259
+msgid "API Docs"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:27
+#: includes/Admin/options/opt_doc_single.php:30
+msgid "General"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:33
+msgid "Overview Content"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:34
+msgid "Introduction shown at the top of the API Doc (multi-page: overview only)."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:41
+#: includes/Admin/options/opt_api_docs.php:129
+msgid "Base URL"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:42
+msgid "Root URL for this API. Endpoint paths are added after it. Leave empty to use Settings → API Docs → Single."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:50
+#: includes/Admin/options/opt_api_docs.php:140
+msgid "Version Label"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:51
+msgid "Shown next to the API name. Does not change URLs. Leave empty to use Settings → API Docs → Single."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:59
+msgid "Authentication Type"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:60
+msgid "Label shown on the overview (documentation only)."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:62
+#: includes/csf/fields/border/border.php:59
+#: includes/csf/fields/typography/typography.php:199
+#: includes/csf/fields/typography/typography.php:213
+#: build/tabbed-docs/index.js:1
+#: src/tabbed-docs/edit.js:457
+#: build/tabbed-docs/index.js:464
+msgid "None"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:63
+msgid "API Key"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:64
+msgid "Bearer Token"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:65
+msgid "Basic Auth"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:66
+msgid "OAuth 2.0"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:67
+#: includes/Admin/options/opt_footnotes.php:116
+msgid "Custom"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:75
+msgid "Authentication Instructions"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:76
+msgid "Explain how clients should send credentials (shown on the overview)."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:87
+#: includes/Admin/options/meta_api_docs.php:93
+msgid "Collections"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:94
+msgid "Add Collection"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:103
+msgid "Collection Name"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:109
+msgid "URL Slug"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:110
+msgid "Used in the page URL. Auto-generated if left empty."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:117
+#: build/docs-builder/index.js:1
+msgid "Visibility"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:118
+#: includes/Admin/options/opt_dark_mode.php:23
+#: includes/Admin/options/opt_docs_collaboration.php:120
+#: includes/Admin/options/opt_docs_collaboration.php:157
+#: includes/Admin/options/opt_docs_collaboration.php:194
+#: includes/Admin/options/opt_docs_collaboration.php:233
+#: includes/Admin/options/opt_docs_subscription.php:162
+#: includes/Admin/options/opt_docs_subscription.php:172
+#: includes/Admin/options/opt_docs_subscription.php:182
+#: includes/Admin/options/opt_doc_single.php:73
+#: includes/Admin/options/opt_doc_single.php:841
+#: includes/Admin/options/opt_doc_single.php:1006
+#: includes/Admin/options/opt_restricted_docs.php:83
+#: includes/Admin/options/opt_restricted_docs.php:95
+#: includes/Admin/options/opt_restricted_docs.php:480
+#: includes/Admin/options/opt_restricted_docs.php:498
+#: includes/Admin/options/settings-options.php:55
+#: includes/Admin/options/settings-options.php:87
+msgid "Show"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:119
+#: includes/Admin/options/opt_dark_mode.php:24
+#: includes/Admin/options/opt_docs_assistant.php:183
+#: includes/Admin/options/opt_docs_collaboration.php:121
+#: includes/Admin/options/opt_docs_collaboration.php:158
+#: includes/Admin/options/opt_docs_collaboration.php:195
+#: includes/Admin/options/opt_docs_collaboration.php:234
+#: includes/Admin/options/opt_docs_subscription.php:163
+#: includes/Admin/options/opt_docs_subscription.php:173
+#: includes/Admin/options/opt_docs_subscription.php:183
+#: includes/Admin/options/opt_doc_single.php:74
+#: includes/Admin/options/opt_doc_single.php:842
+#: includes/Admin/options/opt_doc_single.php:1007
+#: includes/Admin/options/opt_restricted_docs.php:84
+#: includes/Admin/options/opt_restricted_docs.php:96
+#: includes/Admin/options/opt_restricted_docs.php:481
+#: includes/Admin/options/opt_restricted_docs.php:497
+#: includes/Admin/options/settings-options.php:56
+#: includes/Admin/options/settings-options.php:88
+msgid "Hide"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:126
+msgid "Endpoints"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:127
+msgid "Add Endpoint"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:135
+msgid "Endpoint Name"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:141
+msgid "HTTP Method"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:154
+msgid "Endpoint Path"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:155
+msgid "Added after the Base URL."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:162
+msgid "Endpoint Description"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:168
+msgid "Endpoint Details"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:171
+#: includes/Admin/options/meta_api_docs.php:176
+msgid "Parameters"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:177
+msgid "Add Parameter"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:185
+msgid "Parameter Name"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:192
+msgid "Parameter Location"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:194
+msgid "Query"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:195
+msgid "Path"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:196
+msgid "Header"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:203
+msgid "Data Type"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:218
+#: includes/Admin/setup-wizard/step4_install_plugins.php:24
+msgid "Required"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:219
+#: includes/Admin/options/opt_dark_mode.php:50
+#: includes/Admin/options/opt_docs_subscription.php:242
+#: includes/Admin/options/opt_doc_single.php:283
+#: includes/Admin/options/opt_doc_single.php:601
+#: includes/Admin/options/opt_restricted_docs.php:270
+#: includes/Admin/options/opt_restricted_docs.php:451
+#: includes/Admin/options/opt_restricted_docs.php:514
+#: templates/content-feedback.php:80
+#: build/docs-builder/index.js:1
+msgid "Yes"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:220
+#: includes/Admin/options/opt_dark_mode.php:51
+#: includes/Admin/options/opt_docs_subscription.php:243
+#: includes/Admin/options/opt_doc_single.php:284
+#: includes/Admin/options/opt_doc_single.php:602
+#: includes/Admin/options/opt_restricted_docs.php:271
+#: includes/Admin/options/opt_restricted_docs.php:452
+#: includes/Admin/options/opt_restricted_docs.php:515
+#: templates/content-feedback.php:92
+msgid "No"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:226
+msgid "Default Value"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:232
+#: includes/Admin/options/meta_api_docs.php:278
+msgid "Example Value"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:238
+msgid "Parameter Description"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:246
+msgid "Request"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:251
+msgid "Request Content Type"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:264
+msgid "Request Headers"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:265
+#: includes/Admin/options/meta_api_docs.php:349
+msgid "Add Header"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:271
+#: includes/Admin/options/meta_api_docs.php:355
+msgid "Header Name"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:285
+#: includes/Admin/options/meta_api_docs.php:362
+msgid "Header Description"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:293
+msgid "Request Body Description"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:299
+msgid "Request JSON Example"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:309
+#: includes/Admin/options/meta_api_docs.php:314
+msgid "Responses"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:315
+msgid "Add Response"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:323
+msgid "Status Code"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:329
+msgid "Status Label"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:335
+msgid "Response Content Type"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:348
+msgid "Response Headers"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:370
+msgid "Response Body Description"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:376
+msgid "Response JSON Example"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:388
+#: includes/Admin/options/meta_api_docs.php:393
+msgid "Code Examples"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:394
+msgid "Add Code Example"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:401
+#: includes/Admin/options/opt_api_docs.php:185
+msgid "Code Language"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:402
+msgid "Used for tab matching and syntax highlighting (e.g. cURL, JavaScript, Python). Must match Settings → API Docs → Single → Code Language to open this tab by default."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:409
+msgid "Custom Tab Name"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:410
+msgid "Optional. Leave empty to show the Code Language name on the tab."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:416
+msgid "Code Snippet"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:417
+msgid "Request sample shown in the Code panel for this language tab."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:439
+#: includes/Admin/options/opt_api_docs.php:150
+msgid "Display"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:446
+msgid "User Guide"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:447
+msgid "Default uses Settings → API Docs → Single. Badges, Code Panel, and Code Language are site-wide only."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:454
+#: includes/Admin/options/opt_api_docs.php:156
+msgid "Display Mode"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:455
+msgid "Multi-page uses separate URLs for collections and endpoints. One-page lists every endpoint on one scrollable page."
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:457
+#: includes/Admin/options/opt_footnotes.php:115
+#: includes/csf/fields/typography/typography.php:119
+#: includes/csf/fields/typography/typography.php:132
+#: includes/csf/fields/typography/typography.php:145
+#: includes/csf/fields/typography/typography.php:160
+#: includes/csf/fields/typography/typography.php:176
+#: includes/csf/fields/typography/typography.php:189
+#: includes/csf/fields/typography/typography.php:203
+#: includes/csf/fields/typography/typography.php:221
+msgid "Default"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:458
+#: includes/Admin/options/opt_api_docs.php:159
+msgid "Multi-page"
+msgstr ""
+
+#: includes/Admin/options/meta_api_docs.php:459
+#: includes/Admin/options/opt_api_docs.php:160
+msgid "One-page"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:26
+#: includes/Admin/template/feedback-presentation.php:225
+#: includes/Admin/template/feedback-presentation.php:255
+#: includes/Admin/template/feedback-presentation.php:285
+msgid "Archive"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:40
+msgid "API Docs Archive"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:41
+msgid "Site-wide controls for the public API Docs archive (usually /api-docs/). These are not set per API Doc."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:50
+msgid "Enable Archive"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:51
+msgid "Public listing of all published API Docs (usually /api-docs/)."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:59
+#: includes/Admin/options/opt_docs_collaboration.php:207
+#: includes/Admin/options/opt_doc_single.php:1080
+#: includes/Admin/options/opt_doc_single.php:1137
+#: includes/Admin/options/opt_doc_single.php:1215
+#: includes/Elementor/Docs/Doc_Widget.php:382
+#: includes/Elementor/Search/Search_Widget.php:268
+#: includes/Elementor/Search/Search_Widget.php:352
+#: includes/Elementor/Single_Doc/Single_Doc.php:104
+#: includes/Elementor/Single_Doc/Single_Doc.php:374
+#: includes/Elementor/Single_Doc/Single_Doc.php:463
+#: build/shortcode/index.js:1
+#: build/tabbed-docs/index.js:1
+#: src/shortcode/edit.js:70
+#: src/tabbed-docs/edit.js:369
+#: build/shortcode/index.js:128
+#: build/tabbed-docs/index.js:376
+msgid "Title"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:60
+msgid "Main heading on the archive page."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:70
+#: includes/Admin/options/opt_doc_single.php:233
+msgid "Description"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:71
+msgid "Short intro under the title."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:72
+msgid "Browse API references and developer documentation."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:81
+#: build/shortcode/index.js:1
+#: build/tabbed-docs/index.js:1
+#: src/shortcode/edit.js:100
+#: src/tabbed-docs/edit.js:700
+#: build/shortcode/index.js:158
+#: build/tabbed-docs/index.js:707
+msgid "Columns"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:82
+msgid "How many API Doc cards to show in each row."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:84
+#: includes/Admin/options/opt_footnotes.php:60
+#: includes/Admin/options/opt_footnotes.php:128
+msgid "2 Columns"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:85
+#: includes/Admin/options/opt_footnotes.php:61
+#: includes/Admin/options/opt_footnotes.php:129
+msgid "3 Columns"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:86
+#: includes/Admin/options/opt_footnotes.php:62
+#: includes/Admin/options/opt_footnotes.php:130
+msgid "4 Columns"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:99
+msgid "Single"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:113
+msgid "Single API Doc"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:114
+msgid "Site-wide Display options for every API Doc. Display Mode can also be overridden per doc. Base URL and Version apply on the frontend when a doc leaves those fields empty."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:123
+msgid "Defaults"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:130
+msgid "Used on the frontend when a doc’s Base URL is empty. Also shown as the editor placeholder."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:141
+msgid "Used on the frontend when a doc’s Version is empty. Also shown as the editor placeholder."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:157
+msgid "Site default. Each doc’s Display tab can override. Multi-page uses separate URLs for collections and endpoints; One-page lists every endpoint on one scrollable page."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:168
+msgid "HTTP Method Badges"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:169
+msgid "Site-wide. Colored GET, POST, PUT, PATCH, DELETE labels next to each endpoint title."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:176
+msgid "Code Panel"
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:177
+msgid "Site-wide. Right-side panel with request examples and response samples. Does not send live API calls."
+msgstr ""
+
+#: includes/Admin/options/opt_api_docs.php:186
+msgid "Site-wide. Opens this language tab first in the Code panel when an endpoint has a matching Code Language example (e.g. cURL, JavaScript)."
 msgstr ""
 
 #: includes/Admin/options/opt_appearance.php:13
@@ -824,47 +1376,6 @@ msgstr ""
 msgid "Allow visitors to switch between light and dark themes. The toggle button appears on documentation pages."
 msgstr ""
 
-#: includes/Admin/options/opt_dark_mode.php:23
-#: includes/Admin/options/opt_docs_collaboration.php:120
-#: includes/Admin/options/opt_docs_collaboration.php:157
-#: includes/Admin/options/opt_docs_collaboration.php:194
-#: includes/Admin/options/opt_docs_collaboration.php:233
-#: includes/Admin/options/opt_docs_subscription.php:162
-#: includes/Admin/options/opt_docs_subscription.php:172
-#: includes/Admin/options/opt_docs_subscription.php:182
-#: includes/Admin/options/opt_doc_single.php:73
-#: includes/Admin/options/opt_doc_single.php:841
-#: includes/Admin/options/opt_doc_single.php:1006
-#: includes/Admin/options/opt_restricted_docs.php:83
-#: includes/Admin/options/opt_restricted_docs.php:95
-#: includes/Admin/options/opt_restricted_docs.php:480
-#: includes/Admin/options/opt_restricted_docs.php:498
-#: includes/Admin/options/settings-options.php:55
-#: includes/Admin/options/settings-options.php:87
-msgid "Show"
-msgstr ""
-
-#: includes/Admin/options/opt_dark_mode.php:24
-#: includes/Admin/options/opt_docs_assistant.php:183
-#: includes/Admin/options/opt_docs_collaboration.php:121
-#: includes/Admin/options/opt_docs_collaboration.php:158
-#: includes/Admin/options/opt_docs_collaboration.php:195
-#: includes/Admin/options/opt_docs_collaboration.php:234
-#: includes/Admin/options/opt_docs_subscription.php:163
-#: includes/Admin/options/opt_docs_subscription.php:173
-#: includes/Admin/options/opt_docs_subscription.php:183
-#: includes/Admin/options/opt_doc_single.php:74
-#: includes/Admin/options/opt_doc_single.php:842
-#: includes/Admin/options/opt_doc_single.php:1007
-#: includes/Admin/options/opt_restricted_docs.php:84
-#: includes/Admin/options/opt_restricted_docs.php:96
-#: includes/Admin/options/opt_restricted_docs.php:481
-#: includes/Admin/options/opt_restricted_docs.php:497
-#: includes/Admin/options/settings-options.php:56
-#: includes/Admin/options/settings-options.php:88
-msgid "Hide"
-msgstr ""
-
 #: includes/Admin/options/opt_dark_mode.php:33
 msgid "Default Appearance"
 msgstr ""
@@ -900,29 +1411,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_dark_mode.php:47
 msgid "Use a different accent color when dark mode is active. Useful for improving contrast and visibility."
-msgstr ""
-
-#: includes/Admin/options/opt_dark_mode.php:50
-#: includes/Admin/options/opt_docs_subscription.php:242
-#: includes/Admin/options/opt_doc_single.php:283
-#: includes/Admin/options/opt_doc_single.php:601
-#: includes/Admin/options/opt_restricted_docs.php:270
-#: includes/Admin/options/opt_restricted_docs.php:451
-#: includes/Admin/options/opt_restricted_docs.php:514
-#: templates/content-feedback.php:80
-#: build/docs-builder/index.js:1
-msgid "Yes"
-msgstr ""
-
-#: includes/Admin/options/opt_dark_mode.php:51
-#: includes/Admin/options/opt_docs_subscription.php:243
-#: includes/Admin/options/opt_doc_single.php:284
-#: includes/Admin/options/opt_doc_single.php:602
-#: includes/Admin/options/opt_restricted_docs.php:271
-#: includes/Admin/options/opt_restricted_docs.php:452
-#: includes/Admin/options/opt_restricted_docs.php:515
-#: templates/content-feedback.php:92
-msgid "No"
 msgstr ""
 
 #: includes/Admin/options/opt_dark_mode.php:61
@@ -1361,21 +1849,21 @@ msgstr ""
 #: includes/Admin/options/opt_docs_collaboration.php:73
 #: includes/Admin/options/opt_docs_role_manager.php:15
 #: includes/Admin/options/opt_restricted_docs.php:334
-#: includes/functions.php:3026
+#: includes/functions.php:3032
 msgid "Administrator"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:74
 #: includes/Admin/options/opt_docs_role_manager.php:16
 #: includes/Admin/options/opt_restricted_docs.php:335
-#: includes/functions.php:3027
+#: includes/functions.php:3033
 msgid "Editor"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:75
 #: includes/Admin/options/opt_docs_role_manager.php:17
 #: includes/Admin/options/opt_restricted_docs.php:336
-#: includes/functions.php:3028
+#: includes/functions.php:3034
 #: templates/onepage/default-layout.php:73
 msgid "Author"
 msgid_plural "Authors"
@@ -1385,14 +1873,14 @@ msgstr[1] ""
 #: includes/Admin/options/opt_docs_collaboration.php:76
 #: includes/Admin/options/opt_docs_role_manager.php:18
 #: includes/Admin/options/opt_restricted_docs.php:337
-#: includes/functions.php:3029
+#: includes/functions.php:3035
 msgid "Contributor"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:77
 #: includes/Admin/options/opt_docs_role_manager.php:19
 #: includes/Admin/options/opt_restricted_docs.php:338
-#: includes/functions.php:3030
+#: includes/functions.php:3036
 msgid "Subscriber"
 msgstr ""
 
@@ -1459,25 +1947,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:193
 msgid "Show the contributors list on the doc."
-msgstr ""
-
-#: includes/Admin/options/opt_docs_collaboration.php:207
-#: includes/Admin/options/opt_doc_single.php:1080
-#: includes/Admin/options/opt_doc_single.php:1137
-#: includes/Admin/options/opt_doc_single.php:1215
-#: includes/Elementor/Docs/Doc_Widget.php:382
-#: includes/Elementor/Search/Search_Widget.php:267
-#: includes/Elementor/Search/Search_Widget.php:351
-#: includes/Elementor/Single_Doc/Single_Doc.php:104
-#: includes/Elementor/Single_Doc/Single_Doc.php:374
-#: includes/Elementor/Single_Doc/Single_Doc.php:463
-#: build/shortcode/index.js:1
-#: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:70
-#: src/tabbed-docs/edit.js:369
-#: build/shortcode/index.js:128
-#: build/tabbed-docs/index.js:376
-msgid "Title"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_collaboration.php:208
@@ -2044,10 +2513,6 @@ msgstr ""
 msgid "Single Doc Page"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:30
-msgid "General"
-msgstr ""
-
 #: includes/Admin/options/opt_doc_single.php:36
 msgid "Page Layout"
 msgstr ""
@@ -2230,10 +2695,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:228
 msgid "Or select an icon font class (optional)."
-msgstr ""
-
-#: includes/Admin/options/opt_doc_single.php:233
-msgid "Description"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:234
@@ -2455,15 +2916,15 @@ msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:517
 #: includes/Admin/options/opt_doc_single.php:617
-#: includes/Elementor/Search/Search_Widget.php:196
-#: includes/Elementor/Search/Search_Widget.php:202
-#: includes/Elementor/Search/Search_Widget.php:276
+#: includes/Elementor/Search/Search_Widget.php:197
+#: includes/Elementor/Search/Search_Widget.php:203
+#: includes/Elementor/Search/Search_Widget.php:277
 #: includes/Elementor/Search/style-control.php:299
 msgid "Keywords"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:532
-#: includes/Elementor/Search/Search_Widget.php:213
+#: includes/Elementor/Search/Search_Widget.php:214
 msgid "Keywords Label"
 msgstr ""
 
@@ -2477,7 +2938,7 @@ msgid "Label Color"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:561
-#: includes/Elementor/Search/Search_Widget.php:250
+#: includes/Elementor/Search/Search_Widget.php:251
 msgid "Keywords By"
 msgstr ""
 
@@ -2486,37 +2947,37 @@ msgid "Select your preferred keywords type."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:563
-#: includes/Elementor/Search/Search_Widget.php:251
+#: includes/Elementor/Search/Search_Widget.php:252
 msgid "Static keywords are predefined, while dynamic keywords are generated by queries from website visitors"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:565
-#: includes/Elementor/Search/Search_Widget.php:253
+#: includes/Elementor/Search/Search_Widget.php:254
 msgid "Static"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:566
-#: includes/Elementor/Search/Search_Widget.php:254
+#: includes/Elementor/Search/Search_Widget.php:255
 msgid "Dynamic (Sort by popular)"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:580
-#: includes/Elementor/Search/Search_Widget.php:300
+#: includes/Elementor/Search/Search_Widget.php:301
 msgid "Keywords Limit"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:581
-#: includes/Elementor/Search/Search_Widget.php:301
+#: includes/Elementor/Search/Search_Widget.php:302
 msgid "Set the number of keywords to show."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:599
-#: includes/Elementor/Search/Search_Widget.php:318
+#: includes/Elementor/Search/Search_Widget.php:319
 msgid "Exclude Not Found Keywords"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:600
-#: includes/Elementor/Search/Search_Widget.php:319
+#: includes/Elementor/Search/Search_Widget.php:320
 msgid "Exclude the keywords that are not found in the search results."
 msgstr ""
 
@@ -2525,12 +2986,12 @@ msgid "Keyword"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:633
-#: includes/Elementor/Search/Search_Widget.php:281
+#: includes/Elementor/Search/Search_Widget.php:282
 msgid "Keyword #1"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:636
-#: includes/Elementor/Search/Search_Widget.php:284
+#: includes/Elementor/Search/Search_Widget.php:285
 msgid "Keyword #2"
 msgstr ""
 
@@ -2614,10 +3075,10 @@ msgid "Docs Archive Page Title"
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:765
-#: includes/Elementor/Search/ezd-search.php:29
+#: includes/Elementor/Search/ezd-search.php:32
 #: includes/Elementor/Search/Search_Widget.php:160
-#: includes/Frontend/Ajax.php:245
-#: includes/Frontend/Ajax.php:453
+#: includes/Frontend/Ajax.php:256
+#: includes/Frontend/Ajax.php:465
 #: includes/functions.php:893
 #: includes/functions.php:955
 #: includes/functions.php:1021
@@ -3568,21 +4029,6 @@ msgstr ""
 msgid "1 Column"
 msgstr ""
 
-#: includes/Admin/options/opt_footnotes.php:60
-#: includes/Admin/options/opt_footnotes.php:128
-msgid "2 Columns"
-msgstr ""
-
-#: includes/Admin/options/opt_footnotes.php:61
-#: includes/Admin/options/opt_footnotes.php:129
-msgid "3 Columns"
-msgstr ""
-
-#: includes/Admin/options/opt_footnotes.php:62
-#: includes/Admin/options/opt_footnotes.php:130
-msgid "4 Columns"
-msgstr ""
-
 #: includes/Admin/options/opt_footnotes.php:63
 #: includes/Admin/options/opt_footnotes.php:131
 msgid "5 Columns"
@@ -3613,22 +4059,6 @@ msgstr ""
 
 #: includes/Admin/options/opt_footnotes.php:108
 msgid "Select Default to use the value from the settings, or choose Custom to manually select the column number from the dropdown."
-msgstr ""
-
-#: includes/Admin/options/opt_footnotes.php:115
-#: includes/csf/fields/typography/typography.php:119
-#: includes/csf/fields/typography/typography.php:132
-#: includes/csf/fields/typography/typography.php:145
-#: includes/csf/fields/typography/typography.php:160
-#: includes/csf/fields/typography/typography.php:176
-#: includes/csf/fields/typography/typography.php:189
-#: includes/csf/fields/typography/typography.php:203
-#: includes/csf/fields/typography/typography.php:221
-msgid "Default"
-msgstr ""
-
-#: includes/Admin/options/opt_footnotes.php:116
-msgid "Custom"
 msgstr ""
 
 #: includes/Admin/options/opt_footnotes.php:125
@@ -4024,7 +4454,7 @@ msgstr ""
 #: includes/Admin/template/dashboard/antimanual-ai.php:191
 #: includes/Admin/template/dashboard/system-status.php:101
 #: includes/Admin/template/feedback-presentation.php:215
-#: includes/functions.php:2782
+#: includes/functions.php:2788
 #: templates/onepage/default-layout.php:94
 #: build/docs-builder/index.js:1
 msgid "Documentation"
@@ -5019,10 +5449,6 @@ msgstr ""
 
 #: includes/Admin/setup-wizard/step4_install_plugins.php:22
 msgid "Required for AI integration. Create comprehensive user guides and documentation with Antimanual."
-msgstr ""
-
-#: includes/Admin/setup-wizard/step4_install_plugins.php:24
-msgid "Required"
 msgstr ""
 
 #: includes/Admin/setup-wizard/step4_install_plugins.php:29
@@ -6134,12 +6560,6 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
-#: includes/Admin/template/feedback-presentation.php:225
-#: includes/Admin/template/feedback-presentation.php:255
-#: includes/Admin/template/feedback-presentation.php:285
-msgid "Archive"
-msgstr ""
-
 #: includes/Admin/template/feedback-presentation.php:238
 msgid "API Reference"
 msgstr ""
@@ -6150,10 +6570,6 @@ msgstr ""
 
 #: includes/Admin/template/feedback-presentation.php:241
 msgid "5 hours ago"
-msgstr ""
-
-#: includes/Admin/template/feedback-presentation.php:245
-msgid "API Docs"
 msgstr ""
 
 #: includes/Admin/template/feedback-presentation.php:247
@@ -6401,34 +6817,34 @@ msgid "Get started with Antimanual to unlock all AI features for your EazyDocs k
 msgstr ""
 
 #: includes/block-templates/search-banner.php:53
-#: templates/search-banner.php:45
+#: templates/search-banner.php:47
 msgid "Search here"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:53
-#: includes/Elementor/Search/ezd-search.php:39
-#: templates/search-banner.php:46
+#: includes/Elementor/Search/ezd-search.php:43
+#: templates/search-banner.php:48
 #: build/docs-builder/index.js:1
 msgid "Search documentation"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:66
 #: includes/Elementor/Search/ajax-sarch-results.php:11
-#: templates/search-banner.php:61
+#: templates/search-banner.php:64
 msgid "Search results"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:66
 #: includes/Elementor/Search/ajax-sarch-results.php:12
 #: includes/Elementor/Search/ajax-sarch-results.php:14
-#: includes/Elementor/Search/Search_Widget.php:354
-#: templates/search-banner.php:62
-#: templates/search-banner.php:63
+#: includes/Elementor/Search/Search_Widget.php:355
+#: templates/search-banner.php:65
+#: templates/search-banner.php:66
 msgid "No Results Found"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:66
-#: templates/search-banner.php:64
+#: templates/search-banner.php:67
 msgid "Check the spelling or try a different word or phrase."
 msgstr ""
 
@@ -6845,15 +7261,6 @@ msgstr ""
 msgid "ridge"
 msgstr ""
 
-#: includes/csf/fields/border/border.php:59
-#: includes/csf/fields/typography/typography.php:199
-#: includes/csf/fields/typography/typography.php:213
-#: build/tabbed-docs/index.js:1
-#: src/tabbed-docs/edit.js:457
-#: build/tabbed-docs/index.js:464
-msgid "None"
-msgstr ""
-
 #: includes/csf/fields/dimensions/dimensions.php:22
 msgid "width"
 msgstr ""
@@ -6987,19 +7394,19 @@ msgstr ""
 #: includes/csf/fields/typography/typography.php:171
 #: includes/Elementor/Docs/Doc_Widget.php:191
 #: includes/Elementor/Search/Search_Widget.php:122
-#: includes/Elementor/Search/Search_Widget.php:230
+#: includes/Elementor/Search/Search_Widget.php:231
 msgid "Left"
 msgstr ""
 
 #: includes/csf/fields/typography/typography.php:172
-#: includes/Elementor/Search/Search_Widget.php:234
+#: includes/Elementor/Search/Search_Widget.php:235
 msgid "Center"
 msgstr ""
 
 #: includes/csf/fields/typography/typography.php:173
 #: includes/Elementor/Docs/Doc_Widget.php:199
 #: includes/Elementor/Search/Search_Widget.php:126
-#: includes/Elementor/Search/Search_Widget.php:238
+#: includes/Elementor/Search/Search_Widget.php:239
 msgid "Right"
 msgstr ""
 
@@ -7719,19 +8126,19 @@ msgid "Read Time Text"
 msgstr ""
 
 #: includes/Elementor/Search/ajax-sarch-results.php:15
-#: includes/Elementor/Search/Search_Widget.php:363
+#: includes/Elementor/Search/Search_Widget.php:364
 msgid "Check the spellings or use a different word or phrase"
 msgstr ""
 
-#: includes/Elementor/Search/ezd-search.php:30
+#: includes/Elementor/Search/ezd-search.php:33
 #: includes/Elementor/Search/Search_Widget.php:161
-#: includes/Frontend/Ajax.php:246
+#: includes/Frontend/Ajax.php:257
 msgid "Page"
 msgstr ""
 
-#: includes/Elementor/Search/ezd-search.php:31
+#: includes/Elementor/Search/ezd-search.php:34
 #: includes/Elementor/Search/Search_Widget.php:162
-#: includes/Frontend/Ajax.php:247
+#: includes/Frontend/Ajax.php:258
 msgid "Post"
 msgstr ""
 
@@ -7768,32 +8175,32 @@ msgstr ""
 msgid "Enable Post Type Filter"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:174
+#: includes/Elementor/Search/Search_Widget.php:175
 msgid "Result Tabs"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:183
+#: includes/Elementor/Search/Search_Widget.php:184
 msgid "Show Result Tabs"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:184
+#: includes/Elementor/Search/Search_Widget.php:185
 msgid "Show All / Docs / Page / Post tabs on top of search results."
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:226
+#: includes/Elementor/Search/Search_Widget.php:227
 msgid "Alignment"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:335
+#: includes/Elementor/Search/Search_Widget.php:336
 #: includes/Elementor/Search/style-control.php:493
 msgid "No Result"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:342
+#: includes/Elementor/Search/Search_Widget.php:343
 msgid "Image"
 msgstr ""
 
-#: includes/Elementor/Search/Search_Widget.php:361
+#: includes/Elementor/Search/Search_Widget.php:362
 #: includes/Elementor/Single_Doc/Single_Doc.php:412
 msgid "Subtitle"
 msgstr ""
@@ -7985,12 +8392,12 @@ msgstr ""
 msgid "Thanks for your feedback!"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:324
+#: includes/Frontend/Ajax.php:336
 msgid "Invalid document ID"
 msgstr ""
 
-#: includes/Frontend/Ajax.php:372
-#: includes/functions.php:2201
+#: includes/Frontend/Ajax.php:384
+#: includes/functions.php:2207
 msgid "You don't have permission to access this document!"
 msgstr ""
 
@@ -8141,7 +8548,7 @@ msgstr ""
 
 #. translators: %d: ID of a post
 #: includes/Frontend/Walker_Docs.php:159
-#: includes/functions.php:4296
+#: includes/functions.php:4302
 #: includes/Walker_Docs_Onepage.php:151
 #: includes/Walker_Docs_Onepage_Fullscreen.php:163
 #, php-format
@@ -8255,41 +8662,41 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: includes/functions.php:2230
+#: includes/functions.php:2236
 msgid "You don't have permission to "
 msgstr ""
 
-#: includes/functions.php:2232
+#: includes/functions.php:2238
 msgid " this post."
 msgstr ""
 
-#: includes/functions.php:2237
+#: includes/functions.php:2243
 msgid "You don't have sufficient permission to perform this action."
 msgstr ""
 
-#: includes/functions.php:2541
+#: includes/functions.php:2547
 #: build/docs-builder/index.js:1
 msgid "Password protected"
 msgstr ""
 
-#: includes/functions.php:2610
+#: includes/functions.php:2616
 msgid "Please avoid using special characters other than hyphens and underscores!"
 msgstr ""
 
-#: includes/functions.php:2757
+#: includes/functions.php:2763
 msgid "Single Doc"
 msgstr ""
 
-#: includes/functions.php:3869
+#: includes/functions.php:3875
 msgid "BetterDocs is not active. Please activate it first."
 msgstr ""
 
-#: includes/functions.php:3874
+#: includes/functions.php:3880
 msgid "Only BetterDocs migration is supported currently."
 msgstr ""
 
 #. translators: %d: number of categories converted into parent docs.
-#: includes/functions.php:3973
+#: includes/functions.php:3979
 #, php-format
 msgid "%d category converted into a parent doc."
 msgid_plural "%d categories converted into parent docs."
@@ -8297,36 +8704,36 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of docs nested under their category.
-#: includes/functions.php:3975
+#: includes/functions.php:3981
 #, php-format
 msgid "%d doc organised under its category."
 msgid_plural "%d docs organised under their categories."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/functions.php:3978
+#: includes/functions.php:3984
 msgid "Migration completed."
 msgstr ""
 
-#: includes/functions.php:4088
+#: includes/functions.php:4094
 msgid "You do not have permission to import data."
 msgstr ""
 
-#: includes/functions.php:4096
+#: includes/functions.php:4102
 msgid "Sample data file not found."
 msgstr ""
 
-#: includes/functions.php:4120
-#: includes/functions.php:4133
-#: includes/functions.php:4140
+#: includes/functions.php:4126
+#: includes/functions.php:4139
+#: includes/functions.php:4146
 msgid "Sample data imported successfully!"
 msgstr ""
 
-#: includes/functions.php:4155
+#: includes/functions.php:4161
 msgid "The sample data file is empty."
 msgstr ""
 
-#: includes/functions.php:4163
+#: includes/functions.php:4169
 msgid "Failed to parse the sample data file."
 msgstr ""
 
@@ -9306,10 +9713,6 @@ msgid "Docs visibility"
 msgstr ""
 
 #: build/docs-builder/index.js:1
-msgid "Visibility"
-msgstr ""
-
-#: build/docs-builder/index.js:1
 msgid "Sidebar updated successfully."
 msgstr ""
 
@@ -9631,15 +10034,6 @@ msgstr ""
 #: src/shortcode/edit.js:94
 #: build/shortcode/index.js:152
 msgid "Filters"
-msgstr ""
-
-#: build/shortcode/index.js:1
-#: build/tabbed-docs/index.js:1
-#: src/shortcode/edit.js:100
-#: src/tabbed-docs/edit.js:700
-#: build/shortcode/index.js:158
-#: build/tabbed-docs/index.js:707
-msgid "Columns"
 msgstr ""
 
 #: build/shortcode/index.js:1

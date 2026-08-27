@@ -1,10 +1,10 @@
 === EazyDocs - AI Powered Knowledge Base, Wiki, Documentation & FAQ Builder ===
-Contributors: mdjwel, spiderdevs
+Contributors: mdjwel, spiderdevs, arifrahman1
 Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
-Tested up to: 7.0.4
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.13.1
+Stable tag: 2.14.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -353,6 +353,10 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 == Changelog ==
 
+= 2.14.0 (27 August 2026) =
+* New: API Docs Support – Added settings, editor fields, archive options, and search banner integration for API documentation.
+* Fixed: Multidocs List Style – Fixed a fatal error caused by an undefined icon helper in the Multidocs List Style.
+
 = 2.13.1 (13 August 2026) =
 * New: Draft Documents Sidebar Control – Added a setting to show or hide draft documents in the frontend sidebar. Draft documents are now hidden by default, while published documents and existing sidebar behavior remain unaffected.
 * Updated: NoticePilot SDK – Updated the NoticePilot SDK and configuration for improved integration and reliability.
@@ -559,6 +563,9 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 [See changelog for all versions](https://eazydocs.spider-themes.net/changelog/).
 
 == Upgrade Notice ==
+
+= 2.14.0 =
+Adds API Docs support and fixes a Multidocs List Style fatal error.
 
 = 2.13.1 =
 Improved draft document controls, Elementor Docs Widget, dark mode compatibility, subscriptions, RTL support, and overall stability. Also fixed several sidebar, design, and compatibility issues.
