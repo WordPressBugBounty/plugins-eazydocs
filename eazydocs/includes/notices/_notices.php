@@ -13,7 +13,7 @@ require_once __DIR__ . '/offer.php';
 require_once __DIR__ . '/class-remote-notice-client.php';
 
 /**
- * NoticePilot — remote admin-notice campaigns (SDK v1.6.1).
+ * NoticePilot — remote admin-notice campaigns (SDK v1.7.0).
  *
  * Product id .......... 'Eazydocs' (used for every SDK call below — keep consistent).
  * Hub endpoint ........ manage.spider-themes.net → /content/eazydocs
@@ -69,9 +69,13 @@ add_action( 'admin_init', function () {
     }
 
     // is_tracking_allowed() is true once the user opts in to Freemius tracking.
-    if ( method_exists( eaz_fs(), 'is_tracking_allowed' ) && eaz_fs()->is_tracking_allowed() ) {
+    // Only write when the state actually changes (this runs on every admin load).
+    $allowed = method_exists( eaz_fs(), 'is_tracking_allowed' ) && eaz_fs()->is_tracking_allowed();
+    $granted = method_exists( 'Noticepilot_Remote_Notice_Client', 'has_consent' ) ? Noticepilot_Remote_Notice_Client::has_consent( 'Eazydocs' ) : null;
+
+    if ( $allowed && true !== $granted ) {
         Noticepilot_Remote_Notice_Client::grant_consent( 'Eazydocs' );
-    } else {
+    } elseif ( ! $allowed && false !== $granted ) {
         Noticepilot_Remote_Notice_Client::revoke_consent( 'Eazydocs' );
     }
 } );

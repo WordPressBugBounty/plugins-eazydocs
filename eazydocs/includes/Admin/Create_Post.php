@@ -27,14 +27,21 @@ class Create_Post {
 	 */
 	public function handle_doc_creation() {
 		// Check permissions first
-		if ( ! current_user_can( 'publish_docs' ) ) {
+		if ( ! current_user_can( 'publish_docs' ) && ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
 		// Handle parent doc creation
 		if ( $this->verify_action( 'Create_doc', 'parent_doc_nonce', 'parent_title' ) ) {
 			$title = $this->sanitize_title( $_GET['parent_title'] );
-			$query = new \WP_Query( [ 'post_type' => 'docs', 'post_parent' => 0 ] );
+			$query = new \WP_Query( [
+				'post_type'              => 'docs',
+				'post_parent'            => 0,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			] );
 			$this->create_post( $title, 0, $query->found_posts + 2 );
 		}
 
@@ -51,13 +58,19 @@ class Create_Post {
 			
 			$parent_id = absint( wp_unslash( $_GET['parentID'] ) );
 
-			if ( ! current_user_can( 'edit_post', $parent_id ) ) {
+			if ( ! current_user_can( 'edit_post', $parent_id ) && ! current_user_can( 'manage_options' ) ) {
 				wp_die( esc_html__( 'You do not have permission to edit this document.', 'eazydocs' ) );
 			}
 
-			$title = $this->sanitize_title( $_GET['is_section'] );
-			$children = get_children( [ 'post_parent' => $parent_id, 'post_type' => 'docs' ] );
-			$status = ezd_is_premium() ? get_post_status( $parent_id ) : 'publish';
+			$title    = $this->sanitize_title( $_GET['is_section'] );
+			$children = get_children( [
+				'post_parent'            => $parent_id,
+				'post_type'              => 'docs',
+				'fields'                 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			] );
+			$status   = ezd_is_premium() ? get_post_status( $parent_id ) : 'publish';
 			$this->create_post( $title, $parent_id, count( $children ) + 2, $status, sanitize_title( $title ) );
 		}
 
@@ -73,12 +86,18 @@ class Create_Post {
 				wp_die( esc_html__( 'The specified document does not exist.', 'eazydocs' ) );
 			}
 
-			if ( ! current_user_can( 'edit_post', $child_id ) ) {
+			if ( ! current_user_can( 'edit_post', $child_id ) && ! current_user_can( 'manage_options' ) ) {
 				wp_die( esc_html__( 'You do not have permission to edit this document.', 'eazydocs' ) );
 			}
 
 			$title    = $this->sanitize_title( $_GET['child'] );
-			$children = get_children( [ 'post_parent' => $child_id, 'post_type' => 'docs' ] );
+			$children = get_children( [
+				'post_parent'            => $child_id,
+				'post_type'              => 'docs',
+				'fields'                 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			] );
 			$status   = ezd_is_premium() ? get_post_status( $child_id ) : 'publish';
 			$this->create_post( $title, $child_id, count( $children ) + 2, $status, sanitize_title( $title ) );
 		}

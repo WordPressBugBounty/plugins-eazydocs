@@ -80,12 +80,8 @@ class Assets
 			wp_enqueue_style('eazydocs-dark-mode', EZD_STYLES . 'frontend-dark-mode.css', [], EZD_VERSION);
 		}
 
-		if (is_rtl()) {
-			if (ezd_frontend_pages()) {
-				wp_enqueue_style('eazydocs-rtl', EZD_STYLES . 'rtl.css', ['eazydocs-frontend'], EZD_VERSION);
-			} else {
-				wp_enqueue_style('eazydocs-rtl', EZD_STYLES . 'rtl.css', [], EZD_VERSION);
-			}
+		if (is_rtl() && ezd_frontend_pages()) {
+			wp_enqueue_style('eazydocs-rtl', EZD_STYLES . 'rtl.css', ['eazydocs-frontend'], EZD_VERSION);
 		}
 
 		// Enqueue on onepage doc
@@ -169,9 +165,12 @@ class Assets
 	 */
 	private static function global_scope()
 	{
+		// eazydocs_has_shortcode() is exactly what adds the 'eazydocs_shortcode'
+		// body class; calling get_body_class() here re-ran every theme/plugin
+		// body_class filter on each request just to read that one class back.
 		if (
 			has_block('eazydocs/search-banner')
-			|| in_array('eazydocs_shortcode', get_body_class())
+			|| eazydocs_has_shortcode()
 			|| is_singular('docs')
 			|| is_singular('onepage-docs')
 			|| is_singular('api_docs')
@@ -180,5 +179,7 @@ class Assets
 		) {
 			return true;
 		}
+
+		return false;
 	}
 }

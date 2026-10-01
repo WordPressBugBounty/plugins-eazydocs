@@ -5,7 +5,7 @@
  * Plugin URI: https://eazydocs.spider-themes.net
  * Author: Spider Themes
  * Author URI: https://eazydocs.spider-themes.net
- * Version: 2.14.0
+ * Version: 2.14.1
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Text Domain: eazydocs
@@ -67,6 +67,12 @@ if ( function_exists( 'eaz_fs' ) ) {
 	}
 
 	eaz_fs()->add_filter( 'hide_freemius_powered_by', '__return_true' );
+
+	// Disclose that opting in also pre-fills the in-plugin support chat
+	// (see the Support Assistant class). The on-update screen falls back to this filter.
+	eaz_fs()->add_filter( 'connect_message', function ( $message ) {
+		return $message . '<br><br>' . esc_html__( 'Opting in also pre-fills your name and email in the EazyDocs support chat, so you can get help without typing them. They are only sent to our helpdesk when you open the chat.', 'eazydocs' );
+	} );
 	do_action( 'eaz_fs_loaded' );
 }
 
@@ -77,8 +83,9 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 	class EazyDocs {
 
 		// Default constants
-		const version = '2.14.0';
+		const version = '2.14.1';
 		public $plugin_path;
+		public $plugin_url;
 		public $theme_dir_path;
 
 		public function __construct() {
@@ -216,6 +223,10 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 				new EazyDocs\Admin\Import_Export();
 				new EazyDocs\One_Page();
 				new EazyDocs\Edit_OnePage();
+
+				// Helpdesk docs assistant on EazyDocs admin pages.
+				require_once __DIR__ . '/includes/Admin/class-support-assistant.php';
+				EazyDocs_Support_Assistant::get_instance();
 			} elseif ( ! is_admin() ) {
 				new EazyDocs\Frontend\Frontend();
 				new EazyDocs\Frontend\Assets();
@@ -316,6 +327,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			not_found_count mediumint(8) unsigned not null,
 			created_at datetime not null,
 			PRIMARY KEY (id),
+			KEY created_at (created_at),
 			FOREIGN KEY (keyword_id) REFERENCES {$search_keyword}(id) ON DELETE CASCADE
 		) {$charset_collate};";
 
@@ -324,7 +336,9 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			post_id bigint(20) unsigned not null,
 			count mediumint(8) unsigned not null,
 			created_at datetime not null,
-			PRIMARY KEY (id)
+			PRIMARY KEY (id),
+			KEY post_created (post_id,created_at),
+			KEY created_at (created_at)
 		) {$charset_collate};";
 
 			// Load the required upgrade file.
@@ -334,6 +348,12 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 			dbDelta( $sql );
 			dbDelta( $sql2 );
 			dbDelta( $sql3 );
+
+			// Existing installs keep their tables; make sure they get the indexes too.
+			if ( function_exists( 'ezd_analytics_db_add_indexes' ) ) {
+				ezd_analytics_db_add_indexes();
+				update_option( 'ezd_analytics_db_version', EZD_ANALYTICS_DB_VERSION );
+			}
 		}
 
 		/**
@@ -367,6 +387,7 @@ if ( ! class_exists( 'EazyDocs' ) ) {
 					<p><?php esc_html_e( 'EazyDocs database needs an update. Please click the Update button to update your database.', 'eazydocs' ); ?></p>
 					<form method="get">
 						<input type="hidden" name="eazydocs_table_create" value="1">
+						<?php wp_nonce_field( 'ezd_analytics_db_update', '_wpnonce', false ); ?>
 						<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Update Database', 'eazydocs' ); ?>">
 					</form>
 				</div>

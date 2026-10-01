@@ -9,7 +9,7 @@
 		let parent_selector = document.querySelector('.ezd-sticky-lg-top');
 		if (parent_selector) {
 			let parent = parent_selector.parentElement;
-			while (parent) {
+			while (parent && parent !== document.body && parent !== document.documentElement) {
 				const hasOverflow = getComputedStyle(parent).overflow;
 				if (hasOverflow !== 'visible') {
 					parent.style.overflow = 'visible';
@@ -19,10 +19,6 @@
 		}
 
 		$('.body_wrapper').addClass('eazydocs_assistant_body');
-
-		$(window).scroll(function () {
-			$('.doc-book-layout .nav-sidebar li a').filter('.nav-link').index();
-		});
 
 		/**
 		 * Left Sidebar Toggle Icon

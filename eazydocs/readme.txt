@@ -2,9 +2,9 @@
 Contributors: mdjwel, spiderdevs, arifrahman1
 Tags: knowledge base, wordpress wiki, faq, documentation, help desk
 Requires at least: 5.0
-Tested up to: 7.1
+Tested up to: 7.1.2
 Requires PHP: 7.4
-Stable tag: 2.14.0
+Stable tag: 2.14.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://eazydocs.spider-themes.net/
@@ -338,6 +338,18 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 
 [Spider Elements](https://wordpress.org/plugins/spider-elements) – Versatile library of 20+ creative widgets to enhance Elementor and build professional websites.
 
+== External services ==
+
+= Spider Themes Helpdesk (support assistant) =
+
+EazyDocs admin pages show a chat button that opens the EazyDocs documentation assistant hosted on the Spider Themes helpdesk (helpdesk.spider-themes.net), so you can search the docs and ask questions without leaving WordPress.
+
+Nothing is loaded from the helpdesk until you press the chat button. Hovering over the button only opens a network connection to the helpdesk so the chat loads faster; no data is sent. When you open it, the assistant is loaded in an iframe from `https://helpdesk.spider-themes.net/iframe-assistant/`, and your browser sends the product name and the documentation section to show. If you opted in through the Freemius opt-in screen and you are the administrator who opted in, your name and email address are also sent so the support chat is pre-filled. Messages you type in the chat are sent to the helpdesk to be answered.
+
+You can turn the assistant off under EazyDocs → Settings → General Settings → Hide Support Chat (or with `add_filter( 'ezd_support_assistant_enabled', '__return_false' );`).
+
+* [Spider Themes](https://spider-themes.net) — [Terms](https://spider-themes.net/terms) — [Privacy](https://spider-themes.net/privacy)
+
 == Screenshots ==
 
 1. Intuitive drag-and-drop interface for organizing and nesting documentation.
@@ -352,6 +364,21 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 10. Password Protected Doc – Secure sensitive documents with password protection and controlled access.
 
 == Changelog ==
+
+= 2.14.1 (1 October 2026) =
+* Improved: Admin Dropdowns – Scoped select element styling to EazyDocs admin containers to avoid conflicts with core WordPress and third-party dropdowns.
+* Improved: Script Loading – Prevented RTL stylesheet from loading on non-documentation pages, reducing asset footprint.
+* Improved: Sidebar Navigation – Pre-cached post metadata and thumbnails for smoother and faster documentation sidebar rendering.
+* Optimized: Elementor Widgets – Batch-fetched child articles and descendant counts across all documentation skins, eliminating repeated database queries inside layout loops.
+* Optimized: Gutenberg Tabbed Docs – Batch-loaded section articles and document counts in a single query for significantly faster tab rendering.
+* Optimized: Docs Builder – Replaced recursive database queries with in-memory tree traversal for descendant counting, dramatically accelerating builder load time.
+* Optimized: Post Creation – Streamlined document creation queries to check parent and section existence without querying full post objects.
+* Optimized: Page Views Tracking – Added early exit guards for search engine bots, feeds, and background tasks, and capped cookie storage to prevent bloat.
+* Fixed: Parent Document Resolution – Resolved an issue where determining a document's parent ID could incorrectly use the global query ID instead of the requested document.
+* Fixed: Sticky Sidebar – Prevented sticky navigation scripts from unintentionally modifying page body and document overflow styles.
+* Fixed: Single Doc Scripts – Added missing element safety checks to prevent JavaScript errors when specific documentation containers are not present on the page.
+* Fixed: Google Login – Removed PHP session (PHPSESSID) from the frontend sign-in button so page caching works correctly for logged-out visitors.
+* Fixed: Documentation Permissions – Resolved an out-of-memory issue caused by documentation permission checks.
 
 = 2.14.0 (27 August 2026) =
 * New: API Docs Support – Added settings, editor fields, archive options, and search banner integration for API documentation.
@@ -563,6 +590,9 @@ If you like EazyDocs, then consider checking out our other WordPress Plugins:
 [See changelog for all versions](https://eazydocs.spider-themes.net/changelog/).
 
 == Upgrade Notice ==
+
+= 2.14.1 =
+Includes performance improvements, optimized queries, and important bug fixes. We recommend updating to the latest version.
 
 = 2.14.0 =
 Adds API Docs support and fixes a Multidocs List Style fatal error.

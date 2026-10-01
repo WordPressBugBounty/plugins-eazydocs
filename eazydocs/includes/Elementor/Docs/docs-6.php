@@ -17,6 +17,22 @@ $show_lock  = ezd_setting_enabled( $settings, 'md_show_lock_icon' );
 	    <?php
 	    $delay    = 0.1;
 	    $duration = 0.5;
+
+	    $all_doc_ids = [];
+	    if ( ! empty( $docs ) ) {
+		    foreach ( $docs as $d ) {
+			    if ( ! empty( $d['doc']->ID ) ) {
+				    $all_doc_ids[] = (int) $d['doc']->ID;
+			    }
+		    }
+	    }
+
+	    $all_descendant_counts  = ! empty( $all_doc_ids ) ? ezd_get_docs_descendant_counts( $all_doc_ids, [ 'publish' ] ) : [];
+	    $all_children_by_parent = ! empty( $all_doc_ids ) ? ezd_get_children_grouped( $all_doc_ids, [
+		    'numberposts' => 200,
+		    'post_status' => [ 'publish' ],
+	    ] ) : [];
+
 	    foreach ( $docs as $doc ) :
 		    $doc_id = $doc['doc']->ID;
 		    ?>
@@ -44,25 +60,12 @@ $show_lock  = ezd_setting_enabled( $settings, 'md_show_lock_icon' );
                     <div class="doc_entry_info">
                         <ul class="ezd-list-unstyled author_avatar">
 						    <?php
-						    $docs         = new WP_Query( array(
-							    'post_type'     => 'docs',
-							    'post_per_page' => - 1,
-							    'post_parent'   => $doc_id,
-						    ) );
-						    $doc_counter  = get_pages( [
-							    'child_of'  => $doc_id,
-							    'post_type' => 'docs'
-						    ] );
+						    $child_posts  = $all_children_by_parent[ $doc_id ] ?? [];
+						    $doc_count    = $all_descendant_counts[ $doc_id ] ?? 0;
 						    $author_names = [];
 
-						    $i         = 1;
-						    $child_ids = [];
-						    $author_id = [];
-						    while ( $docs->have_posts() ) : $docs->the_post();
-							    $child_ids[] = get_the_ID();
-							    $author_id[] = get_post_field( 'post_author', get_the_ID() );
-							    ++ $i;
-						    endwhile;
+						    $child_ids = wp_list_pluck( $child_posts, 'ID' );
+						    $author_id = wp_list_pluck( $child_posts, 'post_author' );
 
 						    $child_authors = [];
 						    if ( ! empty( $child_ids ) ) {
@@ -127,7 +130,7 @@ $show_lock  = ezd_setting_enabled( $settings, 'md_show_lock_icon' );
 						    ?>
                         </ul>
                         <div class="text">
-						    <?php echo count( $doc_counter ) ?> <?php esc_html_e( 'Article in this Docs.', 'eazydocs' ); ?> <br>
+						    <?php echo esc_html( $doc_count ); ?> <?php esc_html_e( 'Article in this Docs.', 'eazydocs' ); ?> <br>
 						    <?php
 						    esc_html_e( 'Written by ', 'eazydocs' );
 						    echo esc_html( $doc_author );
