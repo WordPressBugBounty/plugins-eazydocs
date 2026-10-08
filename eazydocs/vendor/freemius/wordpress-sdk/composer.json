@@ -1,12 +1,27 @@
 {
     "name": "freemius/wordpress-sdk",
+    "version": "2.13.5",
     "description": "Freemius WordPress SDK",
-    "keywords": ["freemius", "wordpress", "plugin", "wordpress-plugin", "theme", "wordpress-theme", "sdk"],
+    "keywords": [
+        "freemius",
+        "wordpress",
+        "plugin",
+        "wordpress-plugin",
+        "theme",
+        "wordpress-theme",
+        "sdk"
+    ],
     "homepage": "https://freemius.com",
     "license": "GPL-3.0-only",
     "scripts": {
-        "phpcs": ["Composer\\Config::disableProcessTimeout", "phpcs -p -s --colors"],
-        "phpcs:ci": ["Composer\\Config::disableProcessTimeout", "phpcs --standard=phpcompat.xml -p -s --colors"],
+        "phpcs": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpcs -p -s --colors"
+        ],
+        "phpcs:ci": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpcs --standard=phpcompat.xml -p -s --colors"
+        ],
         "phpstan": "./vendor/bin/phpstan analyse phpstan.neon --memory-limit 2G",
         "phpstan:log": "./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 2G > error-phpstan.xml"
     },
@@ -19,7 +34,7 @@
         ]
     },
     "require-dev": {
-        "wp-coding-standards/wpcs": "^2.3",
+        "wp-coding-standards/wpcs": "^3.4.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "squizlabs/php_codesniffer": "^3.7",
         "phpcompatibility/php-compatibility": "^9.3",

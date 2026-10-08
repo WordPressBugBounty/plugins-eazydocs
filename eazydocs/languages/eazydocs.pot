@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: EazyDocs 2.14.2\n"
+"Project-Id-Version: EazyDocs 2.15.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/eazydocs\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-02T11:34:03+00:00\n"
+"POT-Creation-Date: 2026-10-08T09:52:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: eazydocs\n"
@@ -47,11 +47,11 @@ msgstr ""
 msgid "Opting in also pre-fills your name and email in the EazyDocs support chat, so you can get help without typing them. They are only sent to our helpdesk when you open the chat."
 msgstr ""
 
-#: eazydocs.php:387
+#: eazydocs.php:388
 msgid "EazyDocs database needs an update. Please click the Update button to update your database."
 msgstr ""
 
-#: eazydocs.php:391
+#: eazydocs.php:392
 msgid "Update Database"
 msgstr ""
 
@@ -435,8 +435,8 @@ msgstr ""
 #: includes/Admin/options/opt_docs_subscription.php:173
 #: includes/Admin/options/opt_docs_subscription.php:183
 #: includes/Admin/options/opt_doc_single.php:74
-#: includes/Admin/options/opt_doc_single.php:844
-#: includes/Admin/options/opt_doc_single.php:1009
+#: includes/Admin/options/opt_doc_single.php:862
+#: includes/Admin/options/opt_doc_single.php:1027
 #: includes/Admin/options/opt_restricted_docs.php:84
 #: includes/Admin/options/opt_restricted_docs.php:96
 #: includes/Admin/options/opt_restricted_docs.php:481
@@ -874,8 +874,8 @@ msgstr ""
 #: includes/Admin/options/opt_docs_subscription.php:172
 #: includes/Admin/options/opt_docs_subscription.php:182
 #: includes/Admin/options/opt_doc_single.php:73
-#: includes/Admin/options/opt_doc_single.php:843
-#: includes/Admin/options/opt_doc_single.php:1008
+#: includes/Admin/options/opt_doc_single.php:861
+#: includes/Admin/options/opt_doc_single.php:1026
 #: includes/Admin/options/opt_restricted_docs.php:83
 #: includes/Admin/options/opt_restricted_docs.php:95
 #: includes/Admin/options/opt_restricted_docs.php:480
@@ -959,7 +959,7 @@ msgstr ""
 #: includes/Admin/options/opt_dark_mode.php:50
 #: includes/Admin/options/opt_docs_subscription.php:242
 #: includes/Admin/options/opt_doc_single.php:283
-#: includes/Admin/options/opt_doc_single.php:603
+#: includes/Admin/options/opt_doc_single.php:621
 #: includes/Admin/options/opt_restricted_docs.php:270
 #: includes/Admin/options/opt_restricted_docs.php:451
 #: includes/Admin/options/opt_restricted_docs.php:514
@@ -972,7 +972,7 @@ msgstr ""
 #: includes/Admin/options/opt_dark_mode.php:51
 #: includes/Admin/options/opt_docs_subscription.php:243
 #: includes/Admin/options/opt_doc_single.php:284
-#: includes/Admin/options/opt_doc_single.php:604
+#: includes/Admin/options/opt_doc_single.php:622
 #: includes/Admin/options/opt_restricted_docs.php:271
 #: includes/Admin/options/opt_restricted_docs.php:452
 #: includes/Admin/options/opt_restricted_docs.php:515
@@ -1165,9 +1165,9 @@ msgstr ""
 
 #: includes/Admin/options/opt_api_docs.php:59
 #: includes/Admin/options/opt_docs_collaboration.php:207
-#: includes/Admin/options/opt_doc_single.php:1082
-#: includes/Admin/options/opt_doc_single.php:1139
-#: includes/Admin/options/opt_doc_single.php:1217
+#: includes/Admin/options/opt_doc_single.php:1100
+#: includes/Admin/options/opt_doc_single.php:1157
+#: includes/Admin/options/opt_doc_single.php:1235
 #: includes/Elementor/Docs/Doc_Widget.php:382
 #: includes/Elementor/Search/Search_Widget.php:268
 #: includes/Elementor/Search/Search_Widget.php:352
@@ -1354,12 +1354,12 @@ msgstr ""
 #: includes/Admin/options/opt_docs_subscription.php:28
 #: includes/Admin/options/opt_doc_single.php:84
 #: includes/Admin/options/opt_doc_single.php:348
-#: includes/Admin/options/opt_doc_single.php:445
-#: includes/Admin/options/opt_doc_single.php:520
-#: includes/Admin/options/opt_doc_single.php:864
-#: includes/Admin/options/opt_doc_single.php:944
-#: includes/Admin/options/opt_doc_single.php:1019
-#: includes/Admin/options/opt_doc_single.php:1069
+#: includes/Admin/options/opt_doc_single.php:463
+#: includes/Admin/options/opt_doc_single.php:538
+#: includes/Admin/options/opt_doc_single.php:882
+#: includes/Admin/options/opt_doc_single.php:962
+#: includes/Admin/options/opt_doc_single.php:1037
+#: includes/Admin/options/opt_doc_single.php:1087
 #: includes/Admin/options/opt_feedback.php:179
 #: includes/Admin/options/opt_restricted_docs.php:392
 #: includes/csf/fields/sorter/sorter.php:21
@@ -1374,12 +1374,12 @@ msgstr ""
 #: includes/Admin/options/opt_docs_subscription.php:29
 #: includes/Admin/options/opt_doc_single.php:85
 #: includes/Admin/options/opt_doc_single.php:349
-#: includes/Admin/options/opt_doc_single.php:446
-#: includes/Admin/options/opt_doc_single.php:521
-#: includes/Admin/options/opt_doc_single.php:865
-#: includes/Admin/options/opt_doc_single.php:945
-#: includes/Admin/options/opt_doc_single.php:1020
-#: includes/Admin/options/opt_doc_single.php:1070
+#: includes/Admin/options/opt_doc_single.php:464
+#: includes/Admin/options/opt_doc_single.php:539
+#: includes/Admin/options/opt_doc_single.php:883
+#: includes/Admin/options/opt_doc_single.php:963
+#: includes/Admin/options/opt_doc_single.php:1038
+#: includes/Admin/options/opt_doc_single.php:1088
 #: includes/Admin/options/opt_feedback.php:180
 #: includes/Admin/options/opt_restricted_docs.php:393
 #: includes/csf/fields/sorter/sorter.php:22
@@ -1677,7 +1677,7 @@ msgid "Search..."
 msgstr ""
 
 #: includes/Admin/options/opt_docs_assistant.php:476
-#: includes/Admin/options/opt_doc_single.php:672
+#: includes/Admin/options/opt_doc_single.php:690
 msgid "Breadcrumb"
 msgstr ""
 
@@ -2409,7 +2409,7 @@ msgid "Cancel Button"
 msgstr ""
 
 #: includes/Admin/options/opt_docs_subscription.php:106
-#: includes/Admin/options/opt_doc_single.php:982
+#: includes/Admin/options/opt_doc_single.php:1000
 msgid "Success Message"
 msgstr ""
 
@@ -2599,7 +2599,7 @@ msgid "Background color for the documentation content area."
 msgstr ""
 
 #: includes/Admin/options/opt_doc_single.php:71
-#: includes/Admin/options/opt_doc_single.php:874
+#: includes/Admin/options/opt_doc_single.php:892
 msgid "Featured Image"
 msgstr ""
 
@@ -2887,84 +2887,102 @@ msgstr ""
 msgid "Customize the search header that appears above documentation pages."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:409
+#: includes/Admin/options/opt_doc_single.php:413
+msgid "Use this search bar anywhere"
+msgstr ""
+
+#. translators: %s: clickable shortcode copy control.
+#: includes/Admin/options/opt_doc_single.php:416
+#, php-format
+msgid "Add %s to any page, post, widget, or template. It uses the same design as the options below."
+msgstr ""
+
+#: includes/Admin/options/opt_doc_single.php:417
+msgid "Copied"
+msgstr ""
+
+#: includes/Admin/options/opt_doc_single.php:417
+msgid "Copy shortcode"
+msgstr ""
+
+#: includes/Admin/options/opt_doc_single.php:427
 msgid "Banner Type"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:411
+#: includes/Admin/options/opt_doc_single.php:429
 msgid "Built-in Banner"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:412
+#: includes/Admin/options/opt_doc_single.php:430
 msgid "Custom Elementor Template"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:415
+#: includes/Admin/options/opt_doc_single.php:433
 msgid "Choose between the default search banner or a custom Elementor template."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:421
+#: includes/Admin/options/opt_doc_single.php:439
 msgid "Show Search Banner"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:422
+#: includes/Admin/options/opt_doc_single.php:440
 msgid "Display the search banner header on documentation pages."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:432
+#: includes/Admin/options/opt_doc_single.php:450
 msgid "Elementor Template"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:433
+#: includes/Admin/options/opt_doc_single.php:451
 msgid "Select a saved Elementor template. <a target=\"_blank\" href=\"https://shorturl.at/filGI\">Learn how to create templates</a>"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:443
+#: includes/Admin/options/opt_doc_single.php:461
 msgid "Enter Key Search"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:444
+#: includes/Admin/options/opt_doc_single.php:462
 msgid "Allow users to submit search by pressing Enter or clicking the search icon."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:458
+#: includes/Admin/options/opt_doc_single.php:476
 msgid "Banner Title"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:459
+#: includes/Admin/options/opt_doc_single.php:477
 msgid "Optional heading shown above the search field to orient visitors."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:470
+#: includes/Admin/options/opt_doc_single.php:488
 msgid "Banner Subtitle"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:471
+#: includes/Admin/options/opt_doc_single.php:489
 msgid "Optional supporting text shown below the banner title."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:482
+#: includes/Admin/options/opt_doc_single.php:500
 msgid "Banner Background"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:483
+#: includes/Admin/options/opt_doc_single.php:501
 msgid "Background color or image for the search banner area."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:494
+#: includes/Admin/options/opt_doc_single.php:512
 msgid "Banner Spacing"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:495
+#: includes/Admin/options/opt_doc_single.php:513
 msgid "Adjust the internal padding of the search banner."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:509
+#: includes/Admin/options/opt_doc_single.php:527
 msgid "Search Keywords"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:519
-#: includes/Admin/options/opt_doc_single.php:619
+#: includes/Admin/options/opt_doc_single.php:537
+#: includes/Admin/options/opt_doc_single.php:637
 #: includes/Elementor/Search/Search_Widget.php:197
 #: includes/Elementor/Search/Search_Widget.php:203
 #: includes/Elementor/Search/Search_Widget.php:277
@@ -2972,80 +2990,80 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:534
+#: includes/Admin/options/opt_doc_single.php:552
 #: includes/Elementor/Search/Search_Widget.php:214
 msgid "Keywords Label"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:535
+#: includes/Admin/options/opt_doc_single.php:553
 msgid "Popular Searches:"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:547
+#: includes/Admin/options/opt_doc_single.php:565
 #: includes/Elementor/Search/style-control.php:320
 msgid "Label Color"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:563
+#: includes/Admin/options/opt_doc_single.php:581
 #: includes/Elementor/Search/Search_Widget.php:251
 msgid "Keywords By"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:564
+#: includes/Admin/options/opt_doc_single.php:582
 msgid "Select your preferred keywords type."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:565
+#: includes/Admin/options/opt_doc_single.php:583
 #: includes/Elementor/Search/Search_Widget.php:252
 msgid "Static keywords are predefined, while dynamic keywords are generated by queries from website visitors"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:567
+#: includes/Admin/options/opt_doc_single.php:585
 #: includes/Elementor/Search/Search_Widget.php:254
 msgid "Static"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:568
+#: includes/Admin/options/opt_doc_single.php:586
 #: includes/Elementor/Search/Search_Widget.php:255
 msgid "Dynamic (Sort by popular)"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:582
+#: includes/Admin/options/opt_doc_single.php:600
 #: includes/Elementor/Search/Search_Widget.php:301
 msgid "Keywords Limit"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:583
+#: includes/Admin/options/opt_doc_single.php:601
 #: includes/Elementor/Search/Search_Widget.php:302
 msgid "Set the number of keywords to show."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:601
+#: includes/Admin/options/opt_doc_single.php:619
 #: includes/Elementor/Search/Search_Widget.php:319
 msgid "Exclude Not Found Keywords"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:602
+#: includes/Admin/options/opt_doc_single.php:620
 #: includes/Elementor/Search/Search_Widget.php:320
 msgid "Exclude the keywords that are not found in the search results."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:630
+#: includes/Admin/options/opt_doc_single.php:648
 msgid "Keyword"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:635
+#: includes/Admin/options/opt_doc_single.php:653
 #: includes/Elementor/Search/Search_Widget.php:282
 msgid "Keyword #1"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:638
+#: includes/Admin/options/opt_doc_single.php:656
 #: includes/Elementor/Search/Search_Widget.php:285
 msgid "Keyword #2"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:642
-#: includes/Admin/options/opt_doc_single.php:1108
+#: includes/Admin/options/opt_doc_single.php:660
+#: includes/Admin/options/opt_doc_single.php:1126
 #: includes/csf/classes/shortcode-options.class.php:210
 #: includes/csf/fields/group/group.php:23
 #: includes/One_Page_Docs.php:57
@@ -3053,35 +3071,35 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:648
+#: includes/Admin/options/opt_doc_single.php:666
 msgid "Keywords Color"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:661
+#: includes/Admin/options/opt_doc_single.php:679
 msgid "Ajax Search Results"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:662
+#: includes/Admin/options/opt_doc_single.php:680
 msgid "The Search Results settings is global. This settings will be applied to all Ajax Doc Search Results in the plugin."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:673
+#: includes/Admin/options/opt_doc_single.php:691
 msgid "Show / Hide the breadcrumbs in search results"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:687
+#: includes/Admin/options/opt_doc_single.php:705
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:688
+#: includes/Admin/options/opt_doc_single.php:706
 msgid "Show / Hide the thumbnail in search results"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:702
+#: includes/Admin/options/opt_doc_single.php:720
 msgid "Search Mode"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:704
+#: includes/Admin/options/opt_doc_single.php:722
 #, php-format
 msgid ""
 "%1$sSelect how you want the search to work.%2$s %3$s\n"
@@ -3089,41 +3107,41 @@ msgid ""
 "\t\t\t\t\t• %1$sBy Title and Content:%2$s First shows title matches, then includes results that match inside the content."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:715
+#: includes/Admin/options/opt_doc_single.php:733
 msgid "Search in Titles Only"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:716
+#: includes/Admin/options/opt_doc_single.php:734
 msgid "Search in Titles and Content"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:738
+#: includes/Admin/options/opt_doc_single.php:756
 msgid "Breadcrumbs"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:744
+#: includes/Admin/options/opt_doc_single.php:762
 msgid "Show/Hide Breadcrumb"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:745
+#: includes/Admin/options/opt_doc_single.php:763
 msgid "Toggle this switch to Show/Hide the Breadcrumb bar."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:754
+#: includes/Admin/options/opt_doc_single.php:772
 msgid "Frontpage Name"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:755
+#: includes/Admin/options/opt_doc_single.php:773
 #: includes/functions.php:900
 #: includes/functions.php:1021
 msgid "Home"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:766
+#: includes/Admin/options/opt_doc_single.php:784
 msgid "Docs Archive Page Title"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:767
+#: includes/Admin/options/opt_doc_single.php:785
 #: includes/Elementor/Search/ezd-search.php:32
 #: includes/Elementor/Search/Search_Widget.php:160
 #: includes/Frontend/Ajax.php:280
@@ -3135,115 +3153,115 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:778
+#: includes/Admin/options/opt_doc_single.php:796
 msgid "Updated Text"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:779
+#: includes/Admin/options/opt_doc_single.php:797
 #: templates/breadcrumbs.php:2
 msgid "Updated on"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:798
+#: includes/Admin/options/opt_doc_single.php:816
 #: includes/Admin/setup-wizard/step3_settings.php:115
 #: includes/Admin/setup-wizard/step3_settings.php:117
 #: build/docs-builder/index.js:1
 msgid "Left Sidebar"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:804
+#: includes/Admin/options/opt_doc_single.php:822
 msgid "Docs Navigation Layout"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:806
+#: includes/Admin/options/opt_doc_single.php:824
 msgid "Collapsed with Icons"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:807
+#: includes/Admin/options/opt_doc_single.php:825
 msgid "Extended Docs"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:816
+#: includes/Admin/options/opt_doc_single.php:834
 msgid "Docs to view"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:817
+#: includes/Admin/options/opt_doc_single.php:835
 msgid "Select All Docs to display all the top label docs or choose Self Docs to show child docs of the current doc."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:819
+#: includes/Admin/options/opt_doc_single.php:837
 msgid "All Docs (Archive)"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:820
+#: includes/Admin/options/opt_doc_single.php:838
 msgid "Single (Self) Doc"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:829
+#: includes/Admin/options/opt_doc_single.php:847
 msgid "Draft Document Visibility"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:830
+#: includes/Admin/options/opt_doc_single.php:848
 msgid "Control whether draft documents appear in the frontend sidebar navigation."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:832
+#: includes/Admin/options/opt_doc_single.php:850
 msgid "Hide Draft Documents"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:833
+#: includes/Admin/options/opt_doc_single.php:851
 msgid "Show Draft Documents"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:841
+#: includes/Admin/options/opt_doc_single.php:859
 msgid "Sidebar Toggle"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:842
+#: includes/Admin/options/opt_doc_single.php:860
 msgid "Collapse and Expand the left Sidebar with a Toggle button."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:852
+#: includes/Admin/options/opt_doc_single.php:870
 msgid "Filter Form"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:853
+#: includes/Admin/options/opt_doc_single.php:871
 msgid "Filter the left sidebar doc items by typing a letter."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:862
+#: includes/Admin/options/opt_doc_single.php:880
 msgid "Mark Words"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:863
+#: includes/Admin/options/opt_doc_single.php:881
 msgid "Highlight the typed keyword in the docs."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:875
+#: includes/Admin/options/opt_doc_single.php:893
 msgid "Enable this switcher to use featured image for the Doc sections icon."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:881
+#: includes/Admin/options/opt_doc_single.php:899
 msgid "Doc Section Icon"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:882
+#: includes/Admin/options/opt_doc_single.php:900
 msgid "This is the Doc's default icon. If you don't use icon for the article section individually, this icon will be shown."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:894
+#: includes/Admin/options/opt_doc_single.php:912
 msgid "Doc Section Icon Open"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:895
+#: includes/Admin/options/opt_doc_single.php:913
 msgid "This is the Doc's default icon. If you don't use icon for the article section individually, this icon will be shown on open states of the Doc sections."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:909
+#: includes/Admin/options/opt_doc_single.php:927
 msgid "Doc Title Typography"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:916
+#: includes/Admin/options/opt_doc_single.php:934
 #: includes/Elementor/Search/style-control.php:34
 #: includes/Elementor/Search/style-control.php:168
 #: includes/Elementor/Search/style-control.php:361
@@ -3251,7 +3269,7 @@ msgstr ""
 msgid "Background Color"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:932
+#: includes/Admin/options/opt_doc_single.php:950
 #: includes/Admin/options/opt_onepage_doc.php:252
 #: includes/Admin/setup-wizard/step3_settings.php:127
 #: includes/Admin/setup-wizard/step3_settings.php:129
@@ -3259,185 +3277,185 @@ msgstr ""
 msgid "Right Sidebar"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:937
+#: includes/Admin/options/opt_doc_single.php:955
 msgid "Sharing Doc"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:943
+#: includes/Admin/options/opt_doc_single.php:961
 msgid "Share Button"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:953
+#: includes/Admin/options/opt_doc_single.php:971
 msgid "Share Button Label"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:954
+#: includes/Admin/options/opt_doc_single.php:972
 #: templates/tools/share-btns.php:15
 msgid "Share this Doc"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:961
+#: includes/Admin/options/opt_doc_single.php:979
 msgid "Copy Link Button"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:971
+#: includes/Admin/options/opt_doc_single.php:989
 msgid "Copy Link Label"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:972
+#: includes/Admin/options/opt_doc_single.php:990
 #: templates/tools/share-btns.php:8
 msgid "Or copy link"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:983
+#: includes/Admin/options/opt_doc_single.php:1001
 msgid "URL copied to clipboard"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:992
+#: includes/Admin/options/opt_doc_single.php:1010
 msgid "Tools"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:998
+#: includes/Admin/options/opt_doc_single.php:1016
 msgid "Font Size Switcher"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1007
+#: includes/Admin/options/opt_doc_single.php:1025
 msgid "Print Article"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1015
+#: includes/Admin/options/opt_doc_single.php:1033
 msgid "Widgets Area"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1016
+#: includes/Admin/options/opt_doc_single.php:1034
 msgid "Enable to register a Sidebar Widgets area named 'Doc Right Sidebar' in Appearance > Widgets."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1029
+#: includes/Admin/options/opt_doc_single.php:1047
 msgid "Table of Contents (TOC)"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1035
+#: includes/Admin/options/opt_doc_single.php:1053
 msgid "Enable TOC"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1036
+#: includes/Admin/options/opt_doc_single.php:1054
 msgid "EazyDocs will automatically create a structured Table Of Contents(TOC) while you are writing your documentation."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1043
+#: includes/Admin/options/opt_doc_single.php:1061
 msgid "TOC Heading"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1044
+#: includes/Admin/options/opt_doc_single.php:1062
 #: templates/docs-right-sidebar.php:4
 msgid "CONTENTS"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1051
+#: includes/Admin/options/opt_doc_single.php:1069
 msgid "Enable to add numbers before each table of content item."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1052
+#: includes/Admin/options/opt_doc_single.php:1070
 msgid "Auto Numbering"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1060
-#: includes/Admin/options/opt_doc_single.php:1065
+#: includes/Admin/options/opt_doc_single.php:1078
+#: includes/Admin/options/opt_doc_single.php:1083
 #: build/eazydocs-toolbar/index.js:1
 #: src/eazydocs-toolbar/index.js:95
 #: build/eazydocs-toolbar/index.js:123
 msgid "Conditional Dropdown"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1066
+#: includes/Admin/options/opt_doc_single.php:1084
 msgid "You can display conditional contents using the [conditional_data] shortcode in documentation based on the dropdown value. See the shortcode usage tutorial <a href=\"https://tinyurl.com/yd46mfax\" target=\"_blank\">here</a>."
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1077
+#: includes/Admin/options/opt_doc_single.php:1095
 msgid "Dropdown Options"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1087
+#: includes/Admin/options/opt_doc_single.php:1105
 msgid "Icon"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1096
+#: includes/Admin/options/opt_doc_single.php:1114
 msgid "Windows"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1100
+#: includes/Admin/options/opt_doc_single.php:1118
 msgid "iOs"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1104
+#: includes/Admin/options/opt_doc_single.php:1122
 msgid "Linux"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1119
+#: includes/Admin/options/opt_doc_single.php:1137
 #: templates/content-related.php:7
 msgid "Related Articles"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1124
+#: includes/Admin/options/opt_doc_single.php:1142
 msgid "Related Docs Settings"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1130
+#: includes/Admin/options/opt_doc_single.php:1148
 msgid "Related Docs"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1140
+#: includes/Admin/options/opt_doc_single.php:1158
 msgid "Related articles"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1151
-#: includes/Admin/options/opt_doc_single.php:1229
+#: includes/Admin/options/opt_doc_single.php:1169
+#: includes/Admin/options/opt_doc_single.php:1247
 msgid "Docs Number"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1163
-#: includes/Admin/options/opt_doc_single.php:1241
+#: includes/Admin/options/opt_doc_single.php:1181
+#: includes/Admin/options/opt_doc_single.php:1259
 msgid "Column Width"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1165
-#: includes/Admin/options/opt_doc_single.php:1243
+#: includes/Admin/options/opt_doc_single.php:1183
+#: includes/Admin/options/opt_doc_single.php:1261
 msgid "Half"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1166
-#: includes/Admin/options/opt_doc_single.php:1244
+#: includes/Admin/options/opt_doc_single.php:1184
+#: includes/Admin/options/opt_doc_single.php:1262
 msgid "Fullwidth"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1179
-#: includes/Admin/options/opt_doc_single.php:1257
+#: includes/Admin/options/opt_doc_single.php:1197
+#: includes/Admin/options/opt_doc_single.php:1275
 #: includes/Elementor/Docs/Doc_Widget.php:1090
 #: includes/Elementor/Search/Search_Widget.php:96
 msgid "Button"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1180
-#: includes/Admin/options/opt_doc_single.php:1258
+#: includes/Admin/options/opt_doc_single.php:1198
+#: includes/Admin/options/opt_doc_single.php:1276
 #: templates/content-related.php:9
 #: templates/content-related.php:13
 msgid "See More"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1197
+#: includes/Admin/options/opt_doc_single.php:1215
 msgid "Viewed Articles"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1202
+#: includes/Admin/options/opt_doc_single.php:1220
 msgid "Recently Viewed Docs Options"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1208
+#: includes/Admin/options/opt_doc_single.php:1226
 msgid "Recently Viewed Docs"
 msgstr ""
 
-#: includes/Admin/options/opt_doc_single.php:1218
+#: includes/Admin/options/opt_doc_single.php:1236
 msgid "Recently Viewed articles"
 msgstr ""
 
@@ -6867,20 +6885,20 @@ msgid "Get started with Antimanual to unlock all AI features for your EazyDocs k
 msgstr ""
 
 #: includes/block-templates/search-banner.php:53
-#: templates/search-banner.php:47
+#: templates/search-banner.php:53
 msgid "Search here"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:53
 #: includes/Elementor/Search/ezd-search.php:43
-#: templates/search-banner.php:48
+#: templates/search-banner.php:54
 #: build/docs-builder/index.js:1
 msgid "Search documentation"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:66
 #: includes/Elementor/Search/ajax-sarch-results.php:11
-#: templates/search-banner.php:64
+#: templates/search-banner.php:70
 msgid "Search results"
 msgstr ""
 
@@ -6888,13 +6906,13 @@ msgstr ""
 #: includes/Elementor/Search/ajax-sarch-results.php:12
 #: includes/Elementor/Search/ajax-sarch-results.php:14
 #: includes/Elementor/Search/Search_Widget.php:355
-#: templates/search-banner.php:65
-#: templates/search-banner.php:66
+#: templates/search-banner.php:71
+#: templates/search-banner.php:72
 msgid "No Results Found"
 msgstr ""
 
 #: includes/block-templates/search-banner.php:66
-#: templates/search-banner.php:67
+#: templates/search-banner.php:73
 msgid "Check the spelling or try a different word or phrase."
 msgstr ""
 

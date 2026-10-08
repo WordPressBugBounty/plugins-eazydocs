@@ -1,6 +1,6 @@
 <?php
 return array(
-	'version' => '1b5baf36db30c2022f57',
+	'version' => '5e79bc43e8c0fbf7f7a6',
 	'entries' => array(
 		'frontend' => array(
 			'css' => 'frontend.css',

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'spider-themes/eazydocs',
-        'pretty_version' => 'v2.14.2',
-        'version' => '2.14.2.0',
-        'reference' => 'bd9eecbaac146e45b0b9c157861d92331bfe568c',
+        'pretty_version' => 'v2.15.0',
+        'version' => '2.15.0.0',
+        'reference' => 'da4affde504ef1033a3d554b38975f88e40f64e6',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'freemius/wordpress-sdk' => array(
-            'pretty_version' => '2.13.4',
-            'version' => '2.13.4.0',
-            'reference' => 'fa43eb92ae9dffa0d9f5ae11b5a1739bd7222308',
+            'pretty_version' => '2.13.5',
+            'version' => '2.13.5.0',
+            'reference' => '9ffb36d9fe5fa1b5b9e80906b165fff48a8d8d04',
             'type' => 'library',
             'install_path' => __DIR__ . '/../freemius/wordpress-sdk',
             'aliases' => array(),
@@ -83,9 +83,9 @@
             'dev_requirement' => false,
         ),
         'spider-themes/eazydocs' => array(
-            'pretty_version' => 'v2.14.2',
-            'version' => '2.14.2.0',
-            'reference' => 'bd9eecbaac146e45b0b9c157861d92331bfe568c',
+            'pretty_version' => 'v2.15.0',
+            'version' => '2.15.0.0',
+            'reference' => 'da4affde504ef1033a3d554b38975f88e40f64e6',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
